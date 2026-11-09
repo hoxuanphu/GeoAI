@@ -1,0 +1,9 @@
+{
+  "HealthResponse": {"status": "ok", "app_version": "0.1.0", "schema_version": "0.1.0"},
+  "CapabilitiesResponse": {
+    "schema_version": "0.1.0", "runtime": "python-local-metadata",
+    "features": ["health", "capabilities"], "technical_ready": true,
+    "inference_ready": false, "execution_owner_ready": false,
+    "native_launcher_ready": false, "project_writer_ready": false
+  }
+}

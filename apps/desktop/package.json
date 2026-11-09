@@ -1,0 +1,34 @@
+{
+  "name": "geoai-desktop-foundation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 1420 --strictPort",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit && vite build",
+    "tauri": "tauri",
+    "api:generate": "python ../../tools/export_api_client.py",
+    "api:check": "python ../../tools/export_api_client.py --check"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.12.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.4",
+    "@testing-library/react": "^16.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "jsdom": "^31.0.0",
+    "typescript": "5.9",
+    "vite": "^7.3.7",
+    "vitest": "^4.1.12"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@4.53.0",
+    "esbuild": "npm:esbuild-wasm@0.25.12"
+  }
+}

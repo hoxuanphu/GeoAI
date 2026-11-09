@@ -1,0 +1,46 @@
+﻿[
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\backend\\geoai\\contracts\\imports.py",
+        "Hash":  "1C9E2E5E22189600B3BA1779B6CF9B97816EF4CF64DA229318EC398A26ED21D1"
+    },
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\backend\\geoai\\contracts\\__init__.py",
+        "Hash":  "C5D3C70A32A2CA94111E1B311D1B9058AB8BE38C888AAFB6EDC80D7606DDE783"
+    },
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\backend\\geoai\\storage\\__init__.py",
+        "Hash":  "35CC700FFA7836418A7CCB199B6C1A5E664B71168B090EF1EB6D1C15636B6C8E"
+    },
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\backend\\geoai\\storage\\importer.py",
+        "Hash":  "488B230C66ED10E39C2D5090B2354EA18A7677F56B93BAE6B3EAA628C61F426B"
+    },
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\backend\\geoai\\catalog\\__init__.py",
+        "Hash":  "AE40D12B7E09667B52CF63F53F08E0A9CF233842CB9C2CBEDC90764EF13833A2"
+    },
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\backend\\geoai\\catalog\\policy.py",
+        "Hash":  "582F7A2EFDCE1F3CCE3C75C1FF49CF95F52973BA9F8501986485D69AE32198D1"
+    },
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\tests\\contracts\\test_import_contracts.py",
+        "Hash":  "C3ACF0162B3CDBC56340DC7D77E66AF40DA66A171961BA41675C544C153900C7"
+    },
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\tests\\storage\\test_importer_security.py",
+        "Hash":  "ECE56C350A685CD7DF3B901B92E008AA30043D4C9D4364D00DCA7BD1A912A034"
+    },
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\tests\\catalog\\test_resolver_network_policy.py",
+        "Hash":  "44FBC05B53DB4D90557925622E7936FF46C089DBB6C5DD4D9D8CC284119820D0"
+    },
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\tests\\fixtures\\contracts\\import-policy.json",
+        "Hash":  "43A923EF72FECFD267B8B8925F8DAF46BB7B495CDBFF7A6D4F95CF55F1B2A59F"
+    },
+    {
+        "Path":  "C:\\Users\\phuhx1\\Documents\\GeoAI\\schemas\\contracts-v0.1.0.json",
+        "Hash":  "DE81E5C619EC456F04A0127BE479B091C9B2692A4377CF0206556E02B6D8FC14"
+    }
+]

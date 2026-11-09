@@ -1,0 +1,16 @@
+Command: npm test
+
+> geoai-desktop-foundation@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/phuhx1/Documents/GeoAI/apps/desktop
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  23:26:25
+   Duration  1.31s (transform 108ms, setup 0ms, import 257ms, tests 189ms, environment 652ms)
+
+
+Exit: 0

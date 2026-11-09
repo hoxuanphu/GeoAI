@@ -1,0 +1,10 @@
+Command: ['C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe', '-m', 'unittest', 'discover', '-s', 'tests/architecture', '-v']
+test_contracts_require_only_standard_library_and_pydantic (test_import_boundaries.ImportBoundaryTests.test_contracts_require_only_standard_library_and_pydantic) ... ok
+test_internal_dependencies_follow_architecture (test_import_boundaries.ImportBoundaryTests.test_internal_dependencies_follow_architecture) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.031s
+
+OK
+
+Exit: 0; elapsed: 0.12s

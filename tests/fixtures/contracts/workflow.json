@@ -1,0 +1,513 @@
+{
+  "AssetRef": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "asset_id": "nasa:scene-1:blue",
+    "provider": "nasa",
+    "collection": "HLS.S30.v2",
+    "product_profile_id": "hls:s30:v2",
+    "provider_scene_id": "scene-1",
+    "asset_key": "B02",
+    "processing_level": "surface_reflectance",
+    "acquisition": {
+      "start": "2026-11-08T00:00:00Z",
+      "end": "2026-11-08T00:00:00Z"
+    },
+    "crs": {
+      "format": "authority",
+      "definition": "EPSG:32648",
+      "revision": "EPSG:2026",
+      "axis_order": [
+        "east",
+        "north"
+      ],
+      "unit": "m"
+    },
+    "footprint": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            105,
+            10
+          ],
+          [
+            106,
+            10
+          ],
+          [
+            106,
+            11
+          ],
+          [
+            105,
+            11
+          ],
+          [
+            105,
+            10
+          ]
+        ]
+      ]
+    },
+    "bands": [
+      {
+        "name": "B02",
+        "spectral_role": "blue",
+        "unit": "reflectance",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -9999
+      }
+    ],
+    "qa_profile_id": "hls:fmask:v2",
+    "license_id": "license:hls",
+    "identity": {
+      "kind": "sha256",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  },
+  "GridSpec": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "grid_id": "grid:1",
+    "crs": {
+      "format": "authority",
+      "definition": "EPSG:32648",
+      "revision": "EPSG:2026",
+      "axis_order": [
+        "east",
+        "north"
+      ],
+      "unit": "m"
+    },
+    "affine": [
+      30,
+      0,
+      500000,
+      0,
+      -30,
+      1200000
+    ],
+    "width": 224,
+    "height": 224,
+    "pixel_interpretation": "area",
+    "data_kind": "continuous",
+    "resampling": "bilinear",
+    "output_dtype": "float32",
+    "nodata": "nan"
+  },
+  "TransformSpec": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "transform_id": "transform:1",
+    "source_crs": {
+      "format": "authority",
+      "definition": "EPSG:32648",
+      "revision": "EPSG:2026",
+      "axis_order": [
+        "east",
+        "north"
+      ],
+      "unit": "m"
+    },
+    "target_crs": {
+      "format": "authority",
+      "definition": "EPSG:32648",
+      "revision": "EPSG:2026",
+      "axis_order": [
+        "east",
+        "north"
+      ],
+      "unit": "m"
+    },
+    "operation": "identity",
+    "grid_resources": [],
+    "area_of_use": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            105,
+            10
+          ],
+          [
+            106,
+            10
+          ],
+          [
+            106,
+            11
+          ],
+          [
+            105,
+            11
+          ],
+          [
+            105,
+            10
+          ]
+        ]
+      ]
+    },
+    "tolerance_m": 0.1,
+    "proj_version": "fixture-only",
+    "proj_database_version": "fixture-only"
+  },
+  "InputSnapshot": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "snapshot_id": "snapshot:1",
+    "project_id": "project:1",
+    "aoi": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            105,
+            10
+          ],
+          [
+            106,
+            10
+          ],
+          [
+            106,
+            11
+          ],
+          [
+            105,
+            11
+          ],
+          [
+            105,
+            10
+          ]
+        ]
+      ]
+    },
+    "asset_ids": [
+      "nasa:scene-1:blue"
+    ],
+    "band_mapping": {
+      "blue": "B02"
+    },
+    "qa_policy_id": "hls:fmask:v2",
+    "acquisition": {
+      "start": "2026-11-08T00:00:00Z",
+      "end": "2026-11-08T00:00:00Z"
+    },
+    "temporal_selection": "single_date",
+    "grid_id": "grid:1",
+    "transform_ids": [
+      "transform:1"
+    ],
+    "dependency_ids": [
+      "nasa:scene-1:blue"
+    ],
+    "retention_profile": "references"
+  },
+  "ModelSpec": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "model_id": "model:technical:1",
+    "name": "Prithvi fixture, no actual weights",
+    "backbone": {
+      "component_id": "prithvi:300m:tl",
+      "revision": "63adbd39c271da4c42f447e69b1a7c91a338cdc9",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "format": "safetensors"
+    },
+    "decoder": {
+      "component_id": "upernet:fixture",
+      "revision": "seed:7",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "format": "safetensors"
+    },
+    "decoder_trained": false,
+    "task": "segmentation",
+    "product_profile_id": "hls:s30:v2",
+    "band_order": [
+      "blue",
+      "green",
+      "red",
+      "narrow_nir",
+      "swir1",
+      "swir2"
+    ],
+    "tensor": {
+      "channels": 6,
+      "frames": 1,
+      "height": 224,
+      "width": 224,
+      "batch_min": 1,
+      "batch_max": 1
+    },
+    "normalization": {
+      "unit": "reflectance",
+      "mean": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "std": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "metadata_policy": "required_tl",
+    "gsd_m": 30,
+    "class_schema_id": "classes:fixture",
+    "runtime_ids": [
+      "runtime:fixture:cpu"
+    ],
+    "precisions": [
+      "fp32"
+    ],
+    "license_ids": [
+      "license:apache2"
+    ],
+    "evaluation_ids": [],
+    "readiness": "technical"
+  },
+  "PhysicalModelSpec": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "physical_model_id": "physical:et0:fixture",
+    "method_id": "PHY-02",
+    "method_version": "fixture-v1",
+    "method_kind": "physical",
+    "implementation_id": "method:fixture",
+    "implementation_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "source_refs": [
+      "FAO-56, fixture reference"
+    ],
+    "variables": [
+      {
+        "name": "temperature",
+        "unit": "degC",
+        "role": "input"
+      },
+      {
+        "name": "et0",
+        "unit": "mm/day",
+        "role": "output"
+      }
+    ],
+    "parameter_profile_id": "parameters:fixture",
+    "uncertainty_policy_id": "uncertainty:fixture",
+    "resume_capability": "none",
+    "evaluation_ids": [],
+    "readiness": "technical"
+  },
+  "DatasetVersion": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "dataset_id": "dataset:fixture",
+    "label_asset_ids": [
+      "local:labels:1"
+    ],
+    "class_schema_id": "classes:fixture",
+    "split_id": "split:fixture",
+    "split_method": "spatial_temporal",
+    "license_ids": [
+      "license:fixture"
+    ],
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "JobSpec": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "job_id": "job:1",
+    "project_id": "project:1",
+    "workflow_id": "workflow:classify",
+    "workflow_version": "draft-1",
+    "input_snapshot_id": "snapshot:1",
+    "grid_id": "grid:1",
+    "execution_kind": "ml",
+    "model_ids": [
+      "model:technical:1"
+    ],
+    "physical_model_ids": [],
+    "parameter_snapshot_ids": [],
+    "parameters": {},
+    "compute_policy": "cpu",
+    "resource_budget": {
+      "cpu_threads": 2,
+      "ram_bytes": 1073741824,
+      "temporary_bytes": 2147483648
+    },
+    "idempotency_key": "request:1"
+  },
+  "RunManifest": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "run_id": "run:1",
+    "job_id": "job:1",
+    "attempt": {
+      "job_id": "job:1",
+      "attempt_id": "attempt:1",
+      "generation_token": "generation:1"
+    },
+    "input_snapshot_id": "snapshot:1",
+    "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "pipeline_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "config_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "grid_id": "grid:1",
+    "transform_ids": [
+      "transform:1"
+    ],
+    "model_ids": [
+      "model:technical:1"
+    ],
+    "physical_model_ids": [],
+    "runtime": {
+      "runtime_id": "runtime:fixture:cpu",
+      "backend": "fixture",
+      "runtime_version": "0",
+      "precision": "fp32"
+    },
+    "used_fallback": false,
+    "coverage_fraction": 0.75,
+    "artifacts": [
+      {
+        "asset_id": "local:output:1",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "size_bytes": 128,
+        "media_type": "image/tiff"
+      }
+    ],
+    "quality_flags": [
+      "synthetic_fixture"
+    ],
+    "publication_state": "published"
+  },
+  "ResultRevision": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "revision_id": "revision:1",
+    "base_run_id": "run:1",
+    "edit_asset_ids": [],
+    "representation": "raster",
+    "class_schema_id": "classes:fixture",
+    "author_id": "user:fixture",
+    "reason": "Synthetic contract fixture",
+    "review_state": "unreviewed"
+  },
+  "EvaluationRecord": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "evaluation_id": "evaluation:fixture",
+    "dataset_id": "dataset:fixture",
+    "split_id": "split:fixture",
+    "target_model_id": "model:technical:1",
+    "kind": "technical",
+    "metrics": {},
+    "per_class_metrics": {},
+    "gate_decision": "not_assessed",
+    "limitations": [
+      "No actual model/data evaluation"
+    ]
+  },
+  "MetricsSnapshot": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "metrics_snapshot_id": "metrics:1",
+    "run_id": "run:1",
+    "revision_id": "revision:1",
+    "representation": "raster",
+    "aoi": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            105,
+            10
+          ],
+          [
+            106,
+            10
+          ],
+          [
+            106,
+            11
+          ],
+          [
+            105,
+            11
+          ],
+          [
+            105,
+            10
+          ]
+        ]
+      ]
+    },
+    "coverage_fraction": 0.75,
+    "metrics": {
+      "mapped_area_ha": 0.18
+    },
+    "unit": "ha",
+    "method_ids": [
+      "GEO-01"
+    ]
+  },
+  "ReportContext": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "report_context_id": "report:1",
+    "revision_id": "revision:1",
+    "representation": "raster",
+    "metrics_snapshot_id": "metrics:1",
+    "aoi": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            105,
+            10
+          ],
+          [
+            106,
+            10
+          ],
+          [
+            106,
+            11
+          ],
+          [
+            105,
+            11
+          ],
+          [
+            105,
+            10
+          ]
+        ]
+      ]
+    },
+    "acquisition": {
+      "start": "2026-11-08T00:00:00Z",
+      "end": "2026-11-08T00:00:00Z"
+    },
+    "coverage_fraction": 0.75,
+    "evaluation_ids": [],
+    "model_ids": [
+      "model:technical:1"
+    ],
+    "physical_model_ids": [],
+    "template_version": "fixture-v1",
+    "style_version": "fixture-v1",
+    "font_version": "fixture-v1",
+    "report_kind": "draft",
+    "review_state_snapshot": "unreviewed"
+  }
+}
+

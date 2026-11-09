@@ -1,0 +1,17 @@
+[
+  {
+    "suite": "contracts",
+    "exit_code": 0,
+    "seconds": 2.547
+  },
+  {
+    "suite": "integration",
+    "exit_code": 0,
+    "seconds": 7.281
+  },
+  {
+    "suite": "architecture",
+    "exit_code": 0,
+    "seconds": 0.11
+  }
+]

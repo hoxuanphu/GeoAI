@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "skills": {
+    "ait-manager": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/ait-manager/SKILL.md",
+      "computedHash": "432a7faf0102ae151a04c96bc7d04d120a28d6e32af34998a8b8516904dbd3ef",
+      "installMode": "copy"
+    },
+    "communications-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/communications-assessment/SKILL.md",
+      "computedHash": "8fbaadd5cacceff095d7a0a5236d3494b85a1f0e0a7372dff2d832637b079985",
+      "installMode": "copy"
+    },
+    "constellation-design": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/constellation-design/SKILL.md",
+      "computedHash": "0f36ed16fca1e520f39b5ee96b72bf707a75f4aa61850411c14ac735411f8539",
+      "installMode": "copy"
+    },
+    "cost-estimation": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/cost-estimation/SKILL.md",
+      "computedHash": "4e5b1937281f3d768a4c6f02dd1123c431e1876b72096dce29dd34ca7e24177f",
+      "installMode": "copy"
+    },
+    "cost-modeling": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/cost-modeling/SKILL.md",
+      "computedHash": "7023592aaa4e9b63e90358015161b062afd4704f58d90b58d8eb179adebe4486",
+      "installMode": "copy"
+    },
+    "eclss-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/eclss-assessment/SKILL.md",
+      "computedHash": "e22f2bf8471f7f90a74870d35b050abbf5c07b7cb9367fc4001d07e39ef5fb95",
+      "installMode": "copy"
+    },
+    "flight-software-architect": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/flight-software-architect/SKILL.md",
+      "computedHash": "5721057fbd757adf6ed299015d1872b9a6292a5248ef25b9bcdc0afd5d6cba6a",
+      "installMode": "copy"
+    },
+    "gnc-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gnc-assessment/SKILL.md",
+      "computedHash": "54027c16c211e4090211e2c007ce3f81af92978d636dc060b044105bd09db3bf",
+      "installMode": "copy"
+    },
+    "ground-systems-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/ground-systems-assessment/SKILL.md",
+      "computedHash": "bef39e93ab5303e299b50fa3a1cfc663db5d31c1772e4d0fd96a0c1c8acae056",
+      "installMode": "copy"
+    },
+    "hazard-analysis": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/hazard-analysis/SKILL.md",
+      "computedHash": "3ae5ef9c4d8e89d606ec06f97f852789cbd22e86faa4ea2526969413623ee61f",
+      "installMode": "copy"
+    },
+    "isru-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/isru-assessment/SKILL.md",
+      "computedHash": "c495d602f962d82a0e68bf6940fc7ee7958353c5427491845f7924731ba2699b",
+      "installMode": "copy"
+    },
+    "lunar-conops-manager": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/lunar-conops-manager/SKILL.md",
+      "computedHash": "f5969d6ea42799608dcd81b3f962df6a68edba657dbd3b770879e3c70fc1c512",
+      "installMode": "copy"
+    },
+    "manufacturing-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/manufacturing-assessment/SKILL.md",
+      "computedHash": "bed63816de73087d3d07609416c22ea10831191246fc25d73300cd18fc79be4b",
+      "installMode": "copy"
+    },
+    "mission-analysis-specialist": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/mission-analysis-specialist/SKILL.md",
+      "computedHash": "e46b15abc4eb8125e160da2997ac86aa4360af72209bd6d44c851c08a2096804",
+      "installMode": "copy"
+    },
+    "mission-operations-manager": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/mission-operations-manager/SKILL.md",
+      "computedHash": "cb6c525a17bf2209af422f180ac1530160cdae2d481bac1b6ea457417fda0551",
+      "installMode": "copy"
+    },
+    "orbital-conops-manager": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/orbital-conops-manager/SKILL.md",
+      "computedHash": "31e7f68085263884e9c8eb9cc86630c42639f968213020f14decda5077ace869",
+      "installMode": "copy"
+    },
+    "payload-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/payload-assessment/SKILL.md",
+      "computedHash": "184e899e692d48efa553e9052c4c625da64dfec1fcb2234592e3059a2b05dab6",
+      "installMode": "copy"
+    },
+    "power-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/power-assessment/SKILL.md",
+      "computedHash": "7cee75ad7c94d04e2bac8c347d72f32c07d2df3124ce10b313bdddde4a49008e",
+      "installMode": "copy"
+    },
+    "propulsion-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/propulsion-assessment/SKILL.md",
+      "computedHash": "b71a93788864e759e604ca843306ec08b503b9e8537c093cc2a7e0274d74b191",
+      "installMode": "copy"
+    },
+    "reliability-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/reliability-assessment/SKILL.md",
+      "computedHash": "ed882f7c733d75b6f5ae6d85f3cbdb826007ff2b3f7380a0761847e0efb20226",
+      "installMode": "copy"
+    },
+    "requirements-manager": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/requirements-manager/SKILL.md",
+      "computedHash": "dcca4d080372310f79000c180a4644b2be4de61ff20465071646624663ac703b",
+      "installMode": "copy"
+    },
+    "reusability-analysis": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/reusability-analysis/SKILL.md",
+      "computedHash": "50e7a480423fe27c3ed9d55fce9eb9a2ea0d2ad288de0b7cf5b8d7aef63a7c68",
+      "installMode": "copy"
+    },
+    "structural-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/structural-assessment/SKILL.md",
+      "computedHash": "2dce59c684950d51f5bb8b1073915b47d89befcf3eea3b9b0b687be6df1da496",
+      "installMode": "copy"
+    },
+    "systems-engineering-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/systems-engineering-assessment/SKILL.md",
+      "computedHash": "2ee86d09867a17abc398a277cb10bc9cc7fa0dd3bce6b3b3b5f356cd82fc79cc",
+      "installMode": "copy"
+    },
+    "thermal-assessment": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/thermal-assessment/SKILL.md",
+      "computedHash": "153feaf42dfa864fd8f3e8e9a4cd5b44f49ed52cbd2c622785075c6aad57ab43",
+      "installMode": "copy"
+    },
+    "trade-study-manager": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/trade-study-manager/SKILL.md",
+      "computedHash": "2e251cf6730f19b35901e27bc784c53b3478a5efc7564a5ad3fd2ca0af720517",
+      "installMode": "copy"
+    },
+    "v-and-v-manager": {
+      "source": "LunCoSim/space-engineering-skills",
+      "sourceType": "github",
+      "skillPath": "skills/v-and-v-manager/SKILL.md",
+      "computedHash": "0ee20f9019b7eb110989fb4b50c5bd72222d6b9a909727f600c58b0a32060e71",
+      "installMode": "copy"
+    }
+  }
+}

@@ -1,0 +1,469 @@
+test_asset_id_requires_provider_namespace (test_contracts.ContractTests.test_asset_id_requires_provider_namespace) ... ERROR
+test_business_model_requires_evaluation (test_contracts.ContractTests.test_business_model_requires_evaluation) ... ERROR
+test_categorical_grid_cannot_interpolate_class_ids (test_contracts.ContractTests.test_categorical_grid_cannot_interpolate_class_ids) ... ERROR
+test_composite_snapshot_requires_recipe (test_contracts.ContractTests.test_composite_snapshot_requires_recipe) ... ERROR
+test_coverage_is_fraction_not_percent (test_contracts.ContractTests.test_coverage_is_fraction_not_percent) ... ERROR
+test_credentials_and_signed_urls_are_not_asset_fields (test_contracts.ContractTests.test_credentials_and_signed_urls_are_not_asset_fields) ... 
+  test_credentials_and_signed_urls_are_not_asset_fields (test_contracts.ContractTests.test_credentials_and_signed_urls_are_not_asset_fields) (field='credential') ... ERROR
+  test_credentials_and_signed_urls_are_not_asset_fields (test_contracts.ContractTests.test_credentials_and_signed_urls_are_not_asset_fields) (field='download_url') ... ERROR
+  test_credentials_and_signed_urls_are_not_asset_fields (test_contracts.ContractTests.test_credentials_and_signed_urls_are_not_asset_fields) (field='signed_url') ... ERROR
+test_exporter_check_detects_stale_generated_artifact (test_contracts.ContractTests.test_exporter_check_detects_stale_generated_artifact) ... FAIL
+test_hydraulic_spec_requires_solver_identity (test_contracts.ContractTests.test_hydraulic_spec_requires_solver_identity) ... ERROR
+test_manifest_cannot_publish_for_another_job (test_contracts.ContractTests.test_manifest_cannot_publish_for_another_job) ... ERROR
+test_model_band_count_must_match_tensor_and_stats (test_contracts.ContractTests.test_model_band_count_must_match_tensor_and_stats) ... ERROR
+test_naive_persisted_time_is_rejected (test_contracts.ContractTests.test_naive_persisted_time_is_rejected) ... ERROR
+test_official_report_requires_reviewed_snapshot (test_contracts.ContractTests.test_official_report_requires_reviewed_snapshot) ... ERROR
+test_offset_time_is_normalized_to_utc (test_contracts.ContractTests.test_offset_time_is_normalized_to_utc) ... ERROR
+test_physical_job_requires_physical_model_reference (test_contracts.ContractTests.test_physical_job_requires_physical_model_reference) ... ERROR
+test_physical_run_requires_parameter_forcing_provenance (test_contracts.ContractTests.test_physical_run_requires_parameter_forcing_provenance) ... ERROR
+test_polygon_requires_closed_ring_and_wgs84_ranges (test_contracts.ContractTests.test_polygon_requires_closed_ring_and_wgs84_ranges) ... 
+  test_polygon_requires_closed_ring_and_wgs84_ranges (test_contracts.ContractTests.test_polygon_requires_closed_ring_and_wgs84_ranges) (polygon={'type': 'Polygon', 'coordinates': [[[105, 10], [106, 10], [106, 11], [105, 11]]]}) ... ERROR
+  test_polygon_requires_closed_ring_and_wgs84_ranges (test_contracts.ContractTests.test_polygon_requires_closed_ring_and_wgs84_ranges) (polygon={'type': 'Polygon', 'coordinates': [[[500000, 10], [106, 10], [106, 11], [500000, 10]]]}) ... ERROR
+test_published_manifest_cannot_have_no_output (test_contracts.ContractTests.test_published_manifest_cannot_have_no_output) ... ERROR
+test_random_decoder_cannot_be_business_ready (test_contracts.ContractTests.test_random_decoder_cannot_be_business_ready) ... ERROR
+test_reversed_acquisition_range_is_rejected (test_contracts.ContractTests.test_reversed_acquisition_range_is_rejected) ... ERROR
+test_reviewed_revision_requires_reviewer_and_time (test_contracts.ContractTests.test_reviewed_revision_requires_reviewer_and_time) ... ERROR
+test_rpc_boolean_id_is_not_an_integer_id (test_contracts.ContractTests.test_rpc_boolean_id_is_not_an_integer_id) ... ERROR
+test_rpc_progress_cannot_exceed_total (test_contracts.ContractTests.test_rpc_progress_cannot_exceed_total) ... ERROR
+test_rpc_response_cannot_contain_both_result_and_error (test_contracts.ContractTests.test_rpc_response_cannot_contain_both_result_and_error) ... ERROR
+test_rpc_start_requires_attempt_and_matching_job (test_contracts.ContractTests.test_rpc_start_requires_attempt_and_matching_job) ... ERROR
+test_singular_affine_and_nonfinite_coefficients_are_rejected (test_contracts.ContractTests.test_singular_affine_and_nonfinite_coefficients_are_rejected) ... 
+  test_singular_affine_and_nonfinite_coefficients_are_rejected (test_contracts.ContractTests.test_singular_affine_and_nonfinite_coefficients_are_rejected) (affine=[1, 2, 0, 2, 4, 0]) ... ERROR
+  test_singular_affine_and_nonfinite_coefficients_are_rejected (test_contracts.ContractTests.test_singular_affine_and_nonfinite_coefficients_are_rejected) (affine=[inf, 0, 0, 0, -30, 0]) ... ERROR
+test_technical_evaluation_cannot_pass_business_gate (test_contracts.ContractTests.test_technical_evaluation_cannot_pass_business_gate) ... ERROR
+test_unknown_schema_version_is_rejected (test_contracts.ContractTests.test_unknown_schema_version_is_rejected) ... ERROR
+test_url_cannot_be_used_as_internal_asset_id (test_contracts.ContractTests.test_url_cannot_be_used_as_internal_asset_id) ... ERROR
+test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) ... 
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='AssetRef') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='GridSpec') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='TransformSpec') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='InputSnapshot') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='ModelSpec') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='PhysicalModelSpec') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='DatasetVersion') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='JobSpec') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='RunManifest') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='ResultRevision') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='EvaluationRecord') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='MetricsSnapshot') ... ERROR
+  test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='ReportContext') ... ERROR
+test_zero_normalization_std_is_rejected (test_contracts.ContractTests.test_zero_normalization_std_is_rejected) ... ERROR
+
+======================================================================
+ERROR: test_asset_id_requires_provider_namespace (test_contracts.ContractTests.test_asset_id_requires_provider_namespace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 52, in test_asset_id_requires_provider_namespace
+    with self.assertRaises(ValidationError): c.AssetRef.model_validate(p)
+                                             ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'AssetRef'
+
+======================================================================
+ERROR: test_business_model_requires_evaluation (test_contracts.ContractTests.test_business_model_requires_evaluation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 109, in test_business_model_requires_evaluation
+    with self.assertRaises(ValidationError): c.ModelSpec.model_validate(p)
+                                             ^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'ModelSpec'
+
+======================================================================
+ERROR: test_categorical_grid_cannot_interpolate_class_ids (test_contracts.ContractTests.test_categorical_grid_cannot_interpolate_class_ids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 87, in test_categorical_grid_cannot_interpolate_class_ids
+    with self.assertRaises(ValidationError): c.GridSpec.model_validate(p)
+                                             ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'GridSpec'
+
+======================================================================
+ERROR: test_composite_snapshot_requires_recipe (test_contracts.ContractTests.test_composite_snapshot_requires_recipe)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 93, in test_composite_snapshot_requires_recipe
+    with self.assertRaises(ValidationError): c.InputSnapshot.model_validate(p)
+                                             ^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'InputSnapshot'
+
+======================================================================
+ERROR: test_coverage_is_fraction_not_percent (test_contracts.ContractTests.test_coverage_is_fraction_not_percent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 147, in test_coverage_is_fraction_not_percent
+    with self.assertRaises(ValidationError): c.MetricsSnapshot.model_validate(p)
+                                             ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'MetricsSnapshot'
+
+======================================================================
+ERROR: test_credentials_and_signed_urls_are_not_asset_fields (test_contracts.ContractTests.test_credentials_and_signed_urls_are_not_asset_fields) (field='credential')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 48, in test_credentials_and_signed_urls_are_not_asset_fields
+    c.AssetRef.model_validate(p)
+    ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'AssetRef'
+
+======================================================================
+ERROR: test_credentials_and_signed_urls_are_not_asset_fields (test_contracts.ContractTests.test_credentials_and_signed_urls_are_not_asset_fields) (field='download_url')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 48, in test_credentials_and_signed_urls_are_not_asset_fields
+    c.AssetRef.model_validate(p)
+    ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'AssetRef'
+
+======================================================================
+ERROR: test_credentials_and_signed_urls_are_not_asset_fields (test_contracts.ContractTests.test_credentials_and_signed_urls_are_not_asset_fields) (field='signed_url')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 48, in test_credentials_and_signed_urls_are_not_asset_fields
+    c.AssetRef.model_validate(p)
+    ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'AssetRef'
+
+======================================================================
+ERROR: test_hydraulic_spec_requires_solver_identity (test_contracts.ContractTests.test_hydraulic_spec_requires_solver_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 113, in test_hydraulic_spec_requires_solver_identity
+    with self.assertRaises(ValidationError): c.PhysicalModelSpec.model_validate(p)
+                                             ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'PhysicalModelSpec'
+
+======================================================================
+ERROR: test_manifest_cannot_publish_for_another_job (test_contracts.ContractTests.test_manifest_cannot_publish_for_another_job)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 127, in test_manifest_cannot_publish_for_another_job
+    with self.assertRaises(ValidationError): c.RunManifest.model_validate(p)
+                                             ^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'RunManifest'
+
+======================================================================
+ERROR: test_model_band_count_must_match_tensor_and_stats (test_contracts.ContractTests.test_model_band_count_must_match_tensor_and_stats)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 97, in test_model_band_count_must_match_tensor_and_stats
+    with self.assertRaises(ValidationError): c.ModelSpec.model_validate(p)
+                                             ^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'ModelSpec'
+
+======================================================================
+ERROR: test_naive_persisted_time_is_rejected (test_contracts.ContractTests.test_naive_persisted_time_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 60, in test_naive_persisted_time_is_rejected
+    with self.assertRaises(ValidationError): c.GridSpec.model_validate(p)
+                                             ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'GridSpec'
+
+======================================================================
+ERROR: test_official_report_requires_reviewed_snapshot (test_contracts.ContractTests.test_official_report_requires_reviewed_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 143, in test_official_report_requires_reviewed_snapshot
+    with self.assertRaises(ValidationError): c.ReportContext.model_validate(p)
+                                             ^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'ReportContext'
+
+======================================================================
+ERROR: test_offset_time_is_normalized_to_utc (test_contracts.ContractTests.test_offset_time_is_normalized_to_utc)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 64, in test_offset_time_is_normalized_to_utc
+    self.assertEqual(c.GridSpec.model_validate(p).created_at.isoformat(), "2026-11-08T00:00:00+00:00")
+                     ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'GridSpec'
+
+======================================================================
+ERROR: test_physical_job_requires_physical_model_reference (test_contracts.ContractTests.test_physical_job_requires_physical_model_reference)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 117, in test_physical_job_requires_physical_model_reference
+    with self.assertRaises(ValidationError): c.JobSpec.model_validate(p)
+                                             ^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'JobSpec'
+
+======================================================================
+ERROR: test_physical_run_requires_parameter_forcing_provenance (test_contracts.ContractTests.test_physical_run_requires_parameter_forcing_provenance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 131, in test_physical_run_requires_parameter_forcing_provenance
+    with self.assertRaises(ValidationError): c.RunManifest.model_validate(p)
+                                             ^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'RunManifest'
+
+======================================================================
+ERROR: test_polygon_requires_closed_ring_and_wgs84_ranges (test_contracts.ContractTests.test_polygon_requires_closed_ring_and_wgs84_ranges) (polygon={'type': 'Polygon', 'coordinates': [[[105, 10], [106, 10], [106, 11], [105, 11]]]})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 77, in test_polygon_requires_closed_ring_and_wgs84_ranges
+    c.InputSnapshot.model_validate(p)
+    ^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'InputSnapshot'
+
+======================================================================
+ERROR: test_polygon_requires_closed_ring_and_wgs84_ranges (test_contracts.ContractTests.test_polygon_requires_closed_ring_and_wgs84_ranges) (polygon={'type': 'Polygon', 'coordinates': [[[500000, 10], [106, 10], [106, 11], [500000, 10]]]})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 77, in test_polygon_requires_closed_ring_and_wgs84_ranges
+    c.InputSnapshot.model_validate(p)
+    ^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'InputSnapshot'
+
+======================================================================
+ERROR: test_published_manifest_cannot_have_no_output (test_contracts.ContractTests.test_published_manifest_cannot_have_no_output)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 121, in test_published_manifest_cannot_have_no_output
+    with self.assertRaises(ValidationError): c.RunManifest.model_validate(p)
+                                             ^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'RunManifest'
+
+======================================================================
+ERROR: test_random_decoder_cannot_be_business_ready (test_contracts.ContractTests.test_random_decoder_cannot_be_business_ready)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 105, in test_random_decoder_cannot_be_business_ready
+    with self.assertRaises(ValidationError): c.ModelSpec.model_validate(p)
+                                             ^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'ModelSpec'
+
+======================================================================
+ERROR: test_reversed_acquisition_range_is_rejected (test_contracts.ContractTests.test_reversed_acquisition_range_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 68, in test_reversed_acquisition_range_is_rejected
+    with self.assertRaises(ValidationError): c.AssetRef.model_validate(p)
+                                             ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'AssetRef'
+
+======================================================================
+ERROR: test_reviewed_revision_requires_reviewer_and_time (test_contracts.ContractTests.test_reviewed_revision_requires_reviewer_and_time)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 135, in test_reviewed_revision_requires_reviewer_and_time
+    with self.assertRaises(ValidationError): c.ResultRevision.model_validate(p)
+                                             ^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'ResultRevision'
+
+======================================================================
+ERROR: test_rpc_boolean_id_is_not_an_integer_id (test_contracts.ContractTests.test_rpc_boolean_id_is_not_an_integer_id)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 151, in test_rpc_boolean_id_is_not_an_integer_id
+    with self.assertRaises(ValidationError): c.RpcRequest.model_validate(p)
+                                             ^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'RpcRequest'
+
+======================================================================
+ERROR: test_rpc_progress_cannot_exceed_total (test_contracts.ContractTests.test_rpc_progress_cannot_exceed_total)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 166, in test_rpc_progress_cannot_exceed_total
+    with self.assertRaises(ValidationError): c.RpcNotification.model_validate(p)
+                                             ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'RpcNotification'
+
+======================================================================
+ERROR: test_rpc_response_cannot_contain_both_result_and_error (test_contracts.ContractTests.test_rpc_response_cannot_contain_both_result_and_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 161, in test_rpc_response_cannot_contain_both_result_and_error
+    with self.assertRaises(ValidationError): c.RpcSuccess.model_validate(p)
+                                             ^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'RpcSuccess'
+
+======================================================================
+ERROR: test_rpc_start_requires_attempt_and_matching_job (test_contracts.ContractTests.test_rpc_start_requires_attempt_and_matching_job)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 155, in test_rpc_start_requires_attempt_and_matching_job
+    with self.assertRaises(ValidationError): c.RpcRequest.model_validate(p)
+                                             ^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'RpcRequest'
+
+======================================================================
+ERROR: test_singular_affine_and_nonfinite_coefficients_are_rejected (test_contracts.ContractTests.test_singular_affine_and_nonfinite_coefficients_are_rejected) (affine=[1, 2, 0, 2, 4, 0])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 83, in test_singular_affine_and_nonfinite_coefficients_are_rejected
+    c.GridSpec.model_validate(p)
+    ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'GridSpec'
+
+======================================================================
+ERROR: test_singular_affine_and_nonfinite_coefficients_are_rejected (test_contracts.ContractTests.test_singular_affine_and_nonfinite_coefficients_are_rejected) (affine=[inf, 0, 0, 0, -30, 0])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 83, in test_singular_affine_and_nonfinite_coefficients_are_rejected
+    c.GridSpec.model_validate(p)
+    ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'GridSpec'
+
+======================================================================
+ERROR: test_technical_evaluation_cannot_pass_business_gate (test_contracts.ContractTests.test_technical_evaluation_cannot_pass_business_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 139, in test_technical_evaluation_cannot_pass_business_gate
+    with self.assertRaises(ValidationError): c.EvaluationRecord.model_validate(p)
+                                             ^^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'EvaluationRecord'
+
+======================================================================
+ERROR: test_unknown_schema_version_is_rejected (test_contracts.ContractTests.test_unknown_schema_version_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 42, in test_unknown_schema_version_is_rejected
+    with self.assertRaises(ValidationError): c.GridSpec.model_validate(p)
+                                             ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'GridSpec'
+
+======================================================================
+ERROR: test_url_cannot_be_used_as_internal_asset_id (test_contracts.ContractTests.test_url_cannot_be_used_as_internal_asset_id)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 56, in test_url_cannot_be_used_as_internal_asset_id
+    with self.assertRaises(ValidationError): c.AssetRef.model_validate(p)
+                                             ^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'AssetRef'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='AssetRef')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='GridSpec')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='TransformSpec')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='InputSnapshot')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='ModelSpec')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='PhysicalModelSpec')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='DatasetVersion')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='JobSpec')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='RunManifest')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='ResultRevision')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='EvaluationRecord')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='MetricsSnapshot')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_workflow_payloads_round_trip_without_losing_identity (test_contracts.ContractTests.test_workflow_payloads_round_trip_without_losing_identity) (contract='ReportContext')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 34, in test_workflow_payloads_round_trip_without_losing_identity
+    model = c.CONTRACT_MODELS[name]
+            ^^^^^^^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'CONTRACT_MODELS'
+
+======================================================================
+ERROR: test_zero_normalization_std_is_rejected (test_contracts.ContractTests.test_zero_normalization_std_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 101, in test_zero_normalization_std_is_rejected
+    with self.assertRaises(ValidationError): c.ModelSpec.model_validate(p)
+                                             ^^^^^^^^^^^
+AttributeError: module 'geoai.contracts' has no attribute 'ModelSpec'
+
+======================================================================
+FAIL: test_exporter_check_detects_stale_generated_artifact (test_contracts.ContractTests.test_exporter_check_detects_stale_generated_artifact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\phuhx1\Documents\GeoAI\tests\contracts\test_contracts.py", line 173, in test_exporter_check_detects_stale_generated_artifact
+    self.assertEqual(good.returncode, 0, good.stderr)
+AssertionError: 2 != 0 : C:\Users\phuhx1\AppData\Local\Programs\Python\Python312\python.exe: can't open file 'C:\\Users\\phuhx1\\Documents\\GeoAI\\tools\\export_contract_schemas.py': [Errno 2] No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 30 tests in 0.063s
+
+FAILED (failures=1, errors=45)

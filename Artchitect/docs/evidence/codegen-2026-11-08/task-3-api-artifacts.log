@@ -1,0 +1,4 @@
+Command: ['C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe', 'tools/export_api_client.py', '--check']
+API artifacts are current
+
+Exit: 0; elapsed: 0.52s

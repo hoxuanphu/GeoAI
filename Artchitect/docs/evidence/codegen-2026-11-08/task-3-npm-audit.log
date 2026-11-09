@@ -1,0 +1,25 @@
+Command: npm audit --json
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {},
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "dependencies": {
+      "prod": 5,
+      "dev": 99,
+      "optional": 12,
+      "peer": 13,
+      "peerOptional": 0,
+      "total": 103
+    }
+  }
+}
+
+Exit: 0; elapsed: 1.48s

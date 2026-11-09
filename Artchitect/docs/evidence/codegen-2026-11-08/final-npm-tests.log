@@ -1,0 +1,13 @@
+
+> geoai-desktop-foundation@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/phuhx1/Documents/GeoAI/apps/desktop
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  23:27:32
+   Duration  1.48s (transform 123ms, setup 0ms, import 296ms, tests 181ms, environment 760ms)
+

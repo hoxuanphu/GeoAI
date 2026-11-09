@@ -1,0 +1,17 @@
+{
+  "interpreter": ".venv-backend/Scripts/python.exe",
+  "environment_creation": "python -m venv --system-site-packages .venv-backend",
+  "environment_scope": "project-local ignored directory; inherits existing system packages, not a clean isolated-install proof",
+  "command": "python -m pip install --disable-pip-version-check --retries 0 --timeout 15 --only-binary=:all: SQLAlchemy>=2.0,<2.1 alembic>=1.17,<2",
+  "tls": "PIP_CERT uses previously generated public Windows ROOT/CA bundle in Temp; certificate verification enabled",
+  "exit_code": 1,
+  "observed_metadata_versions": {
+    "sqlalchemy": "2.0.57",
+    "alembic": "1.20.1",
+    "greenlet": "3.5.6",
+    "mako": "1.4.3",
+    "markupsafe": "3.0.4"
+  },
+  "failure": "SQLAlchemy wheel download: HTTP 403 Client Error MediaTypeBlocked from files.pythonhosted.org",
+  "result": "Dependencies unavailable; no global package mutation, TLS bypass, alternative database architecture or fabricated lockfile"
+}

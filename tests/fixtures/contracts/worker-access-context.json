@@ -1,0 +1,76 @@
+{
+  "WorkerAccessContext": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-08T00:00:00Z",
+    "access_context_id": "access:1",
+    "project_id": "project:1",
+    "worker_id": "worker:1",
+    "launch_nonce": "launch:1",
+    "execution_owner_id": "owner:1",
+    "owner_epoch": 1,
+    "attempt": {
+      "job_id": "job:1",
+      "attempt_id": "attempt:1",
+      "generation_token": "generation:1"
+    },
+    "job_spec_id": "job:1",
+    "job_spec_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "input_snapshot_id": "snapshot:1",
+    "input_snapshot_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "read_entries": [
+      {
+        "ref_id": "job:1",
+        "kind": "manifest",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "size_bytes": 128,
+        "permission": "read_only",
+        "location": {
+          "kind": "managed-local",
+          "root_id": "root:1",
+          "relative_path": "manifests/job-1.json"
+        }
+      },
+      {
+        "ref_id": "snapshot:1",
+        "kind": "manifest",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "size_bytes": 128,
+        "permission": "read_only",
+        "location": {
+          "kind": "managed-local",
+          "root_id": "root:1",
+          "relative_path": "manifests/snapshot-1.json"
+        }
+      },
+      {
+        "ref_id": "local:input:1",
+        "kind": "input",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "size_bytes": 128,
+        "permission": "read_only",
+        "location": {
+          "kind": "external-registered-local",
+          "registration_id": "registration:1",
+          "absolute_path": "C:\\GeoAI-Synthetic\\input.tif",
+          "file_identity": {
+            "volume_id": "volume:fixture",
+            "file_id": "file:fixture"
+          }
+        }
+      }
+    ],
+    "staging_id": "staging:1",
+    "resource_budget": {
+      "cpu_threads": 2,
+      "ram_bytes": 1073741824,
+      "temporary_bytes": 2147483648
+    }
+  },
+  "WorkerBootstrap": {
+    "schema_version": "0.1.0",
+    "protocol_version": "0.1.0",
+    "worker_id": "worker:1",
+    "launch_nonce": "launch:1",
+    "context_registry_path": "C:\\GeoAI-Synthetic\\registry"
+  }
+}

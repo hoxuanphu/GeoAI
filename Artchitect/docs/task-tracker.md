@@ -1,0 +1,153 @@
+# Task tracker GeoAI
+
+**Cập nhật:** 08/11/2026 · **Múi giờ:** Asia/Bangkok (UTC+07:00).
+**Giai đoạn:** chuẩn bị G0, chưa đạt. **Phạm vi hiện tại:** triển khai code theo yêu cầu mới ngày 08/11/2026; bắt đầu phần nền được phép trước G0, theo [nhật ký](evidence/codegen-2026-11-08/progress.md).
+
+**Yêu cầu làm tiếp:** ghi lại [thiếu sót/nguyên nhân](implementation-gaps.md) và hoàn thiện các phần đủ điều kiện. [Kế hoạch backend trước G0](evidence/backend-pre-g0-2026-11-08/plan.md) / [tiến độ](evidence/backend-pre-g0-2026-11-08/progress.md): policy/archive, context/grant, framing và job core độc lập. Không ghi mọi logic chưa làm thành chờ native/G0.
+
+Đọc [roadmap](roadmap.md) để biết gate/phạm vi, dùng file này theo dõi công việc và mở [spec](specs/README.md) để xem acceptance/test đầy đủ. Tracker không thay spec, quyết định G0 hoặc bằng chứng nghiệm thu. Vai trò dưới đây là trách nhiệm dự kiến, **chưa có tên người được giao hoặc deadline cam kết**.
+
+## Quy ước trạng thái
+
+| Trạng thái | Khi dùng |
+| --- | --- |
+| Chưa bắt đầu | Có spec, chưa thực hiện deliverable; dependency được ghi ở từng task |
+| Chờ đầu vào | Thiếu dữ liệu/quyết định/phân công được nêu rõ; vẫn có thể chuẩn bị phần độc lập được phép |
+| Đang làm | Đang thực hiện trong phạm vi được yêu cầu và đủ dependency cho bước đó |
+| Chờ kiểm tra | Đã có deliverable nhưng chưa đủ acceptance/bằng chứng để đóng |
+| Tạm dừng | Đã làm một phần, hiện dừng theo phạm vi người dùng; không coi là hoàn tất |
+| Hoàn tất | Đạt acceptance trong spec, có ngày và đường dẫn bằng chứng; task hoàn tất không tự đóng gate |
+
+Checkbox chỉ đánh dấu đầu ra đã kiểm, không đánh dấu vì đã có tài liệu mô tả. Checklist dưới là các mốc theo dõi, không thay toàn bộ acceptance của spec. Không tính tỷ lệ hoàn thành dự án từ số file, số checkbox hoặc số task khác kích thước.
+
+## Bảng theo dõi chính
+
+| Task | Trạng thái | Vai trò dự kiến | Dependency chính | Bước tiếp theo | Bằng chứng hiện có |
+| --- | --- | --- | --- | --- | --- |
+| [SPEC-000 — Tài liệu](specs/000-documentation-baseline.md) | Hoàn tất | Phụ trách kiến trúc/tài liệu | Baseline v1.4 và yêu cầu người dùng | Duy trì tracker khi có thay đổi đã kiểm | [Baseline/di chuyển](evidence/2026-11-08-documentation-review.md), [bổ sung review](evidence/2026-11-08-review-followup.md) |
+| [SPEC-001 — Contracts](specs/001-contracts-baseline.md) | Hoàn tất phạm vi schema dự thảo | Backend/contracts | Ngữ nghĩa contracts; runtime access context tích hợp SPEC-009 | Tích hợp native context ở SPEC-009; chạy lại suite/schema mỗi khi đổi DTO | [55 tests và artifacts current sau API](evidence/codegen-2026-11-08/handoff.md), [review PASS](evidence/codegen-2026-11-08/final-review-report.md) |
+| [SPEC-002 — Đầu vào G0](specs/002-g0-evidence.md) | Chờ đầu vào | Chủ nghiệp vụ/dự án + GIS/data + ML | AOI thực, QC bộ 7 lớp/T=3, provider/quyền, gate/hardware/budget và người chốt | Xác nhận AOI kiểm định, QC/crosswalk/nhãn độc lập, profile T=3 và nguồn cụ thể; thu dữ liệu thực | [Decision record](evidence/g0/decision-record.md), [AOI policy](aoi-policy.md), [taxonomy](landcover-taxonomy.md), [kiểm đồng bộ](evidence/2026-11-08-aoi-taxonomy-review.md); chưa đủ hồ sơ đóng G0 |
+| [SPEC-003 — Desktop shell](specs/003-desktop-shell.md) | Chờ đầu vào native sau phần nền | Frontend/native + backend | Kiểu nền SPEC-001; ADR-001/006/011 | Build/kiểm launcher/owner/Job Object với Rust/MSVC, Tauri CLI và Windows cross-session harness | API/session/dev process/UI có log ở [SPEC-003](specs/003-desktop-shell.md#bàn-giao-phần-nền-ngày-08112026); chưa hoàn tất task |
+| [SPEC-004 — Job/publish](specs/004-jobs-and-publish.md) | Chưa bắt đầu | Backend/storage/IPC | Kiểu nền, launcher SPEC-003; nghiệm thu với resolver SPEC-009 | Khi tiếp tục code: job fixture, SQLite, fencing/cancel/publish/recovery | Chưa có integration test hoặc database |
+| [SPEC-005 — Prithvi spike](specs/005-prithvi-spike.md) | Chờ đầu vào | ML/runtime + GIS/data | HLS fixture thực, profile/hardware/budget G0 tương ứng; job/resolver đủ dùng | Khóa fixture/profile rồi đo backbone thật + decoder kỹ thuật | Chưa có tensor fixture thực hoặc benchmark |
+| [SPEC-006 — Workflow nghiệp vụ](specs/006-landcover-workflow.md) | Chưa bắt đầu | Workflow/UI/review/report + QA | G0 đóng, G1 phần phụ thuộc đạt, model pack SPEC-008 | Nhận pack có evaluation rồi kiểm luồng tới reviewed report/PDF | Chưa có workflow/evaluation G2 |
+| [SPEC-007 — Nền tảng G1](specs/007-g1-platform-validation.md) | Chưa bắt đầu | GIS/viewer/native/report + QA | SPEC-001/003/004/009; fixture/CRS/hardware; SPEC-005 khi đo cùng AI | Chuẩn bị fixture và kiểm CRS/viewer/PDF/bundle theo phạm vi được phép | Chưa có kiểm chứng nền tảng/native |
+| [SPEC-008 — Training/model pack](specs/008-training-evaluation-model-pack.md) | Chờ đầu vào | GIS/data + ML + reviewer độc lập + packaging | Nhãn/split/profile/gate/budget; SPEC-005 giúp sàng lọc, promotion chạy lại G2 | Phân công người thực, chuẩn bị nhãn/split/recipe và checkout training | Mới có spec; chưa dataset/checkpoint/pack nghiệp vụ |
+| [SPEC-009 — Importer/resolver](specs/009-importer-worker-resolver.md) | Chờ đầu vào native sau phần kiểu | Backend/storage + GIS/provider + native + QA | Kiểu nền SPEC-001, launcher SPEC-003; tích hợp SPEC-004 | Bootstrap/registry/native resolver, policy và ca IMP/NET/RES sau launcher | Typed context/start đã kiểm ở [SPEC-001](evidence/codegen-2026-11-08/task-1-report.md); [25 ca runtime](importer-resolver-security.md) chưa kiểm |
+
+**Tổng quan lúc khởi tạo:** chỉ SPEC-000 hoàn tất phạm vi tài liệu; SPEC-001 có một phần mã đang dừng, SPEC-002/005/008 đang chờ đầu vào, các task triển khai khác chưa bắt đầu. G0–G4 chưa có gate nào được ghi đạt.
+
+## Mốc chi tiết cần theo dõi
+
+### SPEC-000 — Tài liệu và điều hướng
+
+- [x] 000.1 Bộ docs/ADR/specs, chuyển vào Artchitect và kiểm liên kết — bằng chứng baseline ở bảng trên.
+- [x] 000.2 Bổ sung training/model pack, execution owner và resolver/security sau review — bằng chứng bổ sung ở bảng trên.
+- [x] 000.3 Tạo tracker, nối roadmap/index/hướng dẫn cập nhật và kiểm tài liệu — kết quả ghi tại mục bằng chứng khởi tạo bên dưới.
+
+### SPEC-001 — Contracts
+
+- [x] 001.1 Hoàn thiện run/revision/evaluation/metrics/report và RPC/public registry; sửa cách gọi affine — [bằng chứng](evidence/codegen-2026-11-08/task-1-report.md).
+- [x] 001.2 Đồng bộ typed access context/start ID/hash với SPEC-009, fixture và test; chưa thay native I/O acceptance.
+- [x] 001.3 Sinh JSON Schema, kiểm missing/stale artifact, 51 test nền qua và [review độc lập PASS](evidence/codegen-2026-11-08/task-2-review-report.md); sau API DTOs chạy lại 55 tests và artifact checks đều pass ở [bàn giao cuối](evidence/codegen-2026-11-08/handoff.md).
+
+### SPEC-002 — G0
+
+Đã ghi nhận G0-D01–D07: AOI linh hoạt (vẽ/footprint import/Shapefile), bộ 7 lớp IDs 0–6 với `-1` ignore, T=3 nghiệp vụ và T=1 spike; cùng các quyết định chia đợt, chỉ số, nguồn mở và mục tiêu RAM/VRAM. AOI kiểm định, QC/crosswalk/nhãn độc lập, thời gian frame và các đầu vào còn lại chưa chốt; các mốc dưới vẫn chưa đủ điều kiện đánh dấu.
+
+- [ ] 002.1 Xác nhận feature/AOI/class schema, nguồn/nhãn/license/split và người thực hiện/người duyệt.
+- [ ] 002.2 Thử đọc HLS band/QA có quyền; có coverage ngày/tháng/composite 2–3 năm và manifest có hash.
+- [ ] 002.3 Chốt CRS/điểm chuẩn/tolerance, hardware/workload, ngưỡng tuyệt đối/coverage và ngân sách/điểm dừng; ghi quyết định G0.
+
+G0-D09 ghi [bộ tiêu chí nghiệm thu](acceptance-criteria.md) đã được người dùng cung cấp; G0-D10 xác nhận máy GPU mới dùng riêng training/benchmark và giữ mục tiêu desktop trước đó. 002.3 còn chờ khóa sampling/metric/CI/coverage protocol, operation/điểm chuẩn, máy thực/CPU SLO và số vòng/lịch/chi phí thực. [Đối chiếu kỹ thuật](evidence/2026-11-08-acceptance-review.md) không thay bằng chứng đo model/coverage/benchmark.
+
+Đã cụ thể hóa nhóm nguồn ảnh/nhãn thành quy tắc X–Y, phân vai weak/giải đoán/thực địa và kiểm thời gian/lưới/ignore/split theo [SPEC-002](specs/002-g0-evidence.md#nhóm-3--nguồn-ảnh-và-đóng-gói-input-x), ghi nhận G0-D08. [Báo cáo đối chiếu](evidence/2026-11-08-input-label-review.md) chỉ xác minh tài liệu; còn nguồn/quyền/nhãn/split thực và người duyệt, không đánh dấu 002.1/002.2 hoàn tất.
+
+### SPEC-003 — Shell
+
+- [ ] 003.1 Dựng shell/API/session, health/capabilities và handoff token đúng ranh giới.
+- [ ] 003.2 Kiểm execution owner liên process/session, instance khác project, normal exit/crash và worker còn sống.
+- [ ] 003.3 Lưu kết quả Windows/lifecycle/Host/Origin/token/Unicode theo acceptance.
+
+Phần nền của 003.1/003.3 đã kiểm: metadata API/session, private pipe dev process, DTO/client sinh, React state/error/retry và Vite build. [Bằng chứng chi tiết](specs/003-desktop-shell.md#bàn-giao-phần-nền-ngày-08112026). Giữ các checkbox toàn mốc chưa hoàn tất vì chưa có native Tauri handoff/lifecycle, owner/Job Object/cross-session/WebView2/Unicode native acceptance. Không chuyển pipe dev process test thành shell crash test.
+
+### SPEC-009 — Importer/resolver
+
+- [ ] 009.1 Cấp bootstrap/context cho worker fixture; kiểm managed input và external registered input hợp lệ.
+- [ ] 009.2 Hiện thực policy và chạy IMP-01–11, NET-01–06, RES-01–08, ca dương và sentinel ngoài staging.
+- [ ] 009.3 Tích hợp context/start/candidate với SPEC-004, chạy native/process cases và lưu bằng chứng.
+
+### SPEC-004 — Job/publish
+
+- [ ] 004.1 Có queue/attempt/token/lease và SQLite migration/repository qua worker fixture thật.
+- [ ] 004.2 Kiểm cancel/retry/stale attempt, race publish, crash/reconcile và resolver/candidate khác project/attempt.
+- [ ] 004.3 Kiểm quyền tài nguyên liên project, worker cũ/compute release, GC/pin/restore và lưu integration log.
+
+### SPEC-005 — Spike Prithvi kỹ thuật
+
+- [ ] 005.1 Khóa HLS/preprocess/metadata/tensor/grid fixture thực và revision backbone/decoder kỹ thuật.
+- [ ] 005.2 Kiểm export/runtime/output tolerance; đo CPU cold/warm/RAM/temp và NVIDIA nếu chọn pack.
+- [ ] 005.3 Ghi kết luận khả thi kỹ thuật/phạm vi chưa kiểm; không nghiệm thu F1 từ decoder ngẫu nhiên.
+
+### SPEC-008 — Model nghiệp vụ
+
+- [ ] 008.1 Khóa dataset/nhãn/split có duyệt và kiểm leakage trước chipping.
+- [ ] 008.2 Review recipe/environment/seed/budget; training và chọn checkpoint bằng validation.
+- [ ] 008.3 Test độc lập, per-class metrics/coverage và RF đối chứng; quyết định gate đúng thẩm quyền.
+- [ ] 008.4 Convert/benchmark đúng checkpoint, kiểm license/hash/runtime và bàn giao model pack cho SPEC-006.
+
+### SPEC-007 — Kiểm nền tảng G1
+
+- [ ] 007.1 Kiểm CRS/điểm chuẩn/ranh UTM, mask/grid/area và fixture GIS phù hợp.
+- [ ] 007.2 Kiểm viewer/auth/Range/codec/WASM/state/tài nguyên, draft PDF tiếng Việt và native bundle.
+- [ ] 007.3 Tổng hợp bằng chứng cùng SPEC-003/004/005/009; chỉ kết luận G1 khi đủ phần phụ thuộc.
+
+### SPEC-006 — Workflow G2
+
+- [ ] 006.1 Nhận model pack SPEC-008, chạy HLS → snapshot → Prithvi nghiệp vụ → revision/review → metrics/PDF.
+- [ ] 006.2 Kiểm representation/review/provenance, export/runtime cuối, gate tuyệt đối/coverage/CPU budget và recovery.
+- [ ] 006.3 Lưu golden output/evaluation/e2e report và quyết định G2; không dùng synthetic fixture để đóng nghiệp vụ.
+
+## Dependency và việc đang chờ
+
+Kiểu nền SPEC-001 → launcher SPEC-003 → resolver SPEC-009 → tích hợp job SPEC-004 → spike/nền tảng SPEC-005/007. Phần schema/start/context đầy đủ nghiệm thu cùng SPEC-009 rồi chạy lại suite SPEC-001; không đòi các spec hoàn tất vòng lẫn nhau để bắt đầu.
+
+SPEC-002 thu thập đầu vào song song các task nền tảng được phép trước gate. Nhãn/recipe/training SPEC-008 chuẩn bị song song G1 khi đủ đầu vào tương ứng; không đợi toàn UI/viewer hoàn tất. SPEC-006 cần G0, các phần G1 phụ thuộc và pack SPEC-008 đạt điều kiện.
+
+| Mã chờ | Nội dung | Ảnh hưởng / bước xử lý |
+| --- | --- | --- |
+| WAIT-01 | Đã gỡ: người dùng yêu cầu thực thi code ngày 08/11/2026 | Tiếp tục theo dependency và gate; không tự đóng G0 |
+| WAIT-02 | Đã chốt cách tạo AOI, bộ 7 lớp và T profile; còn AOI kiểm định/thời gian frame, QC/crosswalk/nhãn độc lập, dữ liệu/quyền, gate/hardware/budget và nhân sự | Hoàn thiện hồ sơ SPEC-002 theo decision record; chưa có ngày cam kết |
+| WAIT-03 | Chưa có nhãn/split/recipe/checkpoint và test nghiệp vụ | SPEC-008 chịu trách nhiệm sản xuất đầu vào, không giao ngầm cho SPEC-006 |
+| WAIT-04 | ADR-011 còn đề xuất; khóa/resolver chưa kiểm Windows | Review phạm vi execution owner, sau đó kiểm SPEC-003/004/009 khi triển khai; không coi tài liệu là Accepted/runtime pass |
+| WAIT-05 | Chưa có Rust/Cargo/MSVC và harness kiểm cùng tài khoản xuyên Windows session | Chặn build/native acceptance SPEC-003; tiếp tục API/UI độc lập. SPEC-009/004 tích hợp đợi launcher/owner được kiểm; [môi trường](evidence/codegen-2026-11-08/setup-experiments.md) |
+| WAIT-06 | Fresh Python package install bị HTTP 403 khi tải wheel sau khi TLS đã xác minh | Dùng interpreter/package đã có để kiểm, ghi version thực; chưa kết luận cài mới sạch/offline pack |
+
+G3 installer/máy sạch/offline/upgrade và G4 PHY/provider/server được theo dõi ở roadmap; chưa có spec thực thi riêng. Chỉ thêm task có ID/spec sau khi xác định nhu cầu và đầu vào, không tạo task solver trống hoặc tự cam kết lịch.
+
+## Cách cập nhật sau mỗi phiên
+
+1. Chọn SPEC và mốc con đang làm; ghi người thực/người duyệt khi được phân công, ngày cập nhật và dependency còn thiếu. Không gán vai trò dự kiến như nhân sự đã nhận việc.
+2. Cập nhật trạng thái ở bảng chính, checkbox đã kiểm và lý do chờ/dừng. Khi có deliverable chưa kiểm thì ghi Chờ kiểm tra.
+3. Muốn đóng task: chạy kiểm đúng acceptance, lưu lệnh/môi trường/kết quả/log/artifact thực, thêm link ở tracker và spec; đồng bộ trạng thái gate/phạm vi ở roadmap khi bị ảnh hưởng.
+4. Thêm dòng lịch sử ghi ngày, task, thay đổi/kết quả và bằng chứng. Giữ lịch sử, không sửa kết quả cũ thành test đã chạy mới. Nếu tracker/spec/roadmap khác nhau thì kiểm evidence và sửa đồng bộ, không tự chọn trạng thái lạc quan hơn.
+
+## Lịch sử cập nhật
+
+| Ngày | Task | Thay đổi | Bằng chứng |
+| --- | --- | --- | --- |
+| 08/11/2026 | SPEC-000 / 000.3 | Hoàn tất khởi tạo/kiểm tracker SPEC-000–009 từ trạng thái tài liệu và kiểm kê hiện có; chưa tiếp tục code | Mục kiểm khởi tạo bên dưới; kiểm tài liệu đạt, không đóng gate runtime |
+| 08/11/2026 | SPEC-001 / 001.1–001.3 | Yêu cầu code mới; hoàn thiện contracts/run/RPC/private context/exporter. Baseline 30 tests lỗi → 51 tests pass; schema check và review độc lập pass | [Triển khai](evidence/codegen-2026-11-08/task-1-report.md), [review](evidence/codegen-2026-11-08/task-2-review-report.md), [parent kiểm lại](evidence/codegen-2026-11-08/task-1-parent-verify.log); không đóng G0/G1 |
+| 08/11/2026 | SPEC-003 foundation / SPEC-001 DTOs | Metadata API/session/dev pipe process, private handoff DTO/client, React UI/state/retry/timeout, Tauri scaffold chưa hỗ trợ native. Lượt cuối: 55+14+2 Python và 7 DOM pass; artifacts/typecheck/build pass; chưa đóng các mốc native | [Bàn giao](evidence/codegen-2026-11-08/handoff.md), [review cuối](evidence/codegen-2026-11-08/final-review-report.md); chờ Rust/MSVC/Tauri CLI/cross-session harness, resolver/job và input thực G0 |
+| 08/11/2026 | SPEC-002 / ghi nhận từng phần | Ghi quyết định chia đợt, ưu tiên nguồn mở và mục tiêu máy; đồng bộ nguồn/plans và trạng thái, giữ 002.1–002.3 chưa hoàn tất | [Decision record](evidence/g0/decision-record.md), [kiểm tài liệu](evidence/2026-11-08-g0-intake-review.md); chưa đóng G0 |
+| 08/11/2026 | SPEC-002 / AOI và bộ lớp | Đối chiếu AOI vẽ/ảnh import/Shapefile và IDs 0–6/-1; sửa liên kết decision record, đồng bộ roadmap/SPEC-006/008, T=3 nghiệp vụ và giới hạn crosswalk; giữ 002.1–002.3 chờ đầu vào | [Kiểm đồng bộ AOI/taxonomy](evidence/2026-11-08-aoi-taxonomy-review.md); chỉ tài liệu, chưa đóng G0 |
+| 08/11/2026 | SPEC-002/008 / ảnh X và nhãn Y | Cụ thể hóa nhóm 3/4, phân vai nguồn nhãn và bốn kiểm soát dữ liệu; sửa các diễn giải dtype/thời gian/grid/ignore chưa đúng, không duyệt số chip/ngưỡng minh họa | [Đối chiếu X–Y](evidence/2026-11-08-input-label-review.md); chưa có dữ liệu/split/model được nghiệm thu |
+| 08/11/2026 | SPEC-002 / tiêu chí định lượng | Ghi đủ ngưỡng bảy lớp/global, coverage, diện tích/CRS và budget/stop; xác định protocol/máy/CI còn mở, đồng bộ SPEC-006/008 và nguồn/plans | [Đối chiếu bộ ngưỡng](evidence/2026-11-08-acceptance-review.md); giữ 002.1–002.3 và các gate chưa hoàn tất |
+
+<a id="tracker-verification"></a>
+
+## Bằng chứng khởi tạo tracker
+
+Ngày 08/11/2026, kiểm trực tiếp qua `python -X utf8 -` bằng stdin, exit code 0: 60 file Markdown, 531 lượt liên kết nội bộ (75 lượt có anchor), 127 bảng và code fence không phát hiện lỗi trong bộ kiểm cấu trúc hiện có; 5 block JSON parse được. Tám block Mermaid chỉ kiểm nội dung/fence, chưa render. Đối chiếu tracker xác nhận đủ 10 SPEC duy nhất và 31 ID mốc con duy nhất, không có checkbox triển khai chưa kiểm bị đánh dấu hoàn tất.
+
+SHA-256 của cả 8 file mã/test/fixture/config trong inventory trước/sau không đổi; chỉ thêm tracker và cập nhật 5 file Markdown điều hướng/spec. Chưa gán nhân sự/deadline và không cập nhật lại số đo lịch sử của các báo cáo trước. Không chạy suite contracts/runtime/model vì đợt này chỉ tạo tài liệu theo dõi; bằng chứng này chỉ đóng mốc tài liệu 000.3, không xác nhận G0–G4.

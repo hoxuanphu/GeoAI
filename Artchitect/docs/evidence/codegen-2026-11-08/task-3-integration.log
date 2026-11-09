@@ -1,0 +1,22 @@
+Command: ['C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe', '-m', 'unittest', 'discover', '-s', 'tests/integration', '-v']
+test_authorization_header_name_is_case_insensitive (test_local_session.LocalSessionTests.test_authorization_header_name_is_case_insensitive) ... ok
+test_authorized_health_and_capabilities_describe_implemented_foundation (test_local_session.LocalSessionTests.test_authorized_health_and_capabilities_describe_implemented_foundation) ... ok
+test_duplicate_sensitive_headers_cannot_bypass_policy (test_local_session.LocalSessionTests.test_duplicate_sensitive_headers_cannot_bypass_policy) ... ok
+test_invalid_origin_preflight_is_rejected (test_local_session.LocalSessionTests.test_invalid_origin_preflight_is_rejected) ... ok
+test_logs_redact_request_targets_headers_and_exception_text (test_local_session.LocalSessionTests.test_logs_redact_request_targets_headers_and_exception_text) ... ok
+test_missing_origin_requires_explicit_policy_and_valid_token (test_local_session.LocalSessionTests.test_missing_origin_requires_explicit_policy_and_valid_token) ... ok
+test_missing_wrong_and_previous_session_tokens_are_rejected (test_local_session.LocalSessionTests.test_missing_wrong_and_previous_session_tokens_are_rejected) ... ok
+test_query_parameter_does_not_grant_access (test_local_session.LocalSessionTests.test_query_parameter_does_not_grant_access) ... ok
+test_valid_preflight_grants_cors_only_and_actual_get_still_needs_token (test_local_session.LocalSessionTests.test_valid_preflight_grants_cors_only_and_actual_get_still_needs_token) ... ok
+test_wrong_host_and_wrong_port_are_rejected_even_with_token (test_local_session.LocalSessionTests.test_wrong_host_and_wrong_port_are_rejected_even_with_token) ... ok
+test_wrong_or_null_origin_is_rejected_even_with_token (test_local_session.LocalSessionTests.test_wrong_or_null_origin_is_rejected_even_with_token) ... ok
+test_no_production_launcher_or_unrestricted_stdout_mode (test_shell_lifecycle.DevSidecarTests.test_no_production_launcher_or_unrestricted_stdout_mode) ... ok
+test_pipe_eof_stops_process_and_each_launch_uses_a_fresh_token (test_shell_lifecycle.DevSidecarTests.test_pipe_eof_stops_process_and_each_launch_uses_a_fresh_token) ... ok
+test_trusted_pipe_handoff_authenticated_health_shutdown_and_no_secret_logs (test_shell_lifecycle.DevSidecarTests.test_trusted_pipe_handoff_authenticated_health_shutdown_and_no_secret_logs) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 8.372s
+
+OK
+
+Exit: 0; elapsed: 9.17s

@@ -1,0 +1,117 @@
+
+> geoai-desktop-foundation@0.1.0 test
+> vitest run -t hung
+
+
+ RUN  v4.1.12 C:/Users/phuhx1/Documents/GeoAI/apps/desktop
+
+ ❯ src/App.test.tsx (7 tests | 2 failed | 5 skipped) 34ms
+   × hung handoff times out, retry connects and a late old handoff cannot replace the new session 27ms
+   × hung network is aborted on deadline and retry can connect 5ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 5 skipped (7)
+   Start at  23:24:04
+   Duration  1.13s (transform 108ms, setup 0ms, import 259ms, tests 34ms, environment 627ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/App.test.tsx > hung handoff times out, retry connects and a late old handoff cannot replace the new session
+TestingLibraryElementError: Unable to find an element with the text: Kết nối quá thời gian chờ.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main>[39m
+      [36m<header>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"brand"[39m
+        [36m>[39m
+          [0mGeoAI[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mNền tảng desktop · bản kỹ thuật[0m
+        [36m</span>[39m
+      [36m</header>[39m
+      [36m<section[39m
+        [33maria-live[39m=[32m"polite"[39m
+        [33mclass[39m=[32m"connection"[39m
+      [36m>[39m
+        [36m<h1>[39m
+          [0mKhông gian làm việc[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0mĐang kết nối phiên desktop…[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Bảng làm việc"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33maria-pressed[39m=[32m"true"[39m
+        [36m>[39m
+          [0mDữ liệu[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-pressed[39m=[32m"false"[39m
+        [36m>[39m
+          [0mTrạng thái[0m
+        [36m</button>[39m
+      [36m</nav>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"panel"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0mDữ liệu dự án[0m
+        [36m</h2>[39m
+        [36m<label[39m
+          [33mfor[39m=[32m"project-name"[39m
+        [36m>[39m
+          [0mTên dự án ghi chú[0m
+        [36m</label>[39m
+        [36m<input[39m
+          [33mid[39m=[32m"project-name"[39m
+          [33mplaceholder[39m=[32m"Ghi chú trong phiên làm việc"[39m
+          [33mvalue[39m=[32m""[39m
+        [36m/>[39m
+        [36m<p>[39m
+          [0mGhi chú giữ khi đổi bảng. Import và lưu dự án sẽ được bổ sung sau.[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/App.test.tsx:69:17
+     67|   render(<App handoff={() => ++attempts === 1 ? pending : Promise.reso…
+     68|   await act(async () => { await vi.advanceTimersByTimeAsync(10_000); }…
+     69|   expect(screen.getByText('Kết nối quá thời gian chờ.')).toBeTruthy();
+       |                 ^
+     70|   await act(async () => { fireEvent.click(screen.getByRole('button', {…
+     71|   expect(screen.getByText('Kết nối kỹ thuật sẵn sàng')).toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/App.test.tsx > hung network is aborted on deadline and retry can connect
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/App.test.tsx:81:27
+     79|   render(<App handoff={async () => descriptor} />);
+     80|   await act(async () => { await vi.advanceTimersByTimeAsync(10_000); }…
+     81|   expect(signal?.aborted).toBe(true);
+       |                           ^
+     82|   expect(screen.getByText('Kết nối quá thời gian chờ.')).toBeTruthy();
+     83|   network();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

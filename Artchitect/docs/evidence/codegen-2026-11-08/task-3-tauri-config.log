@@ -1,0 +1,1 @@
+Tauri configuration validates against installed @tauri-apps/cli 2.12.4 JSON Schema. Native compile/WebView/lifecycle remain unverified.

@@ -1,0 +1,3569 @@
+{
+  "$comment": "Generated from Pydantic; cross-field and live authorization checks remain required. Private runtime context definitions are not public RPC or durable project records.",
+  "$defs": {
+    "AcceptedResult": {
+      "additionalProperties": false,
+      "properties": {
+        "accepted": {
+          "title": "Accepted",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "accepted"
+      ],
+      "title": "AcceptedResult",
+      "type": "object"
+    },
+    "ArchiveEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "compressed_bytes": {
+          "minimum": 0,
+          "title": "Compressed Bytes",
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "file",
+            "directory"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "relative_path": {
+          "minLength": 1,
+          "title": "Relative Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "relative_path",
+        "kind",
+        "size_bytes",
+        "compressed_bytes",
+        "sha256"
+      ],
+      "title": "ArchiveEntry",
+      "type": "object"
+    },
+    "ArchiveInventory": {
+      "additionalProperties": false,
+      "properties": {
+        "archive_bytes": {
+          "minimum": 0,
+          "title": "Archive Bytes",
+          "type": "integer"
+        },
+        "archive_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Archive Sha256",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "entries": {
+          "items": {
+            "$ref": "#/$defs/ArchiveEntry"
+          },
+          "title": "Entries",
+          "type": "array"
+        },
+        "inventory_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Inventory Id",
+          "type": "string"
+        },
+        "policy_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "policy_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Policy Sha256",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "total_bytes": {
+          "minimum": 0,
+          "title": "Total Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "created_at",
+        "inventory_id",
+        "policy_id",
+        "policy_sha256",
+        "archive_sha256",
+        "archive_bytes",
+        "entries",
+        "total_bytes"
+      ],
+      "title": "ArchiveInventory",
+      "type": "object"
+    },
+    "ArchivePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_extensions": {
+          "items": {
+            "pattern": "^\\.[a-z0-9]{1,16}$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Allowed Extensions",
+          "type": "array"
+        },
+        "chunk_bytes": {
+          "exclusiveMinimum": 0,
+          "maximum": 1048576,
+          "title": "Chunk Bytes",
+          "type": "integer"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "max_archive_bytes": {
+          "exclusiveMinimum": 0,
+          "title": "Max Archive Bytes",
+          "type": "integer"
+        },
+        "max_compression_ratio": {
+          "exclusiveMinimum": 0,
+          "title": "Max Compression Ratio",
+          "type": "number"
+        },
+        "max_entries": {
+          "exclusiveMinimum": 0,
+          "title": "Max Entries",
+          "type": "integer"
+        },
+        "max_entry_bytes": {
+          "exclusiveMinimum": 0,
+          "title": "Max Entry Bytes",
+          "type": "integer"
+        },
+        "max_path_depth": {
+          "exclusiveMinimum": 0,
+          "title": "Max Path Depth",
+          "type": "integer"
+        },
+        "max_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Max Seconds",
+          "type": "number"
+        },
+        "max_total_bytes": {
+          "exclusiveMinimum": 0,
+          "title": "Max Total Bytes",
+          "type": "integer"
+        },
+        "nested_archives": {
+          "const": "reject",
+          "title": "Nested Archives",
+          "type": "string"
+        },
+        "policy_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "policy_id",
+        "max_archive_bytes",
+        "max_entries",
+        "max_total_bytes",
+        "max_entry_bytes",
+        "max_path_depth",
+        "max_compression_ratio",
+        "max_seconds",
+        "chunk_bytes",
+        "allowed_extensions",
+        "nested_archives"
+      ],
+      "title": "ArchivePolicy",
+      "type": "object"
+    },
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "media_type": {
+          "minLength": 1,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "asset_id",
+        "sha256",
+        "size_bytes",
+        "media_type"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    },
+    "AssetRef": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition": {
+          "$ref": "#/$defs/TimeRange"
+        },
+        "asset_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "asset_key": {
+          "minLength": 1,
+          "title": "Asset Key",
+          "type": "string"
+        },
+        "bands": {
+          "items": {
+            "$ref": "#/$defs/BandSpec"
+          },
+          "minItems": 1,
+          "title": "Bands",
+          "type": "array"
+        },
+        "collection": {
+          "minLength": 1,
+          "title": "Collection",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "crs": {
+          "$ref": "#/$defs/CrsRef"
+        },
+        "footprint": {
+          "$ref": "#/$defs/Wgs84Geometry"
+        },
+        "identity": {
+          "$ref": "#/$defs/ContentIdentity"
+        },
+        "license_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "License Id",
+          "type": "string"
+        },
+        "processing_level": {
+          "minLength": 1,
+          "title": "Processing Level",
+          "type": "string"
+        },
+        "product_profile_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Product Profile Id",
+          "type": "string"
+        },
+        "provider": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Provider",
+          "type": "string"
+        },
+        "provider_scene_id": {
+          "minLength": 1,
+          "title": "Provider Scene Id",
+          "type": "string"
+        },
+        "qa_profile_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Qa Profile Id"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "asset_id",
+        "provider",
+        "collection",
+        "product_profile_id",
+        "provider_scene_id",
+        "asset_key",
+        "processing_level",
+        "acquisition",
+        "crs",
+        "footprint",
+        "bands",
+        "license_id",
+        "identity"
+      ],
+      "title": "AssetRef",
+      "type": "object"
+    },
+    "AttemptKey": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Attempt Id",
+          "type": "string"
+        },
+        "generation_token": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Generation Token",
+          "type": "string"
+        },
+        "job_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Job Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "job_id",
+        "attempt_id",
+        "generation_token"
+      ],
+      "title": "AttemptKey",
+      "type": "object"
+    },
+    "BandSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "nodata": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "const": "nan",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nodata"
+        },
+        "offset": {
+          "default": 0,
+          "title": "Offset",
+          "type": "number"
+        },
+        "scale": {
+          "default": 1,
+          "title": "Scale",
+          "type": "number"
+        },
+        "spectral_role": {
+          "minLength": 1,
+          "title": "Spectral Role",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "spectral_role",
+        "unit"
+      ],
+      "title": "BandSpec",
+      "type": "object"
+    },
+    "CancelParams": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "$ref": "#/$defs/AttemptKey"
+        }
+      },
+      "required": [
+        "attempt"
+      ],
+      "title": "CancelParams",
+      "type": "object"
+    },
+    "CandidateParams": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "$ref": "#/$defs/AttemptKey"
+        },
+        "candidate_manifest_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Candidate Manifest Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attempt",
+        "candidate_manifest_id"
+      ],
+      "title": "CandidateParams",
+      "type": "object"
+    },
+    "CapabilitiesParams": {
+      "additionalProperties": false,
+      "properties": {
+        "protocol_version": {
+          "const": "0.1.0",
+          "title": "Protocol Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "schema_version"
+      ],
+      "title": "CapabilitiesParams",
+      "type": "object"
+    },
+    "CapabilitiesResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "execution_owner_ready": {
+          "const": false,
+          "default": false,
+          "title": "Execution Owner Ready",
+          "type": "boolean"
+        },
+        "features": {
+          "default": [
+            "health",
+            "capabilities"
+          ],
+          "items": {
+            "enum": [
+              "health",
+              "capabilities"
+            ],
+            "type": "string"
+          },
+          "title": "Features",
+          "type": "array"
+        },
+        "inference_ready": {
+          "const": false,
+          "default": false,
+          "title": "Inference Ready",
+          "type": "boolean"
+        },
+        "native_launcher_ready": {
+          "const": false,
+          "default": false,
+          "title": "Native Launcher Ready",
+          "type": "boolean"
+        },
+        "project_writer_ready": {
+          "const": false,
+          "default": false,
+          "title": "Project Writer Ready",
+          "type": "boolean"
+        },
+        "runtime": {
+          "const": "python-local-metadata",
+          "default": "python-local-metadata",
+          "title": "Runtime",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "technical_ready": {
+          "const": true,
+          "default": true,
+          "title": "Technical Ready",
+          "type": "boolean"
+        }
+      },
+      "title": "CapabilitiesResponse",
+      "type": "object"
+    },
+    "ContentIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "sha256",
+            "provider_version",
+            "etag_hint"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "title": "ContentIdentity",
+      "type": "object"
+    },
+    "CrsRef": {
+      "additionalProperties": false,
+      "properties": {
+        "axis_order": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "minLength": 1,
+              "type": "string"
+            }
+          ],
+          "title": "Axis Order",
+          "type": "array"
+        },
+        "definition": {
+          "minLength": 1,
+          "title": "Definition",
+          "type": "string"
+        },
+        "format": {
+          "enum": [
+            "authority",
+            "wkt2",
+            "projjson"
+          ],
+          "title": "Format",
+          "type": "string"
+        },
+        "revision": {
+          "minLength": 1,
+          "title": "Revision",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "format",
+        "definition",
+        "revision",
+        "axis_order",
+        "unit"
+      ],
+      "title": "CrsRef",
+      "type": "object"
+    },
+    "DatasetVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "class_schema_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Class Schema Id",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "dataset_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Dataset Id",
+          "type": "string"
+        },
+        "label_asset_ids": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Label Asset Ids",
+          "type": "array"
+        },
+        "license_ids": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "License Ids",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "split_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Split Id",
+          "type": "string"
+        },
+        "split_method": {
+          "enum": [
+            "spatial",
+            "temporal",
+            "spatial_temporal"
+          ],
+          "title": "Split Method",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "dataset_id",
+        "label_asset_ids",
+        "class_schema_id",
+        "split_id",
+        "split_method",
+        "license_ids",
+        "sha256"
+      ],
+      "title": "DatasetVersion",
+      "type": "object"
+    },
+    "ErrorParams": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "$ref": "#/$defs/AttemptKey"
+        },
+        "error": {
+          "$ref": "#/$defs/StructuredError"
+        }
+      },
+      "required": [
+        "attempt",
+        "error"
+      ],
+      "title": "ErrorParams",
+      "type": "object"
+    },
+    "EvaluationRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_evaluation_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Baseline Evaluation Id"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "dataset_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Dataset Id",
+          "type": "string"
+        },
+        "evaluation_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Evaluation Id",
+          "type": "string"
+        },
+        "gate_decision": {
+          "enum": [
+            "not_assessed",
+            "pass",
+            "fail"
+          ],
+          "title": "Gate Decision",
+          "type": "string"
+        },
+        "gate_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gate Id"
+        },
+        "kind": {
+          "enum": [
+            "technical",
+            "business"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "limitations": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "metrics": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "propertyNames": {
+            "minLength": 1
+          },
+          "title": "Metrics",
+          "type": "object"
+        },
+        "per_class_metrics": {
+          "additionalProperties": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "propertyNames": {
+              "minLength": 1
+            },
+            "type": "object"
+          },
+          "propertyNames": {
+            "minLength": 1
+          },
+          "title": "Per Class Metrics",
+          "type": "object"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "split_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Split Id",
+          "type": "string"
+        },
+        "target_model_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Target Model Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "evaluation_id",
+        "dataset_id",
+        "split_id",
+        "target_model_id",
+        "kind",
+        "metrics",
+        "per_class_metrics",
+        "gate_decision"
+      ],
+      "title": "EvaluationRecord",
+      "type": "object"
+    },
+    "ExternalRegisteredLocalLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "absolute_path": {
+          "minLength": 1,
+          "title": "Absolute Path",
+          "type": "string"
+        },
+        "file_identity": {
+          "$ref": "#/$defs/FileIdentity"
+        },
+        "kind": {
+          "const": "external-registered-local",
+          "title": "Kind",
+          "type": "string"
+        },
+        "registration_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Registration Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "registration_id",
+        "absolute_path",
+        "file_identity"
+      ],
+      "title": "ExternalRegisteredLocalLocation",
+      "type": "object"
+    },
+    "FileIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "file_id": {
+          "minLength": 1,
+          "title": "File Id",
+          "type": "string"
+        },
+        "volume_id": {
+          "minLength": 1,
+          "title": "Volume Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "volume_id",
+        "file_id"
+      ],
+      "title": "FileIdentity",
+      "type": "object"
+    },
+    "GridResource": {
+      "additionalProperties": false,
+      "properties": {
+        "resource_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Resource Id",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "resource_id",
+        "sha256"
+      ],
+      "title": "GridResource",
+      "type": "object"
+    },
+    "GridSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "affine": {
+          "maxItems": 6,
+          "minItems": 6,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Affine",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "crs": {
+          "$ref": "#/$defs/CrsRef"
+        },
+        "data_kind": {
+          "enum": [
+            "continuous",
+            "categorical"
+          ],
+          "title": "Data Kind",
+          "type": "string"
+        },
+        "grid_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Grid Id",
+          "type": "string"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "nodata": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "const": "nan",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nodata"
+        },
+        "output_dtype": {
+          "minLength": 1,
+          "title": "Output Dtype",
+          "type": "string"
+        },
+        "pixel_interpretation": {
+          "enum": [
+            "area",
+            "point"
+          ],
+          "title": "Pixel Interpretation",
+          "type": "string"
+        },
+        "resampling": {
+          "enum": [
+            "nearest",
+            "mode",
+            "bilinear",
+            "cubic",
+            "average"
+          ],
+          "title": "Resampling",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "vertical_datum": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vertical Datum"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "created_at",
+        "grid_id",
+        "crs",
+        "affine",
+        "width",
+        "height",
+        "pixel_interpretation",
+        "data_kind",
+        "resampling",
+        "output_dtype"
+      ],
+      "title": "GridSpec",
+      "type": "object"
+    },
+    "HealthResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "app_version": {
+          "minLength": 1,
+          "title": "App Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "const": "ok",
+          "default": "ok",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "app_version"
+      ],
+      "title": "HealthResponse",
+      "type": "object"
+    },
+    "HeartbeatParams": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "$ref": "#/$defs/AttemptKey"
+        }
+      },
+      "required": [
+        "attempt"
+      ],
+      "title": "HeartbeatParams",
+      "type": "object"
+    },
+    "InputSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition": {
+          "$ref": "#/$defs/TimeRange"
+        },
+        "aoi": {
+          "$ref": "#/$defs/Wgs84Geometry"
+        },
+        "asset_ids": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Asset Ids",
+          "type": "array"
+        },
+        "band_mapping": {
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9._:-]*$": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 256,
+            "minLength": 1
+          },
+          "title": "Band Mapping",
+          "type": "object"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "dependency_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Dependency Ids",
+          "type": "array"
+        },
+        "grid_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Grid Id",
+          "type": "string"
+        },
+        "mosaic_recipe_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mosaic Recipe Id"
+        },
+        "project_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "qa_policy_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Qa Policy Id",
+          "type": "string"
+        },
+        "retention_profile": {
+          "enum": [
+            "references",
+            "offline_pinned"
+          ],
+          "title": "Retention Profile",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "temporal_selection": {
+          "enum": [
+            "single_date",
+            "composite",
+            "time_series"
+          ],
+          "title": "Temporal Selection",
+          "type": "string"
+        },
+        "transform_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Transform Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "created_at",
+        "snapshot_id",
+        "project_id",
+        "aoi",
+        "asset_ids",
+        "band_mapping",
+        "qa_policy_id",
+        "acquisition",
+        "temporal_selection",
+        "grid_id",
+        "retention_profile"
+      ],
+      "title": "InputSnapshot",
+      "type": "object"
+    },
+    "JobSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "compute_policy": {
+          "pattern": "^(cpu|auto|gpu:[A-Za-z0-9][A-Za-z0-9._:-]*)$",
+          "title": "Compute Policy",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "execution_kind": {
+          "enum": [
+            "ml",
+            "physical",
+            "hybrid",
+            "gis"
+          ],
+          "title": "Execution Kind",
+          "type": "string"
+        },
+        "grid_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Grid Id",
+          "type": "string"
+        },
+        "idempotency_key": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "input_snapshot_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Input Snapshot Id",
+          "type": "string"
+        },
+        "job_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Job Id",
+          "type": "string"
+        },
+        "model_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Model Ids",
+          "type": "array"
+        },
+        "parameter_snapshot_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Parameter Snapshot Ids",
+          "type": "array"
+        },
+        "parameters": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Parameters",
+          "type": "object"
+        },
+        "physical_model_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Physical Model Ids",
+          "type": "array"
+        },
+        "project_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "resource_budget": {
+          "$ref": "#/$defs/ResourceBudget"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "workflow_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Workflow Id",
+          "type": "string"
+        },
+        "workflow_version": {
+          "minLength": 1,
+          "title": "Workflow Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "job_id",
+        "project_id",
+        "workflow_id",
+        "workflow_version",
+        "input_snapshot_id",
+        "grid_id",
+        "execution_kind",
+        "parameters",
+        "compute_policy",
+        "resource_budget",
+        "idempotency_key"
+      ],
+      "title": "JobSpec",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "ManagedLocalLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "managed-local",
+          "title": "Kind",
+          "type": "string"
+        },
+        "relative_path": {
+          "minLength": 1,
+          "title": "Relative Path",
+          "type": "string"
+        },
+        "root_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Root Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "root_id",
+        "relative_path"
+      ],
+      "title": "ManagedLocalLocation",
+      "type": "object"
+    },
+    "MetricsSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "aoi": {
+          "$ref": "#/$defs/Wgs84Geometry"
+        },
+        "coverage_fraction": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Coverage Fraction",
+          "type": "number"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "method_ids": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Method Ids",
+          "type": "array"
+        },
+        "metrics": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "propertyNames": {
+            "minLength": 1
+          },
+          "title": "Metrics",
+          "type": "object"
+        },
+        "metrics_snapshot_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Metrics Snapshot Id",
+          "type": "string"
+        },
+        "representation": {
+          "enum": [
+            "raster",
+            "vector"
+          ],
+          "title": "Representation",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "metrics_snapshot_id",
+        "run_id",
+        "revision_id",
+        "representation",
+        "aoi",
+        "coverage_fraction",
+        "metrics",
+        "unit",
+        "method_ids"
+      ],
+      "title": "MetricsSnapshot",
+      "type": "object"
+    },
+    "ModelSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "backbone": {
+          "$ref": "#/$defs/WeightReference"
+        },
+        "band_order": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Band Order",
+          "type": "array"
+        },
+        "class_schema_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Class Schema Id"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "decoder": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WeightReference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "decoder_trained": {
+          "default": false,
+          "title": "Decoder Trained",
+          "type": "boolean"
+        },
+        "evaluation_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Evaluation Ids",
+          "type": "array"
+        },
+        "gsd_m": {
+          "exclusiveMinimum": 0,
+          "title": "Gsd M",
+          "type": "number"
+        },
+        "license_ids": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "License Ids",
+          "type": "array"
+        },
+        "metadata_policy": {
+          "enum": [
+            "required_tl",
+            "validated_without_metadata",
+            "none"
+          ],
+          "title": "Metadata Policy",
+          "type": "string"
+        },
+        "model_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "normalization": {
+          "$ref": "#/$defs/Normalization"
+        },
+        "precisions": {
+          "items": {
+            "enum": [
+              "fp32",
+              "fp16",
+              "int8"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Precisions",
+          "type": "array"
+        },
+        "product_profile_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Product Profile Id",
+          "type": "string"
+        },
+        "readiness": {
+          "enum": [
+            "technical",
+            "business"
+          ],
+          "title": "Readiness",
+          "type": "string"
+        },
+        "runtime_ids": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Runtime Ids",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "task": {
+          "enum": [
+            "segmentation",
+            "classification",
+            "regression",
+            "reconstruction"
+          ],
+          "title": "Task",
+          "type": "string"
+        },
+        "tensor": {
+          "$ref": "#/$defs/TensorProfile"
+        }
+      },
+      "required": [
+        "created_at",
+        "model_id",
+        "name",
+        "backbone",
+        "task",
+        "product_profile_id",
+        "band_order",
+        "tensor",
+        "normalization",
+        "metadata_policy",
+        "gsd_m",
+        "runtime_ids",
+        "precisions",
+        "license_ids",
+        "readiness"
+      ],
+      "title": "ModelSpec",
+      "type": "object"
+    },
+    "Normalization": {
+      "additionalProperties": false,
+      "properties": {
+        "mean": {
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1,
+          "title": "Mean",
+          "type": "array"
+        },
+        "std": {
+          "items": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "minItems": 1,
+          "title": "Std",
+          "type": "array"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "unit",
+        "mean",
+        "std"
+      ],
+      "title": "Normalization",
+      "type": "object"
+    },
+    "PhysicalModelSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "boundary_refs": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Boundary Refs",
+          "type": "array"
+        },
+        "calibration_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Calibration Ids",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "evaluation_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Evaluation Ids",
+          "type": "array"
+        },
+        "grid_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Grid Id"
+        },
+        "implementation_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Implementation Id",
+          "type": "string"
+        },
+        "implementation_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Implementation Sha256",
+          "type": "string"
+        },
+        "initial_condition_ref": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Initial Condition Ref"
+        },
+        "method_id": {
+          "enum": [
+            "GEO-01",
+            "PHY-01",
+            "PHY-02",
+            "PHY-03",
+            "PHY-04",
+            "PHY-05",
+            "PHY-06",
+            "PHY-07",
+            "PHY-08"
+          ],
+          "title": "Method Id",
+          "type": "string"
+        },
+        "method_kind": {
+          "enum": [
+            "index",
+            "physical",
+            "semi_empirical",
+            "terrain"
+          ],
+          "title": "Method Kind",
+          "type": "string"
+        },
+        "method_version": {
+          "minLength": 1,
+          "title": "Method Version",
+          "type": "string"
+        },
+        "parameter_profile_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Parameter Profile Id",
+          "type": "string"
+        },
+        "physical_model_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Physical Model Id",
+          "type": "string"
+        },
+        "readiness": {
+          "enum": [
+            "technical",
+            "business"
+          ],
+          "title": "Readiness",
+          "type": "string"
+        },
+        "resume_capability": {
+          "enum": [
+            "none",
+            "chunk",
+            "native_checkpoint"
+          ],
+          "title": "Resume Capability",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "solver_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Solver Version"
+        },
+        "source_refs": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "time_step_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Time Step Seconds"
+        },
+        "uncertainty_policy_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Uncertainty Policy Id",
+          "type": "string"
+        },
+        "variables": {
+          "items": {
+            "$ref": "#/$defs/PhysicalVariable"
+          },
+          "minItems": 1,
+          "title": "Variables",
+          "type": "array"
+        },
+        "vertical_datum": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vertical Datum"
+        }
+      },
+      "required": [
+        "created_at",
+        "physical_model_id",
+        "method_id",
+        "method_version",
+        "method_kind",
+        "implementation_id",
+        "implementation_sha256",
+        "source_refs",
+        "variables",
+        "parameter_profile_id",
+        "uncertainty_policy_id",
+        "resume_capability",
+        "readiness"
+      ],
+      "title": "PhysicalModelSpec",
+      "type": "object"
+    },
+    "PhysicalVariable": {
+      "additionalProperties": false,
+      "properties": {
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum"
+        },
+        "name": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "input",
+            "output",
+            "parameter"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "unit",
+        "role"
+      ],
+      "title": "PhysicalVariable",
+      "type": "object"
+    },
+    "ProgressParams": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "$ref": "#/$defs/AttemptKey"
+        },
+        "completed_units": {
+          "minimum": 0,
+          "title": "Completed Units",
+          "type": "integer"
+        },
+        "phase": {
+          "minLength": 1,
+          "title": "Phase",
+          "type": "string"
+        },
+        "total_units": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Units"
+        }
+      },
+      "required": [
+        "attempt",
+        "phase",
+        "completed_units"
+      ],
+      "title": "ProgressParams",
+      "type": "object"
+    },
+    "ProviderEndpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "host": {
+          "maxLength": 253,
+          "minLength": 1,
+          "title": "Host",
+          "type": "string"
+        },
+        "port": {
+          "exclusiveMinimum": 0,
+          "maximum": 65535,
+          "title": "Port",
+          "type": "integer"
+        },
+        "scheme": {
+          "enum": [
+            "http",
+            "https"
+          ],
+          "title": "Scheme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scheme",
+        "host",
+        "port"
+      ],
+      "title": "ProviderEndpoint",
+      "type": "object"
+    },
+    "ProviderPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_private_networks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Private Networks",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "endpoints": {
+          "items": {
+            "$ref": "#/$defs/ProviderEndpoint"
+          },
+          "minItems": 1,
+          "title": "Endpoints",
+          "type": "array"
+        },
+        "max_address_records": {
+          "exclusiveMinimum": 0,
+          "title": "Max Address Records",
+          "type": "integer"
+        },
+        "max_bytes": {
+          "exclusiveMinimum": 0,
+          "title": "Max Bytes",
+          "type": "integer"
+        },
+        "max_chunk_bytes": {
+          "exclusiveMinimum": 0,
+          "maximum": 1048576,
+          "title": "Max Chunk Bytes",
+          "type": "integer"
+        },
+        "max_redirects": {
+          "minimum": 0,
+          "title": "Max Redirects",
+          "type": "integer"
+        },
+        "max_requests": {
+          "exclusiveMinimum": 0,
+          "title": "Max Requests",
+          "type": "integer"
+        },
+        "max_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Max Seconds",
+          "type": "number"
+        },
+        "max_url_length": {
+          "exclusiveMinimum": 0,
+          "title": "Max Url Length",
+          "type": "integer"
+        },
+        "policy_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "provider_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "policy_id",
+        "provider_id",
+        "endpoints",
+        "allowed_private_networks",
+        "max_requests",
+        "max_redirects",
+        "max_bytes",
+        "max_seconds",
+        "max_chunk_bytes",
+        "max_address_records",
+        "max_url_length"
+      ],
+      "title": "ProviderPolicy",
+      "type": "object"
+    },
+    "ReportContext": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition": {
+          "$ref": "#/$defs/TimeRange"
+        },
+        "aoi": {
+          "$ref": "#/$defs/Wgs84Geometry"
+        },
+        "coverage_fraction": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Coverage Fraction",
+          "type": "number"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "evaluation_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Evaluation Ids",
+          "type": "array"
+        },
+        "font_version": {
+          "minLength": 1,
+          "title": "Font Version",
+          "type": "string"
+        },
+        "metrics_snapshot_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Metrics Snapshot Id",
+          "type": "string"
+        },
+        "model_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Model Ids",
+          "type": "array"
+        },
+        "physical_model_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Physical Model Ids",
+          "type": "array"
+        },
+        "report_context_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Report Context Id",
+          "type": "string"
+        },
+        "report_kind": {
+          "enum": [
+            "draft",
+            "official"
+          ],
+          "title": "Report Kind",
+          "type": "string"
+        },
+        "representation": {
+          "enum": [
+            "raster",
+            "vector"
+          ],
+          "title": "Representation",
+          "type": "string"
+        },
+        "review_state_snapshot": {
+          "enum": [
+            "unreviewed",
+            "reviewed"
+          ],
+          "title": "Review State Snapshot",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "style_version": {
+          "minLength": 1,
+          "title": "Style Version",
+          "type": "string"
+        },
+        "template_version": {
+          "minLength": 1,
+          "title": "Template Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "report_context_id",
+        "revision_id",
+        "representation",
+        "metrics_snapshot_id",
+        "aoi",
+        "acquisition",
+        "coverage_fraction",
+        "template_version",
+        "style_version",
+        "font_version",
+        "report_kind",
+        "review_state_snapshot"
+      ],
+      "title": "ReportContext",
+      "type": "object"
+    },
+    "ResourceBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "cpu_threads": {
+          "exclusiveMinimum": 0,
+          "title": "Cpu Threads",
+          "type": "integer"
+        },
+        "ram_bytes": {
+          "exclusiveMinimum": 0,
+          "title": "Ram Bytes",
+          "type": "integer"
+        },
+        "temporary_bytes": {
+          "minimum": 0,
+          "title": "Temporary Bytes",
+          "type": "integer"
+        },
+        "vram_bytes": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Vram Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "cpu_threads",
+        "ram_bytes",
+        "temporary_bytes"
+      ],
+      "title": "ResourceBudget",
+      "type": "object"
+    },
+    "ResultRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "author_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Author Id",
+          "type": "string"
+        },
+        "base_run_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Base Run Id",
+          "type": "string"
+        },
+        "class_schema_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Class Schema Id",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "edit_asset_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Edit Asset Ids",
+          "type": "array"
+        },
+        "parent_revision_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Revision Id"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "representation": {
+          "enum": [
+            "raster",
+            "vector"
+          ],
+          "title": "Representation",
+          "type": "string"
+        },
+        "review_state": {
+          "enum": [
+            "unreviewed",
+            "reviewed"
+          ],
+          "title": "Review State",
+          "type": "string"
+        },
+        "reviewed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reviewed At"
+        },
+        "reviewed_by": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reviewed By"
+        },
+        "revision_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "revision_id",
+        "base_run_id",
+        "representation",
+        "class_schema_id",
+        "author_id",
+        "reason",
+        "review_state"
+      ],
+      "title": "ResultRevision",
+      "type": "object"
+    },
+    "RpcError": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "integer"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StructuredError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "RpcError",
+      "type": "object"
+    },
+    "RpcFailure": {
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "$ref": "#/$defs/RpcError"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Id"
+        },
+        "jsonrpc": {
+          "const": "2.0",
+          "title": "Jsonrpc",
+          "type": "string"
+        }
+      },
+      "required": [
+        "jsonrpc",
+        "id",
+        "error"
+      ],
+      "title": "RpcFailure",
+      "type": "object"
+    },
+    "RpcNotification": {
+      "additionalProperties": false,
+      "properties": {
+        "jsonrpc": {
+          "const": "2.0",
+          "title": "Jsonrpc",
+          "type": "string"
+        },
+        "method": {
+          "enum": [
+            "heartbeat",
+            "progress",
+            "artifact_candidate",
+            "completed",
+            "error"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "params": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HeartbeatParams"
+            },
+            {
+              "$ref": "#/$defs/ProgressParams"
+            },
+            {
+              "$ref": "#/$defs/CandidateParams"
+            },
+            {
+              "$ref": "#/$defs/ErrorParams"
+            }
+          ],
+          "title": "Params"
+        }
+      },
+      "required": [
+        "jsonrpc",
+        "method",
+        "params"
+      ],
+      "title": "RpcNotification",
+      "type": "object"
+    },
+    "RpcRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Id"
+        },
+        "jsonrpc": {
+          "const": "2.0",
+          "title": "Jsonrpc",
+          "type": "string"
+        },
+        "method": {
+          "enum": [
+            "capabilities",
+            "start",
+            "cancel",
+            "shutdown"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "params": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CapabilitiesParams"
+            },
+            {
+              "$ref": "#/$defs/StartParams"
+            },
+            {
+              "$ref": "#/$defs/CancelParams"
+            },
+            {
+              "$ref": "#/$defs/ShutdownParams"
+            }
+          ],
+          "title": "Params"
+        }
+      },
+      "required": [
+        "jsonrpc",
+        "id",
+        "method",
+        "params"
+      ],
+      "title": "RpcRequest",
+      "type": "object"
+    },
+    "RpcSuccess": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Id"
+        },
+        "jsonrpc": {
+          "const": "2.0",
+          "title": "Jsonrpc",
+          "type": "string"
+        },
+        "result": {
+          "$ref": "#/$defs/JsonValue"
+        }
+      },
+      "required": [
+        "jsonrpc",
+        "id",
+        "result"
+      ],
+      "title": "RpcSuccess",
+      "type": "object"
+    },
+    "RunManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "artifacts": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Artifacts",
+          "type": "array"
+        },
+        "attempt": {
+          "$ref": "#/$defs/AttemptKey"
+        },
+        "config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "coverage_fraction": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Coverage Fraction",
+          "type": "number"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "fallback_reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fallback Reason"
+        },
+        "grid_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Grid Id",
+          "type": "string"
+        },
+        "input_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Input Sha256",
+          "type": "string"
+        },
+        "input_snapshot_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Input Snapshot Id",
+          "type": "string"
+        },
+        "job_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Job Id",
+          "type": "string"
+        },
+        "model_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Model Ids",
+          "type": "array"
+        },
+        "physical_model_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Physical Model Ids",
+          "type": "array"
+        },
+        "physical_provenance": {
+          "default": null,
+          "title": "Physical Provenance",
+          "type": "null"
+        },
+        "pipeline_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Pipeline Sha256",
+          "type": "string"
+        },
+        "publication_state": {
+          "enum": [
+            "candidate",
+            "published"
+          ],
+          "title": "Publication State",
+          "type": "string"
+        },
+        "quality_flags": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Quality Flags",
+          "type": "array"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "runtime": {
+          "$ref": "#/$defs/RuntimeProvenance"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "transform_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Transform Ids",
+          "type": "array"
+        },
+        "used_fallback": {
+          "title": "Used Fallback",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "created_at",
+        "run_id",
+        "job_id",
+        "attempt",
+        "input_snapshot_id",
+        "input_sha256",
+        "pipeline_sha256",
+        "config_sha256",
+        "grid_id",
+        "runtime",
+        "used_fallback",
+        "coverage_fraction",
+        "publication_state"
+      ],
+      "title": "RunManifest",
+      "type": "object"
+    },
+    "RuntimeProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "backend": {
+          "minLength": 1,
+          "title": "Backend",
+          "type": "string"
+        },
+        "device_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Device Id"
+        },
+        "driver_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Driver Version"
+        },
+        "precision": {
+          "enum": [
+            "fp32",
+            "fp16",
+            "int8"
+          ],
+          "title": "Precision",
+          "type": "string"
+        },
+        "runtime_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Runtime Id",
+          "type": "string"
+        },
+        "runtime_version": {
+          "minLength": 1,
+          "title": "Runtime Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "runtime_id",
+        "backend",
+        "runtime_version",
+        "precision"
+      ],
+      "title": "RuntimeProvenance",
+      "type": "object"
+    },
+    "SessionDescriptor": {
+      "additionalProperties": false,
+      "description": "Private native/dev pipe handoff only; never durable project metadata.",
+      "properties": {
+        "base_url": {
+          "pattern": "^http://127\\.0\\.0\\.1:[1-9][0-9]{0,4}$",
+          "title": "Base Url",
+          "type": "string"
+        },
+        "token": {
+          "maxLength": 256,
+          "minLength": 20,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Token",
+          "type": "string"
+        }
+      },
+      "required": [
+        "base_url",
+        "token"
+      ],
+      "title": "SessionDescriptor",
+      "type": "object"
+    },
+    "ShutdownParams": {
+      "additionalProperties": false,
+      "properties": {
+        "graceful": {
+          "title": "Graceful",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "graceful"
+      ],
+      "title": "ShutdownParams",
+      "type": "object"
+    },
+    "StartParams": {
+      "additionalProperties": false,
+      "properties": {
+        "access_context_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Access Context Id",
+          "type": "string"
+        },
+        "access_context_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Access Context Sha256",
+          "type": "string"
+        },
+        "attempt": {
+          "$ref": "#/$defs/AttemptKey"
+        },
+        "input_snapshot_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Input Snapshot Id",
+          "type": "string"
+        },
+        "job_spec_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Job Spec Id",
+          "type": "string"
+        },
+        "resource_budget": {
+          "$ref": "#/$defs/ResourceBudget"
+        }
+      },
+      "required": [
+        "attempt",
+        "job_spec_id",
+        "input_snapshot_id",
+        "access_context_id",
+        "access_context_sha256",
+        "resource_budget"
+      ],
+      "title": "StartParams",
+      "type": "object"
+    },
+    "StructuredError": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "unsupported_schema",
+            "invalid_input",
+            "missing_resource",
+            "stale_attempt",
+            "incompatible_model",
+            "resource_exhausted",
+            "cancelled",
+            "internal_error"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "title": "StructuredError",
+      "type": "object"
+    },
+    "TensorProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "batch_max": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Batch Max",
+          "type": "integer"
+        },
+        "batch_min": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Batch Min",
+          "type": "integer"
+        },
+        "channels": {
+          "exclusiveMinimum": 0,
+          "title": "Channels",
+          "type": "integer"
+        },
+        "frames": {
+          "exclusiveMinimum": 0,
+          "title": "Frames",
+          "type": "integer"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "channels",
+        "frames",
+        "height",
+        "width"
+      ],
+      "title": "TensorProfile",
+      "type": "object"
+    },
+    "TimeRange": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "TimeRange",
+      "type": "object"
+    },
+    "TransformSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "area_of_use": {
+          "$ref": "#/$defs/Wgs84Geometry"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "grid_resources": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/GridResource"
+          },
+          "title": "Grid Resources",
+          "type": "array"
+        },
+        "operation": {
+          "minLength": 1,
+          "title": "Operation",
+          "type": "string"
+        },
+        "proj_database_version": {
+          "minLength": 1,
+          "title": "Proj Database Version",
+          "type": "string"
+        },
+        "proj_version": {
+          "minLength": 1,
+          "title": "Proj Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_crs": {
+          "$ref": "#/$defs/CrsRef"
+        },
+        "target_crs": {
+          "$ref": "#/$defs/CrsRef"
+        },
+        "tolerance_m": {
+          "minimum": 0,
+          "title": "Tolerance M",
+          "type": "number"
+        },
+        "transform_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Transform Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "transform_id",
+        "source_crs",
+        "target_crs",
+        "operation",
+        "area_of_use",
+        "tolerance_m",
+        "proj_version",
+        "proj_database_version"
+      ],
+      "title": "TransformSpec",
+      "type": "object"
+    },
+    "WeightReference": {
+      "additionalProperties": false,
+      "properties": {
+        "component_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Component Id",
+          "type": "string"
+        },
+        "conversion_record_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Conversion Record Id"
+        },
+        "format": {
+          "enum": [
+            "safetensors",
+            "onnx",
+            "pt"
+          ],
+          "title": "Format",
+          "type": "string"
+        },
+        "revision": {
+          "minLength": 1,
+          "title": "Revision",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "component_id",
+        "revision",
+        "sha256",
+        "format"
+      ],
+      "title": "WeightReference",
+      "type": "object"
+    },
+    "Wgs84Geometry": {
+      "additionalProperties": false,
+      "properties": {
+        "coordinates": {
+          "$ref": "#/$defs/JsonValue"
+        },
+        "type": {
+          "enum": [
+            "Polygon",
+            "MultiPolygon"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "title": "Wgs84Geometry",
+      "type": "object"
+    },
+    "WorkerAccessContext": {
+      "additionalProperties": false,
+      "properties": {
+        "access_context_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Access Context Id",
+          "type": "string"
+        },
+        "attempt": {
+          "$ref": "#/$defs/AttemptKey"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "execution_owner_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Execution Owner Id",
+          "type": "string"
+        },
+        "input_snapshot_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Input Snapshot Id",
+          "type": "string"
+        },
+        "input_snapshot_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Input Snapshot Sha256",
+          "type": "string"
+        },
+        "job_spec_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Job Spec Id",
+          "type": "string"
+        },
+        "job_spec_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Job Spec Sha256",
+          "type": "string"
+        },
+        "launch_nonce": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Launch Nonce",
+          "type": "string"
+        },
+        "owner_epoch": {
+          "exclusiveMinimum": 0,
+          "title": "Owner Epoch",
+          "type": "integer"
+        },
+        "project_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "read_entries": {
+          "items": {
+            "$ref": "#/$defs/WorkerReadEntry"
+          },
+          "minItems": 1,
+          "title": "Read Entries",
+          "type": "array"
+        },
+        "resource_budget": {
+          "$ref": "#/$defs/ResourceBudget"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "staging_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Staging Id",
+          "type": "string"
+        },
+        "worker_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Worker Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "access_context_id",
+        "project_id",
+        "worker_id",
+        "launch_nonce",
+        "execution_owner_id",
+        "owner_epoch",
+        "attempt",
+        "job_spec_id",
+        "job_spec_sha256",
+        "input_snapshot_id",
+        "input_snapshot_sha256",
+        "read_entries",
+        "staging_id",
+        "resource_budget"
+      ],
+      "title": "WorkerAccessContext",
+      "type": "object"
+    },
+    "WorkerBootstrap": {
+      "additionalProperties": false,
+      "properties": {
+        "context_registry_path": {
+          "minLength": 1,
+          "title": "Context Registry Path",
+          "type": "string"
+        },
+        "launch_nonce": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Launch Nonce",
+          "type": "string"
+        },
+        "protocol_version": {
+          "const": "0.1.0",
+          "title": "Protocol Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "worker_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Worker Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "protocol_version",
+        "worker_id",
+        "launch_nonce",
+        "context_registry_path"
+      ],
+      "title": "WorkerBootstrap",
+      "type": "object"
+    },
+    "WorkerReadEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "manifest",
+            "input",
+            "model",
+            "checkpoint",
+            "profile"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "location": {
+          "discriminator": {
+            "mapping": {
+              "external-registered-local": "#/$defs/ExternalRegisteredLocalLocation",
+              "managed-local": "#/$defs/ManagedLocalLocation"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ManagedLocalLocation"
+            },
+            {
+              "$ref": "#/$defs/ExternalRegisteredLocalLocation"
+            }
+          ],
+          "title": "Location"
+        },
+        "permission": {
+          "const": "read_only",
+          "title": "Permission",
+          "type": "string"
+        },
+        "ref_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Ref Id",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "ref_id",
+        "kind",
+        "sha256",
+        "size_bytes",
+        "location",
+        "permission"
+      ],
+      "title": "WorkerReadEntry",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GeoAI draft contracts 0.1.0",
+  "x-geoai-registries": {
+    "durable": [
+      "ArchiveInventory",
+      "ArchivePolicy",
+      "AssetRef",
+      "DatasetVersion",
+      "EvaluationRecord",
+      "GridSpec",
+      "InputSnapshot",
+      "JobSpec",
+      "MetricsSnapshot",
+      "ModelSpec",
+      "PhysicalModelSpec",
+      "ProviderPolicy",
+      "ReportContext",
+      "ResultRevision",
+      "RunManifest",
+      "TransformSpec"
+    ],
+    "private_runtime": [
+      "SessionDescriptor",
+      "WorkerAccessContext",
+      "WorkerBootstrap"
+    ],
+    "wire": [
+      "AcceptedResult",
+      "CapabilitiesResponse",
+      "HealthResponse",
+      "RpcFailure",
+      "RpcNotification",
+      "RpcRequest",
+      "RpcSuccess"
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+[
+  {
+    "name": "contracts",
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/contracts",
+      "-v"
+    ],
+    "exit_code": 0,
+    "seconds": 3.047,
+    "log": "final-contracts.log"
+  },
+  {
+    "name": "integration",
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/integration",
+      "-v"
+    ],
+    "exit_code": 0,
+    "seconds": 8.359,
+    "log": "final-integration.log"
+  },
+  {
+    "name": "architecture",
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/architecture",
+      "-v"
+    ],
+    "exit_code": 0,
+    "seconds": 0.125,
+    "log": "final-architecture.log"
+  },
+  {
+    "name": "schema",
+    "command": [
+      "python",
+      "tools/export_contract_schemas.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "seconds": 0.313,
+    "log": "final-schema.log"
+  },
+  {
+    "name": "api-artifacts",
+    "command": [
+      "python",
+      "tools/export_api_client.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "seconds": 0.515,
+    "log": "final-api-artifacts.log"
+  }
+]

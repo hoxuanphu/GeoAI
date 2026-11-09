@@ -1,0 +1,4 @@
+Command: ['C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe', 'tools/export_contract_schemas.py', '--check']
+Contract schema is current
+
+Exit: 0; elapsed: 0.33s

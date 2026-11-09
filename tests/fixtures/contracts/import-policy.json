@@ -1,0 +1,26 @@
+{
+  "ArchivePolicy": {
+    "schema_version": "0.1.0", "created_at": "2026-11-08T00:00:00Z",
+    "policy_id": "archive:fixture-v1", "max_archive_bytes": 10000,
+    "max_entries": 8, "max_total_bytes": 4096, "max_entry_bytes": 2048,
+    "max_path_depth": 4, "max_compression_ratio": 50.0, "max_seconds": 1.0,
+    "chunk_bytes": 64, "allowed_extensions": [".txt", ".json"], "nested_archives": "reject"
+  },
+  "ProviderPolicy": {
+    "schema_version": "0.1.0", "created_at": "2026-11-08T00:00:00Z",
+    "policy_id": "network:fixture-v1", "provider_id": "fixture",
+    "endpoints": [{"scheme": "https", "host": "data.example", "port": 443}],
+    "allowed_private_networks": [], "max_requests": 3, "max_redirects": 1,
+    "max_bytes": 8, "max_seconds": 1.0, "max_chunk_bytes": 4,
+    "max_address_records": 4, "max_url_length": 1024
+  },
+  "ArchiveInventory": {
+    "schema_version": "0.1.0", "created_at": "2026-11-08T00:00:00Z",
+    "inventory_id": "inventory:fixture", "policy_id": "archive:fixture-v1",
+    "policy_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "archive_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "archive_bytes": 111, "total_bytes": 3,
+    "entries": [{"relative_path": "a.txt", "kind": "file", "size_bytes": 3,
+                 "compressed_bytes": 3, "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"}]
+  }
+}
