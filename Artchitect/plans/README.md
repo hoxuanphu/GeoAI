@@ -12,6 +12,8 @@ Trạng thái: **đề xuất thiết kế để xem xét; chưa triển khai, b
 
 Cơ sở nội bộ: [bản chính v1.2][A], [bản Copilot][B], [Cẩm nang kiến trúc][C1] và [Hướng dẫn xây dựng ứng dụng][C2]. Phạm vi kế thừa từ bản chính: **ưu tiên Windows desktop, xử lý cục bộ, Giro3D, AI CPU/NVIDIA; giữ khả năng đưa cùng lõi nghiệp vụ lên Linux/server**.
 
+**Bổ sung 10/11/2026:** Ubuntu 22.04/24.04 LTS đã được yêu cầu cho desktop local, tách khỏi Linux server G4. [ADR-012](../docs/adr/ADR-012-ubuntu-desktop.md), [thiết kế Ubuntu](../docs/platforms/ubuntu/ubuntu-desktop-architecture.md), [guide](../docs/platforms/ubuntu/ubuntu-development-and-packaging.md) và [ma trận](../docs/platforms/ubuntu/ubuntu-validation-matrix.md) là addendum đề xuất trên baseline v1.4; chưa có implementation hoặc test Linux, không thay support matrix/gate bằng tài liệu.
+
 Yêu cầu sản phẩm đã được người dùng xác nhận: **Prithvi-EO-2.0 phải được tích hợp và sử dụng cho phân tích ngay trong bản phát hành đầu**. Biến thể, decoder và profile dữ liệu bên dưới là lựa chọn thiết kế khởi đầu cần kiểm chứng; việc tích hợp Prithvi không còn là hạng mục nghiên cứu tùy chọn.
 
 ## Mục lục và đối chiếu

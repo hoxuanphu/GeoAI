@@ -1,5 +1,7 @@
 # Yêu cầu Ubuntu LTS và đánh giá kiểm thử Cloud — 10/11/2026
 
+**Bổ sung tài liệu tiếp nối cùng ngày:** [ADR-012](../adr/ADR-012-ubuntu-desktop.md), [thiết kế Ubuntu](../ubuntu-desktop-architecture.md), [guide](../ubuntu-development-and-packaging.md) và [ma trận UB-01–20](../ubuntu-validation-matrix.md) đã phát triển từ hồ sơ này. Các đoạn “còn chờ ADR/thiết kế” dưới đây ghi trạng thái ở thời điểm tiếp nhận; hiện đã có bản đề xuất, còn review/chốt và kiểm chứng. Hồ sơ ban đầu không bị viết lại thành bằng chứng runtime.
+
 ## Yêu cầu được ghi nhận
 
 Người dùng yêu cầu bộ cài Linux và bổ sung Ubuntu 22.04 LTS vào hướng Ubuntu 24.04 LTS đã đề xuất. Ghi cả Ubuntu 22.04 LTS và 24.04 LTS vào mục tiêu hỗ trợ cần triển khai/kiểm chứng, bên cạnh Windows. Kiến trúc CPU x86_64 là đề xuất ban đầu; chưa chốt ARM64, support matrix phần cứng hoặc lịch phát hành. Yêu cầu nền tảng không đồng nghĩa runtime/bộ cài đã được nghiệm thu.

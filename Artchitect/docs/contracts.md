@@ -4,6 +4,8 @@
 
 ## Quy ước chung
 
+[SPEC-010](specs/010-ubuntu-foundation.md) dự kiến thêm private `LinuxOwnerLedger` khi triển khai, với layout trong [native profile](platforms/ubuntu/ubuntu-native-profile.md). Model này chưa có trong Pydantic/schema hiện hành; phải thêm source/registry/fixture/exporter/tests cùng task contracts trước sử dụng. Profile control shell dùng hằng byte native và SessionDescriptor hiện có, không tạo public RPC hoặc nới capabilities Literal false bằng tài liệu.
+
 - Mọi record lưu lâu dài có `schema_version = "0.1.0"` và `created_at`; thời gian phải có timezone và được chuẩn hóa UTC. Kiểu giá trị lồng như CrsRef/AttemptKey không lặp metadata record.
 - Từ chối version khác và trường không biết. ID nội bộ gồm chữ/số, dấu chấm/gạch/gạch dưới/hai chấm; asset ID có namespace provider. ID không phải URL, đường dẫn hay credential.
 - Hash SHA-256 là 64 ký tự hex chữ thường. ContentIdentity phân biệt hash, version provider và ETag chỉ là hint; không tự coi ETag là hash.

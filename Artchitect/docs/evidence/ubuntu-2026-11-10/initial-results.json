@@ -1,0 +1,153 @@
+{
+  "date": "2026-11-10",
+  "timezone": "Asia/Bangkok",
+  "executor": "Windows / PowerShell / Python 3.12",
+  "command": "python -X utf8 Artchitect/docs/evidence/ubuntu-2026-11-10/verify-docs.py",
+  "status": "fail",
+  "errors": [
+    "Artchitect/plans/17_nguon_tham_khao_va_lich_su.md: missing target ../solution/Hướng",
+    "Artchitect/solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md: missing target Hướng"
+  ],
+  "markdown_files": 31,
+  "local_links": 542,
+  "markdown_anchors": 47,
+  "tables": 101,
+  "json_blocks": 0,
+  "mermaid_text_blocks": [
+    {
+      "file": "Artchitect/docs/architecture.md",
+      "kind": "flowchart TB"
+    },
+    {
+      "file": "Artchitect/docs/desktop-architecture-diagrams.md",
+      "kind": "flowchart TB"
+    },
+    {
+      "file": "Artchitect/docs/desktop-architecture-diagrams.md",
+      "kind": "flowchart TB"
+    },
+    {
+      "file": "Artchitect/docs/desktop-architecture-diagrams.md",
+      "kind": "flowchart TD"
+    },
+    {
+      "file": "Artchitect/docs/desktop-architecture-diagrams.md",
+      "kind": "flowchart TB"
+    },
+    {
+      "file": "Artchitect/docs/desktop-architecture-diagrams.md",
+      "kind": "sequenceDiagram"
+    },
+    {
+      "file": "Artchitect/docs/desktop-architecture-diagrams.md",
+      "kind": "stateDiagram-v2"
+    },
+    {
+      "file": "Artchitect/docs/desktop-architecture-diagrams.md",
+      "kind": "flowchart LR"
+    },
+    {
+      "file": "Artchitect/docs/desktop-architecture-diagrams.md",
+      "kind": "flowchart TB"
+    },
+    {
+      "file": "Artchitect/docs/ubuntu-desktop-architecture.md",
+      "kind": "flowchart TB"
+    },
+    {
+      "file": "Artchitect/docs/ubuntu-desktop-architecture.md",
+      "kind": "flowchart TD"
+    },
+    {
+      "file": "Artchitect/docs/ubuntu-desktop-architecture.md",
+      "kind": "sequenceDiagram"
+    },
+    {
+      "file": "Artchitect/kien_truc_he_thong.md",
+      "kind": "flowchart TB"
+    },
+    {
+      "file": "Artchitect/kien_truc_he_thong.md",
+      "kind": "flowchart LR"
+    },
+    {
+      "file": "Artchitect/kien_truc_he_thong.md",
+      "kind": "sequenceDiagram"
+    },
+    {
+      "file": "Artchitect/kien_truc_he_thong.md",
+      "kind": "flowchart TB"
+    },
+    {
+      "file": "Artchitect/kien_truc_he_thong.md",
+      "kind": "flowchart LR"
+    },
+    {
+      "file": "Artchitect/plans/04_kien_truc_thuc_thi_va_module.md",
+      "kind": "flowchart TB"
+    },
+    {
+      "file": "Artchitect/solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md",
+      "kind": "flowchart TB"
+    }
+  ],
+  "ubuntu_acceptance_ids": [
+    "UB-01",
+    "UB-02",
+    "UB-03",
+    "UB-04",
+    "UB-05",
+    "UB-06",
+    "UB-07",
+    "UB-08",
+    "UB-09",
+    "UB-10",
+    "UB-11",
+    "UB-12",
+    "UB-13",
+    "UB-14",
+    "UB-15",
+    "UB-16",
+    "UB-17",
+    "UB-18",
+    "UB-19",
+    "UB-20"
+  ],
+  "protected_file_count": 145,
+  "protected_files_changed": [],
+  "git_diff_check_exit_code": 0,
+  "checked_files": [
+    "Artchitect/docs/README.md",
+    "Artchitect/docs/adr/ADR-001-desktop-first.md",
+    "Artchitect/docs/adr/ADR-006-packaging.md",
+    "Artchitect/docs/adr/ADR-011-local-execution-owner.md",
+    "Artchitect/docs/adr/ADR-012-ubuntu-desktop.md",
+    "Artchitect/docs/adr/README.md",
+    "Artchitect/docs/architecture.md",
+    "Artchitect/docs/desktop-architecture-diagrams.md",
+    "Artchitect/docs/development-guide.md",
+    "Artchitect/docs/evidence/2026-11-10-linux-support-assessment.md",
+    "Artchitect/docs/evidence/ubuntu-2026-11-10/review.md",
+    "Artchitect/docs/importer-resolver-security.md",
+    "Artchitect/docs/roadmap.md",
+    "Artchitect/docs/specs/000-documentation-baseline.md",
+    "Artchitect/docs/specs/003-desktop-shell.md",
+    "Artchitect/docs/specs/004-jobs-and-publish.md",
+    "Artchitect/docs/specs/009-importer-worker-resolver.md",
+    "Artchitect/docs/task-tracker.md",
+    "Artchitect/docs/testing-strategy.md",
+    "Artchitect/docs/ubuntu-desktop-architecture.md",
+    "Artchitect/docs/ubuntu-development-and-packaging.md",
+    "Artchitect/docs/ubuntu-validation-matrix.md",
+    "Artchitect/docs/worker-resolver.md",
+    "Artchitect/kien_truc_he_thong.md",
+    "Artchitect/plans/01_dinh_huong_san_pham.md",
+    "Artchitect/plans/04_kien_truc_thuc_thi_va_module.md",
+    "Artchitect/plans/13_stack_va_bo_cai_windows.md",
+    "Artchitect/plans/15_lo_trinh_va_cong_nghiem_thu.md",
+    "Artchitect/plans/16_quyet_dinh_can_chot_va_danh_doi.md",
+    "Artchitect/plans/17_nguon_tham_khao_va_lich_su.md",
+    "Artchitect/solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md"
+  ],
+  "limits": "Documentation only. Mermaid not parsed/rendered. No Linux/Cloud/runtime/native/GIS/model/GPU/installer tests. External URL reachability is not checked by this script."
+}

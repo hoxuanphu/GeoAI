@@ -1,5 +1,7 @@
 # Nguồn tham khảo và lịch sử tài liệu
 
+**Addendum Ubuntu 10/11/2026:** [nguồn đã đối chiếu](../docs/platforms/ubuntu/ubuntu-development-and-packaging.md#nguồn-đã-đối-chiếu) bổ sung Tauri/Debian/prerequisites, package Ubuntu Jammy/Noble, systemd v249, XDG và Linux man-pages cho [ADR-012](../docs/adr/ADR-012-ubuntu-desktop.md). [Lịch sử nguồn tổng hợp](../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md#20-lịch-sử-tài-liệu) ghi bổ sung trên baseline 1.4. Chỉ kiểm tài liệu; chưa chạy Linux, desktop/GPU/model hoặc bộ cài.
+
 > Đồng bộ từ [bản tổng hợp v1.4](../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md), ngày 08/11/2026. Đây là đề xuất thiết kế; chưa triển khai hoặc benchmark. Số mục được giữ theo tài liệu gốc.
 
 [Mục lục bộ tài liệu](README.md) · [Danh mục nguồn](17_nguon_tham_khao_va_lich_su.md)

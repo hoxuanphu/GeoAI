@@ -6,7 +6,7 @@
 
 **Phạm vi:** Provider/product profile, định dạng, QA, grid, CRS và VN-2000.
 
-AOI có thể do người dùng vẽ, lấy theo footprint ảnh import hoặc import Shapefile; chi tiết identity/CRS/topology/snapshot ở [AOI policy](../docs/aoi-policy.md). Không tự thu AOI theo valid mask. Bộ 7 lớp/crosswalk WorldCover-JAXA ở [landcover taxonomy](../docs/landcover-taxonomy.md); nhãn mở phải được version hóa và QC trước dùng train.
+AOI có thể do người dùng vẽ, lấy theo footprint ảnh import hoặc import Shapefile; chi tiết identity/CRS/topology/snapshot ở [AOI policy](../docs/domain/aoi-policy.md). Không tự thu AOI theo valid mask. Bộ 7 lớp/crosswalk WorldCover-JAXA ở [landcover taxonomy](../docs/domain/landcover-taxonomy.md); nhãn mở phải được version hóa và QC trước dùng train.
 
 <a id="muc-7"></a>
 

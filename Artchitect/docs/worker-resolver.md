@@ -4,6 +4,12 @@
 
 Mục tiêu là worker nhận ID từ `start` có thể đọc đúng input/model/manifest và ghi đúng staging, không dùng SQLite session, path từ UI hoặc provider URL như quyền truy cập. [ADR-011](adr/ADR-011-local-execution-owner.md) giới hạn phiên thực thi; [IPC](ipc-protocol.md) giữ fencing/cancel/publish.
 
+## Ánh xạ Ubuntu đề xuất ngày 10/11/2026
+
+[ADR-012](adr/ADR-012-ubuntu-desktop.md) và [kiến trúc Ubuntu](platforms/ubuntu/ubuntu-desktop-architecture.md) giữ semantics context/ID/hash/attempt, bổ sung supervisor/user service, private FD bootstrap, directory FD/`openat2`/`fstat` và native file policy Linux. Job Object/handle/Win32 bên dưới là profile Windows. Chưa có adapter Linux; cần UB-09–14 của [ma trận Ubuntu](platforms/ubuntu/ubuntu-validation-matrix.md), gồm ca dương external registered input và bytes thay đổi, trước khi công bố hỗ trợ. Không thêm kiểu wire hoặc coi mapping identity native là đã được kiểm từ schema.
+
+[SPEC-010/native profile](platforms/ubuntu/ubuntu-native-profile.md) chọn packet qua anonymous pipe kế thừa giữa API và worker, giữ `registry_delivery="handle-snapshot"`; socket shell chỉ phục vụ bootstrap/liveness. [Interface profile](platforms/ubuntu/ubuntu-adapter-interfaces.md) xác định Linux identity encoding và managed snapshot cho external input, không giả Linux có deny-write sharing của Windows. Ledger private dự kiến và mọi schema change chỉ được dùng sau Pydantic/fixture/exporter cùng task triển khai.
+
 ## Phương án bản đầu và bootstrap
 
 1. Execution owner/coordinator nhận khóa writer/project, resolve input remote qua catalog rồi materialize phần dữ liệu đủ preprocessing/context vào local cache được lease. Provider credential/signed URL chỉ ở catalog/session; worker bản đầu không nhận credential, không tự HTTP download hoặc tìm lại scene. File local ngoài project có thể được đăng ký read-only; SMB/network input phải staging local trước khi cấp cho worker ở profile này.

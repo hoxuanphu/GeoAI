@@ -46,7 +46,7 @@
 | QA và composite | Loại NoData, mây/bóng mây theo profile; quy định giá trị điền và valid mask giống khi train, loại pixel không hợp lệ khỏi loss/metrics/output. Bản đầu ưu tiên ảnh/ngày xác định; composite nhiều ngày chỉ được dùng nếu profile model quy định ngữ nghĩa thời gian, không gán một ngày giả cho TL |
 | Runtime và license | PyTorch/TerraTorch làm đường tham chiếu; thử export toàn bộ encoder + decoder sang ONNX. Model pack chỉ chứa thành phần inference cần thiết, kèm license/notice của backbone, decoder, trọng số và dữ liệu huấn luyện theo điều kiện tương ứng |
 
-Sáu kênh quang học không được thay bằng SAR VV/VH, DEM hoặc RGB lặp kênh. Sentinel-2 L2A, ảnh độ phân giải khác hoặc kênh thiếu phải qua một profile adaptation có dữ liệu huấn luyện/kiểm định riêng. Đổi tên band hoặc resample 10 m thành 30 m không tự tạo sản phẩm HLS tương đương. Bộ lớp 7 lớp và crosswalk được version hóa tại [landcover taxonomy](../docs/landcover-taxonomy.md); nhãn mở không thay test độc lập.
+Sáu kênh quang học không được thay bằng SAR VV/VH, DEM hoặc RGB lặp kênh. Sentinel-2 L2A, ảnh độ phân giải khác hoặc kênh thiếu phải qua một profile adaptation có dữ liệu huấn luyện/kiểm định riêng. Đổi tên band hoặc resample 10 m thành 30 m không tự tạo sản phẩm HLS tương đương. Bộ lớp 7 lớp và crosswalk được version hóa tại [landcover taxonomy](../docs/domain/landcover-taxonomy.md); nhãn mở không thay test độc lập.
 
 Điều kiện hoàn tất tích hợp: UI chọn được feature Prithvi đã sẵn sàng; worker thực thi đúng checkpoint/decoder; xuất raster địa lý và báo cáo truy nguyên được; chạy trên CPU reference và NVIDIA reference; có evaluation độc lập. Model pack chỉ có backbone hoặc một demo tái tạo ảnh chưa đáp ứng điều kiện này.
 
@@ -88,7 +88,7 @@ Mỗi feature có ngưỡng chất lượng riêng do chủ nghiệp vụ chốt
 
 ### 8.5. Quy tắc nghiệm thu và điểm dừng thử nghiệm
 
-Bộ giá trị người dùng cung cấp ngày 08/11/2026 được ghi tại [tiêu chí nghiệm thu](../docs/acceptance-criteria.md): bảy lớp/global, coverage, diện tích/CI/CRS, tài nguyên và điểm dừng. Máy GPU mới đã xác nhận dùng riêng training/benchmark, giữ mục tiêu desktop trước đó; protocol/sampling, máy thực, CPU SLO và các khoảng lựa chọn còn cần khóa tại SPEC-002. Ghi ngưỡng chưa là gate đạt. Giữ S30/T=3/224 cho nghiệp vụ và T=1 spike; recipe S30+L30/median, cửa sổ 512, DEM hoặc đổi model phải kiểm riêng, không dùng để bỏ qua quality gate.
+Bộ giá trị người dùng cung cấp ngày 08/11/2026 được ghi tại [tiêu chí nghiệm thu](../docs/domain/acceptance-criteria.md): bảy lớp/global, coverage, diện tích/CI/CRS, tài nguyên và điểm dừng. Máy GPU mới đã xác nhận dùng riêng training/benchmark, giữ mục tiêu desktop trước đó; protocol/sampling, máy thực, CPU SLO và các khoảng lựa chọn còn cần khóa tại SPEC-002. Ghi ngưỡng chưa là gate đạt. Giữ S30/T=3/224 cho nghiệp vụ và T=1 spike; recipe S30+L30/median, cửa sổ 512, DEM hoặc đổi model phải kiểm riêng, không dùng để bỏ qua quality gate.
 
 G0 phải chốt trước khi tinh chỉnh: ngưỡng tuyệt đối theo lớp/vùng của feature, coverage tối thiểu, ngân sách CPU, số vòng thử tối đa và trần thời gian/chi phí, người chịu trách nhiệm và mốc quyết định. Giá trị cụ thể do chủ nghiệp vụ/chủ dự án phê duyệt trong hồ sơ G0; chưa có các giá trị này thì chưa hoàn tất G0. Không đặt một số vòng hoặc ngưỡng F1 tùy ý cho mọi dự án.
 

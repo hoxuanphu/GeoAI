@@ -3,6 +3,8 @@
 **Trạng thái:** Định hướng kế thừa; ràng buộc triển khai cụ thể còn cần G0. **Ngày:** 08/11/2026.
 **Nguồn:** [đề xuất v1.4](../../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md), [đặc tả liên quan](../architecture.md).
 
+**Mở rộng 10/11/2026:** người dùng bổ sung Ubuntu 22.04 LTS và Ubuntu 24.04 LTS bên cạnh Windows. [ADR-012](ADR-012-ubuntu-desktop.md) ghi thiết kế adapter đề xuất; desktop local vẫn là hướng triển khai, server vẫn mở riêng ở G4. Phần Windows trong hồ sơ này giữ phạm vi/bằng chứng lịch sử; chưa có nghiệm thu Linux.
+
 ## Bối cảnh
 
 Người dùng cần quy trình GIS/AI chạy cục bộ trên máy Windows, có khả năng offline và dữ liệu ở local.

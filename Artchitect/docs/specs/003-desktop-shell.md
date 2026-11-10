@@ -4,7 +4,17 @@
 
 ## Yêu cầu Linux ghi nhận ngày 10/11/2026
 
-Ngoài Windows, mục tiêu hỗ trợ cần triển khai/kiểm chứng gồm **Ubuntu 22.04 LTS và Ubuntu 24.04 LTS** theo yêu cầu người dùng. [Hồ sơ yêu cầu và đánh giá Cloud](../evidence/2026-11-10-linux-support-assessment.md) ghi nguồn, phụ thuộc Windows hiện có, hướng build trên 22.04 và ma trận kiểm hai LTS. Chưa có runtime/bộ cài Linux hoặc test Cloud đã chạy. Các acceptance Windows bên dưới giữ nguyên phạm vi; phải bổ sung ADR/thiết kế Linux và acceptance tương ứng trước triển khai, không chỉ đổi tên Job Object/WebView2 thành primitive Linux. Python >=3.12, WebKitGTK, process containment/owner, native I/O, Host/Origin và packaging cần kiểm riêng. Chỉ được chuẩn bị phần độc lập trước G0; ghi pass/skip/fail và giới hạn môi trường khi kiểm thực tế.
+Ngoài Windows, mục tiêu hỗ trợ cần triển khai/kiểm chứng gồm **Ubuntu 22.04 LTS và Ubuntu 24.04 LTS** theo yêu cầu người dùng. [Hồ sơ yêu cầu và đánh giá Cloud](../evidence/2026-11-10-linux-support-assessment.md) là mốc tiếp nhận; [ADR-012](../adr/ADR-012-ubuntu-desktop.md), [kiến trúc Ubuntu](../platforms/ubuntu/ubuntu-desktop-architecture.md), [môi trường/đóng gói](../platforms/ubuntu/ubuntu-development-and-packaging.md) và [ma trận UB-01–20](../platforms/ubuntu/ubuntu-validation-matrix.md) phát triển thiết kế đề xuất. Chưa có runtime/bộ cài Linux hoặc test Cloud đã chạy. Acceptance Windows bên dưới giữ nguyên phạm vi; kỹ thuật Linux chưa Accepted và cần review/kiểm chứng riêng.
+
+### Acceptance bổ sung cho Ubuntu
+
+[SPEC-010](010-ubuntu-foundation.md) và profile đi kèm cụ thể hóa launcher/owner/FD/cleanup, không đòi toàn SPEC-003 Windows hoàn tất trước làm fixture Linux. Code 010 chưa bắt đầu; nghiệm thu nhánh shell vẫn cần process/WebKitGTK thật theo các ca dưới.
+
+- UB-01/03/04/05: preflight, frontend, Tauri/WebKitGTK thật, descriptor private và Host/Origin/token cho dev/production, SSE/Range/loader. Không nâng readiness từ build frontend.
+- UB-06/07/08: supervisor trong user service/cgroup, owner theo UID xuyên login session/bản cài, FD lifetime và crash/cleanup; lấy được khóa không đủ cấp compute khi workload cũ chưa được xác nhận dừng. Thiếu primitive thì chặn execution, không fallback process group đơn lẻ.
+- UB-09/17: bootstrap/transport Linux tích hợp SPEC-009/004; native sidecar/ABI/bundle kiểm riêng trên cả hai LTS. Máy sạch/offline/upgrade ở UB-18–20 thuộc hồ sơ G3, chưa tự đóng từ shell pass.
+
+Chỉ phần fixture độc lập đủ dependency được làm trước G0. Lệnh/log/result cần record riêng cho từng LTS, X11/Wayland và loại bằng chứng; test Windows hoặc Chromium không thay WebKitGTK acceptance.
 
 ## Kiểm môi trường 09/11/2026
 

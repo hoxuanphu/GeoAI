@@ -5,15 +5,15 @@
 
 ## Dependency và phạm vi
 
-Đọc [architecture](../architecture.md), [domain rules](../domain-rules.md), [testing strategy](../testing-strategy.md), ADR-003/005/006/007. Cần SPEC-001/003/004 và fixture được phép dùng; khi kiểm cùng AI cần runtime kỹ thuật SPEC-005. CRS/VN-2000 và tolerance, máy/workload/viewer budget phải có quyết định G0 tương ứng; trước đó chỉ chạy ca cơ chế tổng hợp, chưa kết luận hỗ trợ sản phẩm.
+Đọc [architecture](../architecture.md), [domain rules](../domain-rules.md), [testing strategy](../guides/testing-strategy.md), ADR-003/005/006/007. Cần SPEC-001/003/004 và fixture được phép dùng; khi kiểm cùng AI cần runtime kỹ thuật SPEC-005. CRS/VN-2000 và tolerance, máy/workload/viewer budget phải có quyết định G0 tương ứng; trước đó chỉ chạy ca cơ chế tổng hợp, chưa kết luận hỗ trợ sản phẩm.
 
-Output dự kiến: adapter viewer và asset/Range/tile serving, fixture GIS có nguồn/license/hash, template Typst/font tiếng Việt, prototype sidecar/bundle có inventory native; báo cáo tại `Artchitect/docs/evidence/g1/`. Các package đích ở [hướng dẫn dev](../development-guide.md); không tạo bản sao pipeline trong UI hoặc renderer thứ hai.
+Output dự kiến: adapter viewer và asset/Range/tile serving, fixture GIS có nguồn/license/hash, template Typst/font tiếng Việt, prototype sidecar/bundle có inventory native; báo cáo tại `Artchitect/docs/evidence/g1/`. Các package đích ở [hướng dẫn dev](../guides/development-guide.md); không tạo bản sao pipeline trong UI hoặc renderer thứ hai.
 
 Phần import/asset/native phải tích hợp [SPEC-009](009-importer-worker-resolver.md) với policy/ca kiểm ở [ma trận security](../importer-resolver-security.md), không chỉ kiểm token HTTP. Tổng hợp G1 cần cả execution-owner/recovery ở SPEC-003/004 và resolver/candidate isolation; chưa có các bằng chứng này thì không kết luận toàn G1 đạt.
 
 ## Acceptance và ca kiểm cụ thể
 
-Tolerance người dùng cung cấp RMSE ngang VN-2000 ≤15 m và chênh lệch diện tích AOI ≤0,1% được diễn giải tại [tiêu chí nghiệm thu](../acceptance-criteria.md). Cần khóa CRS/operation/grid/điểm kiểm độc lập và cùng phương pháp diện tích trước nghiệm thu; không dùng round-trip, schema pass hoặc một bộ 7 tham số chưa kiểm để xác nhận đạt.
+Tolerance người dùng cung cấp RMSE ngang VN-2000 ≤15 m và chênh lệch diện tích AOI ≤0,1% được diễn giải tại [tiêu chí nghiệm thu](../domain/acceptance-criteria.md). Cần khóa CRS/operation/grid/điểm kiểm độc lập và cùng phương pháp diện tích trước nghiệm thu; không dùng round-trip, schema pass hoặc một bộ 7 tham số chưa kiểm để xác nhận đạt.
 
 | Nhánh | Phải kiểm | Khi không đạt |
 | --- | --- | --- |

@@ -1,5 +1,9 @@
 # Kiến trúc thực thi và ranh giới module
 
+**Addendum Ubuntu 10/11/2026:** [ADR-012](../docs/adr/ADR-012-ubuntu-desktop.md) và [thiết kế Ubuntu](../docs/platforms/ubuntu/ubuntu-desktop-architecture.md) đề xuất composition root chọn adapter WebKitGTK/supervisor/cgroup/UID owner/FD I/O, giữ module nghiệp vụ, IPC và fencing chung. Job Object/Win32 ở baseline dưới thuộc Windows; không thay bằng đổi tên primitive. Chưa triển khai/kiểm Linux.
+
+[SPEC-010](../docs/specs/010-ubuntu-foundation.md) cụ thể hóa interface trong storage/jobs, native profile và fixture; chỉ entrypoint ghép factory OS, module nền không import ngược bootstrap. Các file/method được ghi là deliverable tương lai, không tự là code đã tồn tại.
+
 > Đồng bộ từ [bản tổng hợp v1.4](../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md), ngày 08/11/2026. Đây là đề xuất thiết kế; chưa triển khai hoặc benchmark. Số mục được giữ theo tài liệu gốc.
 
 [Mục lục bộ tài liệu](README.md) · [Danh mục nguồn](17_nguon_tham_khao_va_lich_su.md)

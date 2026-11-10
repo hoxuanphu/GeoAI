@@ -30,4 +30,14 @@ Thêm các ca cùng idempotency key/khác payload bị conflict, mở hai instan
 
 Thêm hai project khác nhau tranh CPU/GPU/đĩa, owner crash còn worker giữ model, đổi project trước giải phóng compute và ca GPU bị ứng dụng ngoài chiếm. Chạy RES-03/05/06/07 của [ma trận importer/resolver](../importer-resolver-security.md): stale context/replay, candidate khác project/attempt, reparse/file đổi bytes và worker cũ còn sống. Không cho phép checksum đúng thay ownership/fencing.
 
-Chỉ hoàn tất khi chạy đủ trên Windows môi trường đích và ghi lệnh/log. Pydantic test không chứng minh transport, atomic publish hoặc chính sách khóa đã đúng. Không kéo PostgreSQL/server vào task local.
+Phạm vi Windows chỉ hoàn tất khi chạy đủ trên Windows môi trường đích và ghi lệnh/log. Pydantic test không chứng minh transport, atomic publish hoặc chính sách khóa đã đúng. Không kéo PostgreSQL/server vào task local.
+
+## Phần mở rộng Ubuntu 10/11/2026
+
+[SPEC-010](010-ubuntu-foundation.md) quy định interface/native profile và fixture integration của nhánh Linux: giữ owner/writer/attempt riêng, đợi workload dừng, finalize bytes bằng publisher-owned copy rồi commit SQLite có fencing. Các mốc 010 chưa triển khai; không thay acceptance hoặc bằng chứng Windows.
+
+[ADR-012](../adr/ADR-012-ubuntu-desktop.md) và [kiến trúc Ubuntu](../platforms/ubuntu/ubuntu-desktop-architecture.md) bổ sung thiết kế adapter đề xuất, chưa có implementation Linux. Dùng cùng state machine/RPC/coordinator/repository semantics, thay primitive OS qua composition root. Owner theo UID không thay writer lock/project, attempt token hoặc pin/lease.
+
+Acceptance Linux theo [UB-02/06–09/12/13](../platforms/ubuntu/ubuntu-validation-matrix.md): SQLite thật, user service/cgroup cleanup, FD/pipe và log native, cancel/retry/stale attempt, candidate còn writer FD, publish không overwrite cùng filesystem, file/directory fsync và crash ở các điểm filesystem/commit/event. Không fallback copy khi EXDEV rồi báo atomic; không phục vụ orphan khi DB chưa công bố. Kiểm trên cả Ubuntu 22.04 LTS và 24.04 LTS, ghi filesystem/mount và pass/fail/skip; process kill không chứng minh power-loss durability.
+
+Có thể dựng core/fixture trước G0 khi đủ dependency; nghiệm thu tích hợp vẫn cần SPEC-003/009 nền đủ dùng, không tạo vòng dependency. Chưa đóng mốc 004.1–004.3 hoặc bất kỳ gate nào từ tài liệu Ubuntu.

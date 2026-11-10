@@ -2,7 +2,7 @@
 
 Đọc trước mọi thay đổi raster/vector/CRS. Chi tiết nguồn: [chuẩn hóa địa lý](../plans/06_du_lieu_da_nguon_va_chuan_hoa_dia_ly.md), [phương trình và đơn vị](../plans/07_model_prithvi_nhan_va_kiem_dinh.md#muc-8-7), ADR-005 và ADR-010.
 
-Cách tạo AOI vẽ/footprint ảnh import/Shapefile và quy tắc cố định phạm vi ở [AOI policy](aoi-policy.md). Bộ bảy lớp, crosswalk và `ignore_index = -1` ở [landcover taxonomy](landcover-taxonomy.md); lớp 0 là nước hợp lệ, không dùng làm NoData. Quyền đọc file/nguồn theo importer/resolver, không suy từ việc dữ liệu có CRS hợp lệ.
+Cách tạo AOI vẽ/footprint ảnh import/Shapefile và quy tắc cố định phạm vi ở [AOI policy](domain/aoi-policy.md). Bộ bảy lớp, crosswalk và `ignore_index = -1` ở [landcover taxonomy](domain/landcover-taxonomy.md); lớp 0 là nước hợp lệ, không dùng làm NoData. Quyền đọc file/nguồn theo importer/resolver, không suy từ việc dữ liệu có CRS hợp lệ.
 
 ## CRS, trục và grid
 
@@ -36,7 +36,7 @@ Với `pixel_interpretation=area`, `(0,0)` là góc ô trên trái, tâm pixel `
 
 Diện tích bản đồ chưa là ước lượng điều chỉnh sai số. Khoảng tin cậy cần thiết kế lấy mẫu kiểm định; confidence model chưa là xác suất hiệu chuẩn hoặc khoảng tin cậy.
 
-[Tiêu chí nghiệm thu](acceptance-criteria.md) ghi yêu cầu diện tích/CI, RMSE VN-2000 ≤15 m và chênh lệch diện tích AOI ≤0,1%, cùng protocol còn cần khóa. CI diện tích cần probability sampling/trọng số đúng thiết kế; không dùng sample counts của chip thuận tiện làm diện tích toàn AOI. So diện tích reprojection phải cùng ranh/phương pháp vật lý, không nhầm biến dạng phép chiếu với lỗi datum. Không lấy tolerance 15 m hoặc bộ 7 tham số làm chứng nhận pháp lý/độ chính xác chưa kiểm.
+[Tiêu chí nghiệm thu](domain/acceptance-criteria.md) ghi yêu cầu diện tích/CI, RMSE VN-2000 ≤15 m và chênh lệch diện tích AOI ≤0,1%, cùng protocol còn cần khóa. CI diện tích cần probability sampling/trọng số đúng thiết kế; không dùng sample counts của chip thuận tiện làm diện tích toàn AOI. So diện tích reprojection phải cùng ranh/phương pháp vật lý, không nhầm biến dạng phép chiếu với lỗi datum. Không lấy tolerance 15 m hoặc bộ 7 tham số làm chứng nhận pháp lý/độ chính xác chưa kiểm.
 
 Coverage là `A_valid / A_AOI`, cùng phương pháp diện tích và policy cắt biên; không dùng bbox chung làm mẫu số. Với AOI diện tích dương, tổng diện tích lớp quan sát và diện tích chưa quan sát phải khớp diện tích AOI trong tolerance của phương pháp đã chốt. Không có pixel hợp lệ phải báo coverage 0 và không có kết quả phân loại hợp lệ; không biến toàn AOI thành lớp 0. AOI rỗng/diện tích bằng 0 bị từ chối, không chia cho 0.
 

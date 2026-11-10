@@ -1,0 +1,12 @@
+﻿{
+  "desktop-architecture-diagrams.md": "platforms/windows/desktop-architecture-diagrams.md",
+  "ubuntu-desktop-architecture.md": "platforms/ubuntu/ubuntu-desktop-architecture.md",
+  "ubuntu-development-and-packaging.md": "platforms/ubuntu/ubuntu-development-and-packaging.md",
+  "ubuntu-validation-matrix.md": "platforms/ubuntu/ubuntu-validation-matrix.md",
+  "aoi-policy.md": "domain/aoi-policy.md",
+  "landcover-taxonomy.md": "domain/landcover-taxonomy.md",
+  "acceptance-criteria.md": "domain/acceptance-criteria.md",
+  "development-guide.md": "guides/development-guide.md",
+  "testing-strategy.md": "guides/testing-strategy.md",
+  "implementation-gaps.md": "project/implementation-gaps.md"
+}

@@ -2,6 +2,10 @@
 
 **Trạng thái:** tiêu chí thiết kế/acceptance của [SPEC-009](specs/009-importer-worker-resolver.md), chưa có implementation hoặc kết quả test. Đọc cùng [worker resolver](worker-resolver.md), [bảo mật nguồn](../plans/14_bao_mat_server_va_van_hanh.md) và [IPC](ipc-protocol.md).
 
+## Bổ sung Ubuntu 10/11/2026
+
+Các ID IMP/NET/RES dưới giữ nguyên kết quả bắt buộc; [UB-09–14](platforms/ubuntu/ubuntu-validation-matrix.md) yêu cầu kiểm riêng trên Ubuntu 22.04/24.04 LTS. [Adapter Linux đề xuất](platforms/ubuntu/ubuntu-desktop-architecture.md) ánh xạ reparse/handle sang directory FD và symlink/magic-link/hardlink/ancestor race, bổ sung FIFO/device/mount và FD còn ghi sau candidate. Archive vẫn giữ portable naming policy để không tạo tên mơ hồ khi chuyển Windows/Linux. Chưa có ca Ubuntu đã chạy; ca Windows/metadata không thay bằng chứng native Linux.
+
 ## Phạm vi và policy
 
 Importer xử lý file/archive/model pack do người dùng chọn hoặc tải qua provider adapter đã đăng ký. Không tin file chỉ vì có đuôi GeoTIFF/GeoPackage hoặc có hash; hash không chứng minh nguồn tin cậy. Worker chỉ mở dependency được cấp và không phải sandbox chống mã độc cùng tài khoản. G0 chọn dữ liệu/provider và ngân sách; G1 kiểm policy bằng fixture nhỏ, chưa có quyền tải dữ liệu khách hàng để thử.

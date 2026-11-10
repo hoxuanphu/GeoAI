@@ -7,6 +7,16 @@
 
 **Bằng chứng nền ngày 09/11/2026:** policy ZIP/endpoint/stream và grant registry metadata đã có; [review policy](../evidence/backend-pre-g0-2026-11-08/task-1-review.md), [báo cáo grants](../evidence/backend-pre-g0-2026-11-08/task-2-report.md), [review grants](../evidence/backend-pre-g0-2026-11-08/task-2-review.md). Kết quả nền 32 storage và 9 catalog tests chỉ kiểm logic thuần. Đợt mở rộng đã kiểm native handle/identity, managed/external reads, extraction/rollback và publisher bằng file thật; [báo cáo I/O](../evidence/backend-pre-g0-2026-11-08/task-9-report.md), [báo cáo bootstrap/transport](../evidence/backend-pre-g0-2026-11-08/task-8-report.md). Tổng suite storage hiện 52 pass/23 DB skip; integration 54 pass/2 DB skip. Không gọi provider thực; các mốc 009.1–009.3 vẫn chưa hoàn tất.
 
+## Phần mở rộng Ubuntu 10/11/2026
+
+[SPEC-010](010-ubuntu-foundation.md) xác định interface root/reader/owner/process và profile FD/identity/snapshot Linux; là task triển khai nhánh nền, không là dependency đòi SPEC-009 hoàn tất toàn bộ. Giữ packet/context source Pydantic hiện có; ledger mới chỉ là model private dự kiến của task contracts/code, chưa có trong schema.
+
+[ADR-012](../adr/ADR-012-ubuntu-desktop.md) và [kiến trúc Ubuntu](../platforms/ubuntu/ubuntu-desktop-architecture.md) đề xuất private FD bootstrap/transport, directory FD/`openat2`, kiểm `fstat`/hash và staging/publisher trên filesystem Linux. Các primitive này chưa được triển khai. `WorkerAccessContext`/`WorkerLaunchPacket` giữ schema hiện có; mapping identity Linux vào trường private cần fixture và review, không tự thêm field bằng tài liệu hoặc sửa artifact sinh.
+
+Acceptance theo [UB-09–14](../platforms/ubuntu/ubuntu-validation-matrix.md), chạy trên Ubuntu 22.04 LTS và 24.04 LTS: ca dương external registered input/sidecar, context/nonce/hash/attempt sai, symlink/magic-link/hardlink/FIFO/device/ancestor swap, ZIP/quota và sentinel, provider fixture/driver policy và candidate có writer FD hoặc bytes thay đổi. Input đổi phải bị từ chối hoặc materialize đúng snapshot; không cấm mọi input ngoài project để pass. Chạy lại IMP/NET/RES tương ứng; không lấy metadata hash đúng thay quyền OS/ownership/fencing.
+
+Thiếu primitive an toàn thì không cấp execution/grant, không fallback `realpath` + so prefix. Fixture có thể làm trước G0 khi đủ dependency; provider/live data vẫn cần quyền/policy. Bằng chứng Windows hiện có không đóng các ca Ubuntu hoặc mốc 009.1–009.3.
+
 ## Dependency, người phụ trách và phạm vi
 
 Đọc [worker resolver](../worker-resolver.md), [ma trận security](../importer-resolver-security.md), [contracts](../contracts.md), [IPC](../ipc-protocol.md), ADR-002/009/011. Cần các kiểu dùng chung SPEC-001, bootstrap shell/session tối thiểu SPEC-003; việc dispatch/publish thực được tích hợp và nghiệm thu ở SPEC-004. SPEC-009 không phụ thuộc SPEC-004 đã hoàn tất: có thể dùng launcher/worker fixture để kiểm resolver trước, sau đó chạy lại tích hợp. Tránh vòng dependency giữa hai spec.

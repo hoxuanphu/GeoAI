@@ -8,7 +8,7 @@
 
 1. Đọc [AGENTS.md](AGENTS.md), [chỉ mục tài liệu](Artchitect/docs/README.md), [roadmap](Artchitect/docs/roadmap.md).
 2. Chọn task ở [Artchitect/docs/specs](Artchitect/docs/specs/README.md), đọc các hợp đồng/ADR mà task dẫn chiếu.
-3. Đọc [hướng dẫn dev](Artchitect/docs/development-guide.md) để chọn task có đủ dependency; chỉ phần được ghi rõ mới chạy trước G0. Không dùng fixture tổng hợp làm dữ liệu/model/gate nghiệp vụ.
+3. Đọc [hướng dẫn dev](Artchitect/docs/guides/development-guide.md) để chọn task có đủ dependency; chỉ phần được ghi rõ mới chạy trước G0. Không dùng fixture tổng hợp làm dữ liệu/model/gate nghiệp vụ.
 
 ## Kiểm tra Python
 

@@ -12,7 +12,7 @@ Input/model registry/allowlist được cấp theo SPEC-009; benchmark chạy tr
 
 ## Acceptance
 
-[Tiêu chí nghiệm thu](../acceptance-criteria.md) bổ sung yêu cầu GPU/tài nguyên/điểm dừng được cung cấp; phạm vi máy thực và phép đo còn cần khóa trước benchmark. G1 chỉ đo kỹ thuật với checkpoint/decoder technical; không áp bảng F1 nghiệp vụ để tuyên bố decoder ngẫu nhiên đạt hoặc dùng SLA GPU thay CPU SLO.
+[Tiêu chí nghiệm thu](../domain/acceptance-criteria.md) bổ sung yêu cầu GPU/tài nguyên/điểm dừng được cung cấp; phạm vi máy thực và phép đo còn cần khóa trước benchmark. G1 chỉ đo kỹ thuật với checkpoint/decoder technical; không áp bảng F1 nghiệp vụ để tuyên bố decoder ngẫu nhiên đạt hoặc dùng SLA GPU thay CPU SLO.
 
 - Đúng S30 band mapping/scale/mean/std, shape B×6×1×224×224, metadata policy/QA/padding/crop/GridSpec; sai band/GSD/T/metadata thiếu bị chặn.
 - Encoder thật + UPerNet cùng kiến trúc dự kiến, decoder ngẫu nhiên được ghi rõ, không show business ready hoặc tính F1 như nghiệm thu.

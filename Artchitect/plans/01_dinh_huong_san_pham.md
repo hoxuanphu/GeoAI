@@ -1,5 +1,7 @@
 # Định hướng sản phẩm và cấu hình triển khai
 
+**Addendum 10/11/2026:** bổ sung mục tiêu Ubuntu 22.04/24.04 LTS bên cạnh Windows theo [nguồn tổng hợp](../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md). [ADR-012](../docs/adr/ADR-012-ubuntu-desktop.md) đề xuất adapter Linux; desktop local tiếp tục là hướng triển khai, không đẩy Ubuntu desktop sang server G4. Phần Windows trong baseline dưới giữ phạm vi Windows; chưa có runtime Linux hoặc lịch phát hành đã cam kết.
+
 > Đồng bộ từ [bản tổng hợp v1.4](../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md), ngày 08/11/2026. Đây là đề xuất thiết kế; chưa triển khai hoặc benchmark. Số mục được giữ theo tài liệu gốc.
 
 [Mục lục bộ tài liệu](README.md) · [Danh mục nguồn](17_nguon_tham_khao_va_lich_su.md)

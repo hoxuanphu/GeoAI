@@ -2,6 +2,10 @@
 
 Ngày lập/cập nhật và tra cứu nguồn: **08/11/2026**. Phiên bản tài liệu: **1.4**.
 
+**Addendum Ubuntu 10/11/2026, thiết kế đề xuất:** người dùng bổ sung mục tiêu Ubuntu 22.04 LTS và Ubuntu 24.04 LTS bên cạnh Windows. [ADR-012](../docs/adr/ADR-012-ubuntu-desktop.md), [kiến trúc Ubuntu](../docs/platforms/ubuntu/ubuntu-desktop-architecture.md), [môi trường/đóng gói](../docs/platforms/ubuntu/ubuntu-development-and-packaging.md) và [ma trận UB-01–20](../docs/platforms/ubuntu/ubuntu-validation-matrix.md) cụ thể hóa hướng Tauri/WebKitGTK + Python dùng chung, supervisor/user service/cgroup, owner theo UID, FD/I/O và `.deb` build từ 22.04 để kiểm cả hai LTS. Các lựa chọn kỹ thuật chưa Accepted, chưa có implementation/test Linux. Các primitive Windows/NSIS trong baseline dưới đây tiếp tục thuộc profile Windows; server vẫn mở riêng G4. Giữ Prithvi + decoder từ bản đầu, schema và các gate; không coi yêu cầu OS là nghiệm thu runtime hoặc cam kết lịch phát hành.
+
+**Đặc tả Ubuntu foundation, 10/11/2026:** [SPEC-010](../docs/specs/010-ubuntu-foundation.md), [native profile v1](../docs/platforms/ubuntu/ubuntu-native-profile.md) và [interface adapter](../docs/platforms/ubuntu/ubuntu-adapter-interfaces.md) cụ thể hóa composition, namespace/owner FD, creator-bound Unix socket, dừng theo pidfd, generation journal bền vững và Linux stop-then-copy publish. Đây là input gen code đề xuất, chưa triển khai; private ledger/schema additions phải đi cùng source Pydantic/fixture/exporter trong task code. Review quyết định thiết kế khác nghiệm thu UB/G1–G3; không đợi mọi UB mới viết phần nền đủ dependency.
+
 Bản tổng hợp là nguồn nội dung chuẩn; [bộ 17 tài liệu chuyên biệt](../plans/README.md) trình bày cùng thiết kế theo từng chủ đề và giữ số mục gốc. Khi thay đổi thiết kế, cập nhật bản tổng hợp trước rồi đồng bộ các tài liệu đã tách trong cùng phiên bản. Các quyết định còn mở được quản lý tại mục 17; quyết định có đánh đổi đáng kể khi được chốt cần hồ sơ ADR nêu phương án, bằng chứng, người chốt và tác động, liên kết từ cả hai bản.
 
 Bổ sung đặc tả triển khai sau review ngày 08/11/2026 trong baseline v1.4: task tạo model nghiệp vụ SPEC-008, importer/worker resolver SPEC-009 và ADR-011 về execution owner local. Các phần bổ sung cụ thể hóa trách nhiệm/interface/acceptance, chưa được triển khai hoặc nghiệm thu và không thay yêu cầu sản phẩm/gate đã xác nhận.
@@ -392,7 +396,7 @@ Mỗi feature có ngưỡng chất lượng riêng do chủ nghiệp vụ chốt
 
 ### 8.5. Quy tắc nghiệm thu và điểm dừng thử nghiệm
 
-Bộ giá trị người dùng cung cấp ngày 08/11/2026 được ghi tại [tiêu chí nghiệm thu](../docs/acceptance-criteria.md): bảy lớp/global, coverage, diện tích/CI/CRS, tài nguyên và điểm dừng. Máy GPU mới đã xác nhận dùng riêng training/benchmark, giữ mục tiêu desktop trước đó; protocol/sampling, máy thực, CPU SLO và các khoảng lựa chọn còn cần khóa tại SPEC-002. Ghi ngưỡng chưa là gate đạt. Giữ S30/T=3/224 cho nghiệp vụ và T=1 spike; recipe S30+L30/median, cửa sổ 512, DEM hoặc đổi model phải kiểm riêng, không dùng để bỏ qua quality gate.
+Bộ giá trị người dùng cung cấp ngày 08/11/2026 được ghi tại [tiêu chí nghiệm thu](../docs/domain/acceptance-criteria.md): bảy lớp/global, coverage, diện tích/CI/CRS, tài nguyên và điểm dừng. Máy GPU mới đã xác nhận dùng riêng training/benchmark, giữ mục tiêu desktop trước đó; protocol/sampling, máy thực, CPU SLO và các khoảng lựa chọn còn cần khóa tại SPEC-002. Ghi ngưỡng chưa là gate đạt. Giữ S30/T=3/224 cho nghiệp vụ và T=1 spike; recipe S30+L30/median, cửa sổ 512, DEM hoặc đổi model phải kiểm riêng, không dùng để bỏ qua quality gate.
 
 G0 phải chốt trước khi tinh chỉnh: ngưỡng tuyệt đối theo lớp/vùng của feature, coverage tối thiểu, ngân sách CPU, số vòng thử tối đa và trần thời gian/chi phí, người chịu trách nhiệm và mốc quyết định. Giá trị cụ thể do chủ nghiệp vụ/chủ dự án phê duyệt trong hồ sơ G0; chưa có các giá trị này thì chưa hoàn tất G0. Không đặt một số vòng hoặc ngưỡng F1 tùy ý cho mọi dự án.
 
@@ -717,7 +721,7 @@ Giảm tải trước hết bằng đọc ít hơn, prefetch có hạn, cửa s�
 
 ### 13.1. Workload và ngân sách CPU bắt buộc
 
-[Tiêu chí nghiệm thu](../docs/acceptance-criteria.md) ghi yêu cầu mới GPU 16–24 GB/RAM 32 GB/SSD 500 GB, VRAM ≤85%, SLA GPU ≤15 phút/tile T=3, cap training 4 GPU-giờ và early stopping. Người dùng xác nhận máy này dùng riêng training/benchmark; giữ mục tiêu desktop ít nhất 20 GB RAM/8 GB VRAM. Máy thực/ranh giới đo, CPU SLO và campaign/chi phí còn chờ khóa; không coi đây là benchmark hoặc support matrix đã đạt. Các ví dụ GPU/chip/epoch không thay đo thực; shape/precision/profile đổi phải đánh giá lại.
+[Tiêu chí nghiệm thu](../docs/domain/acceptance-criteria.md) ghi yêu cầu mới GPU 16–24 GB/RAM 32 GB/SSD 500 GB, VRAM ≤85%, SLA GPU ≤15 phút/tile T=3, cap training 4 GPU-giờ và early stopping. Người dùng xác nhận máy này dùng riêng training/benchmark; giữ mục tiêu desktop ít nhất 20 GB RAM/8 GB VRAM. Máy thực/ranh giới đo, CPU SLO và campaign/chi phí còn chờ khóa; không coi đây là benchmark hoặc support matrix đã đạt. Các ví dụ GPU/chip/epoch không thay đo thực; shape/precision/profile đổi phải đánh giá lại.
 
 G0 chốt trước khi đo nghiệm thu: model CPU cụ thể, số core/thread dùng, RAM khả dụng, loại đĩa, dữ liệu/hash, AOI/số pixel hợp lệ, T, window/overlap, chất lượng tối thiểu, **thời gian job tối đa**, peak RAM và đĩa tạm. Có hai mức: fixture nhỏ kiểm tra tính đúng và workload nghiệp vụ đại diện để quyết định khả năng sử dụng. G1 đo cold/warm time, thời gian riêng I/O/preprocess/inference/postprocess/report và phản hồi UI; không chỉ ghi tốc độ một patch rồi suy ra tốc độ toàn AOI.
 
@@ -839,7 +843,7 @@ Kiểm tra tự động gồm:
 
 ## 16. Lộ trình và cổng nghiệm thu
 
-Đã ghi bộ số ngưỡng do người dùng cung cấp tại [tiêu chí nghiệm thu](../docs/acceptance-criteria.md); SPEC-002 còn khóa protocol/máy/CI/budget và thu đầu vào thực. G0 chưa hoàn tất; training/benchmark chỉ chạy khi đủ dependency tương ứng, không tự coi “vòng thử ở G0” là cho phép fine-tune trước gate. G2 cần số đo thật theo version đã khóa, gồm CPU SLO riêng và các tiêu chí chất lượng/coverage/diện tích/CRS phù hợp.
+Đã ghi bộ số ngưỡng do người dùng cung cấp tại [tiêu chí nghiệm thu](../docs/domain/acceptance-criteria.md); SPEC-002 còn khóa protocol/máy/CI/budget và thu đầu vào thực. G0 chưa hoàn tất; training/benchmark chỉ chạy khi đủ dependency tương ứng, không tự coi “vòng thử ở G0” là cho phép fine-tune trước gate. G2 cần số đo thật theo version đã khóa, gồm CPU SLO riêng và các tiêu chí chất lượng/coverage/diện tích/CRS phù hợp.
 
 Thứ tự đã xác nhận: HLS 30 m với lớp phủ, NDVI/EVI/NDMI/MNDWI, thống kê và PDF trước; rừng/mất rừng, đất ngập nước/ngập lụt và profile 10/5/1 m sau. Đây là phạm vi chia đợt, chưa có lịch/ngân sách đợt sau; G0 vẫn chờ AOI/thời gian, bộ lớp/nhãn, nguồn truy cập thực, CRS/gate/workload và người chịu trách nhiệm. Chọn chỉ số không tự nghiệm thu công thức/profile hoặc số đo nghiệp vụ.
 
@@ -929,6 +933,7 @@ Sổ dưới định danh các quyết định cần quản lý, không tự nâ
 | ADR-009 | JSON-RPC local và fencing theo attempt | Lựa chọn thiết kế đề xuất; wire draft 0.1.0 chưa có transport | Kiểm framing/native log, cancel/retry/crash và stale attempt ở G1; idempotency không thay fencing |
 | ADR-010 | Mô hình toán–vật lý theo Domain Pack | Lựa chọn thiết kế đề xuất; GEO-01 bản đầu, PHY chọn từng feature G4 | Dữ liệu/đơn vị/hiệu chuẩn, solver/uncertainty và gate riêng trước phát hành feature |
 | ADR-011 | Quyền thực thi local dùng chung giữa project/instance | Đề xuất có điều kiện; một phiên sở hữu cho mỗi tài khoản Windows trên máy | G1 kiểm khóa liên session/process, hai project tranh tài nguyên, crash/worker còn sống và recovery; chưa hỗ trợ nhiều tài khoản cùng compute |
+| [ADR-012](../docs/adr/ADR-012-ubuntu-desktop.md) | Mở rộng desktop Ubuntu 22.04/24.04 LTS | Mục tiêu OS đã xác nhận; adapter/packaging còn đề xuất | UB-01–20, review kỹ thuật và bằng chứng hai LTS; không thay acceptance Windows hoặc server G4 |
 
 ADR dự thảo được sửa có lịch sử. Khi quyết định đã được chấp thuận thay đổi, tạo ADR mới liên kết hồ sơ cũ và đánh dấu trạng thái bị thay thế; giữ nguyên nội dung quyết định/bằng chứng lịch sử. Cập nhật bản tổng hợp và toàn bộ tài liệu chuyên biệt chịu ảnh hưởng trong cùng phiên bản. Chưa tạo các file ADR chỉ có tiêu đề hoặc ghi quyết định chưa được chốt là đã chấp thuận.
 
@@ -1046,6 +1051,8 @@ Bản 1.4 bổ sung danh mục mô hình toán–vật lý và phương trình p
 | 1.2 | 08/11/2026 | Bổ sung ngưỡng tuyệt đối/quy tắc dừng, chuẩn bị nhãn từ G0 và tách spike G1 khỏi nghiệm thu checkpoint G2; khảo sát HLS/credential/UTM; ứng viên 100M-TL/tiny-TL/non-TL, profile ONNX cố định và dynamic INT8 có điều kiện; an toàn chuyển đổi trọng số và stdout Windows. Đồng bộ README và 17 tài liệu trong plans, giữ số mục/liên kết và trạng thái đề xuất; chưa chạy benchmark hoặc nghiệm thu nghiệp vụ |
 | 1.3 | 08/11/2026 | Tiếp thu chọn lọc bản hợp nhất chuyên gia: hướng phụ thuộc module/CI, SQLAlchemy/Alembic và upgrade/restore, hai profile COG dùng chung khi phù hợp, token loader/Host/Origin, Windows Job Object với dừng có kiểm soát, cấu hình nghiệm thu mẫu và sổ ADR. Giữ các điều kiện v1.2 và đồng bộ README cùng 17 tài liệu; chỉ cập nhật thiết kế, chưa triển khai/benchmark |
 | 1.4 | 08/11/2026 | Bổ sung PhysicalModelSpec, danh mục mô hình toán–vật lý và phương trình/đơn vị/giới hạn cho chỉ số phổ, PROSAIL, FAO-56, SEBAL, SCS-CN, HAND, nước nông 2D, RUSLE và allometry sinh khối/carbon; thêm hiệu chuẩn, độ bất định và cổng kiểm chứng. Các feature vật lý mở rộng ở G4; bản đầu vẫn GEO-01 + Prithvi và baseline, chưa triển khai/benchmark |
+| Addendum Ubuntu trên baseline 1.4 | 10/11/2026 | Ghi mục tiêu hai LTS và ADR-012; đồng bộ adapter, guide build/ABI/offline và ma trận UB-01–20 sang kiến trúc/plans/docs/specs. Chỉ phát triển tài liệu; kỹ thuật chưa Accepted, chưa code/test Linux và không đóng gate |
+| Addendum SPEC-010 trên baseline 1.4 | 10/11/2026 | Cụ thể hóa Ubuntu foundation bằng spec, native profile và interface adapter: creator-bound socket/FD, pidfd stop, generation journal/recovery, Linux I/O/publish và suite 010-T01–09. Rà thiết kế và kiểm tài liệu theo SPEC-000/000.7; các mốc code 010.1–010.3 chưa bắt đầu, ADR kỹ thuật vẫn đề xuất |
 
 **Bổ sung đặc tả cho baseline v1.4, 08/11/2026:** liên kết SPEC-008 tạo model nghiệp vụ, SPEC-009/worker access context và security acceptance, ADR-011 giới hạn đồng thời liên project/instance; đồng bộ docs/kiến trúc/plans chịu ảnh hưởng. Đây là tài liệu dự thảo để triển khai, chưa làm code, chưa chốt dữ liệu/ngưỡng/nhân sự hoặc tạo bằng chứng runtime.
 

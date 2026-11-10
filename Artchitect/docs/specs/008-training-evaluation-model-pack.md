@@ -27,7 +27,7 @@ Một người có thể kiêm vai trò, nhưng việc chọn/tinh chỉnh model
 
 Input thực: HLS S30 v2 sáu band/QA/ngày/tọa độ/grid đã kiểm, label assets có class schema và ngày phù hợp, split trước chipping, backbone revision/license, decoder architecture, profile nghiệp vụ T=3/224 theo [Prithvi profile](../prithvi-profile.md), normalization/metadata policy và budget. T=1 chỉ là spike kỹ thuật, không thay profile nghiệp vụ khi bàn giao. Các con số trong fixture contracts không phải normalization hoặc tolerance để huấn luyện.
 
-Bộ lớp theo [taxonomy](../landcover-taxonomy.md): IDs 0–6 là bảy lớp học; `ignore_index = -1` không tạo kênh thứ tám. Khóa crosswalk theo version WorldCover/JAXA, xử lý ao nuôi có điều kiện và bổ sung nhãn wetland có cây gỗ còn thiếu; không dùng weak labels sinh train làm test truth độc lập. Recipe/model pack phải ghi T=3, class mapping/ignore, ngày từng frame và policy frame thiếu; không lặp ảnh để đủ shape. [Bằng chứng ghi nhận yêu cầu](../evidence/2026-11-08-aoi-taxonomy-review.md) chỉ kiểm tài liệu.
+Bộ lớp theo [taxonomy](../domain/landcover-taxonomy.md): IDs 0–6 là bảy lớp học; `ignore_index = -1` không tạo kênh thứ tám. Khóa crosswalk theo version WorldCover/JAXA, xử lý ao nuôi có điều kiện và bổ sung nhãn wetland có cây gỗ còn thiếu; không dùng weak labels sinh train làm test truth độc lập. Recipe/model pack phải ghi T=3, class mapping/ignore, ngày từng frame và policy frame thiếu; không lặp ảnh để đủ shape. [Bằng chứng ghi nhận yêu cầu](../evidence/2026-11-08-aoi-taxonomy-review.md) chỉ kiểm tài liệu.
 
 Output dự kiến ở kho model/data được kiểm soát; Git chỉ giữ manifest đã lọc và fixture nhỏ được phép:
 
@@ -47,7 +47,7 @@ Recipe phải có giá trị cụ thể và người review trước lần chạ
 
 ## Trình tự và acceptance
 
-Người dùng đã cung cấp [bộ tiêu chí định lượng](../acceptance-criteria.md): per-class/macro/OA, coverage, diện tích/CI/CRS, cap 4 GPU-giờ/lần và early stopping min_delta 0,005/patience 15. Recipe/protocol phải khóa phạm vi/máy/cách đo, số vòng cụ thể trong khoảng 3–5 và chi phí/lịch trước chạy; không coi các khoảng còn mở là budget đã đầy đủ. Không lấy ví dụ chip 512/epoch để cam kết thời gian, không tự thêm DEM vào sáu band hoặc đổi họ Prithvi để đạt SLA. Chạm trần/ngưỡng không đạt thì trade-off report và quyết định có thẩm quyền, không hạ gate hồi tố.
+Người dùng đã cung cấp [bộ tiêu chí định lượng](../domain/acceptance-criteria.md): per-class/macro/OA, coverage, diện tích/CI/CRS, cap 4 GPU-giờ/lần và early stopping min_delta 0,005/patience 15. Recipe/protocol phải khóa phạm vi/máy/cách đo, số vòng cụ thể trong khoảng 3–5 và chi phí/lịch trước chạy; không coi các khoảng còn mở là budget đã đầy đủ. Không lấy ví dụ chip 512/epoch để cam kết thời gian, không tự thêm DEM vào sáu band hoặc đổi họ Prithvi để đạt SLA. Chạm trần/ngưỡng không đạt thì trade-off report và quyết định có thẩm quyền, không hạ gate hồi tố.
 
 1. Khóa dataset/class mapping/split, kiểm nhãn và leakage theo vùng/thời gian/scene trước chipping. Kiểm đủ IDs 0–6, ignore -1, mask QA không loại nước hợp lệ, crosswalk/nhãn độc lập và ba frame cùng grid theo taxonomy/profile. Không dùng prediction hoặc mọi edit review như ground truth chưa duyệt.
 2. Khóa recipe/profile và budget/điểm dừng; làm smoke train trên tập nhỏ thuộc train để kiểm loss/mask/decoder/shape, không báo chất lượng từ smoke hoặc decoder ngẫu nhiên.

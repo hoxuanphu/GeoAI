@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-10",
+  "timezone": "Asia/Bangkok",
+  "scope": "documentation organization",
+  "command": "python -X utf8 Artchitect/docs/evidence/docs-organization-2026-11-10/verify.py",
+  "status": "pass",
+  "errors": [],
+  "moved_documents": 10,
+  "required_agents_documents": 17,
+  "preexisting_markdown_rewritten_links_only": 27,
+  "protected_files": 295,
+  "protected_files_unchanged": 295,
+  "markdown_files": 135,
+  "local_links": 1190,
+  "anchors_checked": 156,
+  "git_diff_check_exit_code": 0,
+  "limits": "Markdown structure and SHA-256 only; no Mermaid rendering, external link, Linux, runtime, model, installer, or gate validation."
+}

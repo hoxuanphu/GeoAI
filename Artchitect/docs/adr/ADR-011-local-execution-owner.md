@@ -3,6 +3,8 @@
 **Trạng thái:** đề xuất triển khai có điều kiện kiểm chứng G1; chưa Accepted, chưa có implementation.
 **Ngày:** 08/11/2026. **Nguồn:** [bản tổng hợp v1.4, mục 9.4](../../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md), [SPEC-003](../specs/003-desktop-shell.md), [SPEC-004](../specs/004-jobs-and-publish.md).
 
+**Mở rộng Ubuntu 10/11/2026:** [ADR-012](ADR-012-ubuntu-desktop.md) đề xuất namespace owner theo UID, user manager/cgroup và `flock` với recovery workload thật. Phạm vi tài khoản Windows/primitive Windows bên dưới không tự áp dụng sang Linux; bất biến một owner/project/job nặng, khóa writer, attempt fencing và pin/lease tiếp tục tách biệt. Chưa nghiệm thu adapter Linux.
+
 ## Bối cảnh
 
 Khóa một writer/project ngăn ghi DB trùng nhưng không ngăn hai project khác nhau cùng nạp Prithvi hoặc giữ GPU/RAM. Quy tắc một worker/GPU phải có chủ sở hữu liên process; giới hạn thread trong từng worker chưa đủ. Cần giới hạn có thể kiểm chứng cho bản đầu, chưa có yêu cầu xử lý đồng thời nhiều người dùng.

@@ -1,5 +1,7 @@
 # Lộ trình và cổng nghiệm thu
 
+**Phân biệt Ubuntu desktop/server, 10/11/2026:** [ADR-012](../docs/adr/ADR-012-ubuntu-desktop.md) bổ sung Ubuntu 22.04/24.04 LTS vào mục tiêu desktop local. [UB-01–20](../docs/platforms/ubuntu/ubuntu-validation-matrix.md) ánh xạ các kiểm Linux vào G1/G2/G3 tương ứng; fixture nền có thể chuẩn bị trước G0 khi đủ dependency. Server/Linux server trong baseline dưới vẫn là phạm vi riêng G4. Chưa có test Linux hoặc gate mới được ghi đạt.
+
 > Đồng bộ từ [bản tổng hợp v1.4](../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md), ngày 08/11/2026. Đây là đề xuất thiết kế; chưa triển khai hoặc benchmark. Số mục được giữ theo tài liệu gốc.
 
 [Mục lục bộ tài liệu](README.md) · [Danh mục nguồn](17_nguon_tham_khao_va_lich_su.md)
@@ -10,7 +12,7 @@
 
 ## 16. Lộ trình và cổng nghiệm thu
 
-Đã ghi bộ số ngưỡng do người dùng cung cấp tại [tiêu chí nghiệm thu](../docs/acceptance-criteria.md); SPEC-002 còn khóa protocol/máy/CI/budget và thu đầu vào thực. G0 chưa hoàn tất; training/benchmark chỉ chạy khi đủ dependency tương ứng, không tự coi “vòng thử ở G0” là cho phép fine-tune trước gate. G2 cần số đo thật theo version đã khóa, gồm CPU SLO riêng và các tiêu chí chất lượng/coverage/diện tích/CRS phù hợp.
+Đã ghi bộ số ngưỡng do người dùng cung cấp tại [tiêu chí nghiệm thu](../docs/domain/acceptance-criteria.md); SPEC-002 còn khóa protocol/máy/CI/budget và thu đầu vào thực. G0 chưa hoàn tất; training/benchmark chỉ chạy khi đủ dependency tương ứng, không tự coi “vòng thử ở G0” là cho phép fine-tune trước gate. G2 cần số đo thật theo version đã khóa, gồm CPU SLO riêng và các tiêu chí chất lượng/coverage/diện tích/CRS phù hợp.
 
 Thứ tự đã xác nhận: HLS 30 m với lớp phủ, NDVI/EVI/NDMI/MNDWI, thống kê và PDF trước; rừng/mất rừng, đất ngập nước/ngập lụt và profile 10/5/1 m sau. Đây là phạm vi chia đợt, chưa có lịch/ngân sách đợt sau; G0 vẫn chờ AOI/thời gian, bộ lớp/nhãn, nguồn truy cập thực, CRS/gate/workload và người chịu trách nhiệm. Chọn chỉ số không tự nghiệm thu công thức/profile hoặc số đo nghiệp vụ.
 

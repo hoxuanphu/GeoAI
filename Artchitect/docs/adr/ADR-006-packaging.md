@@ -3,6 +3,8 @@
 **Trạng thái:** Đề xuất; công cụ đóng gói cuối chưa chốt. **Ngày:** 08/11/2026.
 **Nguồn:** [đề xuất v1.4](../../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md), [đặc tả liên quan](../architecture.md).
 
+**Mở rộng Ubuntu 10/11/2026:** [ADR-012](ADR-012-ubuntu-desktop.md) và [guide Linux](../platforms/ubuntu/ubuntu-development-and-packaging.md) đề xuất `.deb` build từ 22.04, kiểm ABI/dependency/runtime trên cả 22.04 và 24.04 LTS. NSIS/WebView2 dưới đây thuộc Windows; công cụ freeze Python và lock Linux phải được resolve/kiểm thật, không suy từ pack Windows.
+
 ## Bối cảnh
 
 Stack native GDAL/PROJ/codec/ORT/CUDA và WebView2 có tài nguyên ngoài package Python.

@@ -1,5 +1,7 @@
 # Stack và bộ cài Windows
 
+**Phần Ubuntu bổ sung 10/11/2026:** baseline NSIS/WebView2 bên dưới giữ profile Windows. [ADR-012](../docs/adr/ADR-012-ubuntu-desktop.md) và [guide Ubuntu](../docs/platforms/ubuntu/ubuntu-development-and-packaging.md) đề xuất `.deb`, WebKitGTK hệ thống và runtime Python riêng; build từ 22.04 rồi kiểm ABI/dependency trên 22.04/24.04 LTS, có thể cần gói riêng. Lock/freeze/offline OS dependency và máy sạch chưa được kiểm; không dùng pack Windows làm bằng chứng Linux.
+
 > Đồng bộ từ [bản tổng hợp v1.4](../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md), ngày 08/11/2026. Đây là đề xuất thiết kế; chưa triển khai hoặc benchmark. Số mục được giữ theo tài liệu gốc.
 
 [Mục lục bộ tài liệu](README.md) · [Danh mục nguồn](17_nguon_tham_khao_va_lich_su.md)

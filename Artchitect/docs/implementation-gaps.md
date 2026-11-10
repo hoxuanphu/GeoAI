@@ -1,20 +1,6 @@
-# Phần chưa hoàn thành và nguyên nhân
+# Phần chưa hoàn thành và nguyên nhân — đường dẫn tương thích
 
-Ghi nhận theo yêu cầu người dùng ngày 08/11/2026; cập nhật cùng [tracker](task-tracker.md), [roadmap](roadmap.md) và spec. Đây là danh sách công việc còn thiếu, không phải danh sách mọi phần đều bị chặn kỹ thuật. [Bàn giao trước](evidence/codegen-2026-11-08/handoff.md) giữ kết quả lịch sử; đợt làm tiếp có [kế hoạch/bằng chứng riêng](evidence/backend-pre-g0-2026-11-08/plan.md).
+Tài liệu đã được chuyển sang [Phần chưa hoàn thành và nguyên nhân](project/implementation-gaps.md). Đường dẫn này được giữ để các hồ sơ và liên kết cũ tiếp tục tra cứu được. Nội dung hiện hành nằm ở tài liệu theo chủ đề.
 
-| Phần thiếu | Nguyên nhân thực tế | Có thể làm trước ngay? | Điều kiện còn chờ |
-| --- | --- | --- | --- |
-| SPEC-002: AOI kiểm định, HLS/QA/coverage, nhãn/split, CRS/điểm chuẩn, protocol/hardware/budget | Chưa có đủ dữ liệu/quyết định được xác nhận; bộ 7 lớp và các ngưỡng đã ghi nhận không tự thay hồ sơ đo | Chuẩn bị biểu mẫu/kiểm metadata; không tự điền dữ liệu hoặc gate | Chủ nghiệp vụ/GIS/ML xác nhận nguồn, quyền, input và phạm vi đo |
-| SPEC-003: launcher, owner, Job Object, crash/cross-session/WebView2 | Mới viết API/UI foundation; Rust/Cargo/MSVC chưa có, binary CLI tải bị HTTP403, chưa có harness xuyên session | Phần API/UI đã kiểm; native cần code và toolchain/kiểm riêng | Toolchain Windows và ca native/process thật; không bật quyền thực thi từ scaffold |
-| SPEC-009: native I/O/bootstrap/provider sau policy và grant registry | Policy ZIP/endpoint/stream và grant metadata đã có, 32 storage + 9 catalog tests kiểm lại pass; chưa là kiểm I/O/provider thực | Tiếp tục adapter native và tích hợp với worker/publisher theo kế hoạch | Handle/path/reparse/identity, registry/worker integration và quyền provider live |
-| SPEC-004: process/DB/publish sau IPC và coordinator core | Framing/classification/correlation và state/idempotency/fencing/checkpoint core đã có, 17 tests mới pass sau review | Tiếp tục adapter process, DB và publisher; không cần G0 để viết cơ chế tổng hợp | Native stdout/heartbeat/stop observation, transaction/publish/recovery |
-| SPEC-004: SQLAlchemy/Alembic/SQLite và publish filesystem | Đang viết repository/migration/tests; SQLAlchemy/Alembic chưa cài, không thử cài lại theo chỉ đạo tiếp tục dù thiếu môi trường | Viết adapter đúng ADR và test SQLite thật với skip có lý do khi thiếu dependency | Chạy migration/repository/backup/restore cùng writer/owner và filesystem/process tests |
-| SPEC-005: Prithvi thật/export/benchmark | Thiếu HLS fixture/profile/hardware/budget tương ứng được khóa và nền job/resolver | Chưa đủ điều kiện chạy spike thực | Đầu vào G0 tương ứng, model revision/license và runtime |
-| SPEC-008: dataset/training/checkpoint/evaluation/model pack | Chưa có dữ liệu nhãn/split/profile/budget và môi trường training được chốt | Có thể chuẩn bị hồ sơ; không training/promote bằng dữ liệu giả | Dataset/split có duyệt và evaluation độc lập |
-| SPEC-007: GIS/viewer/PDF/native bundle | Chưa triển khai, còn dependency nền; nghiệm thu địa lý cần dữ liệu/điểm chuẩn/tolerance | Một số cơ chế fixture có thể chuẩn bị; ưu tiên nền SPEC-009/004 trước | Runtime nền, fixture GIS/CRS, viewer/font/codec và môi trường native |
-| SPEC-006: luồng nghiệp vụ hoàn chỉnh | Phụ thuộc G0, phần G1 tương ứng và model pack SPEC-008 | Chưa đủ điều kiện nghiệm thu business | Pack/evaluation cùng pipeline/review/metrics/report tích hợp |
-| G3/G4: installer/offline/upgrade và PHY/server mở rộng | Chưa đến pha có đầu vào/runtime đủ, chưa có spec riêng cho feature mở rộng | Không tạo task solver/installer giả | Runtime đã kiểm, support matrix và feature/profile cụ thể |
-
-**Thiếu sót của lượt triển khai trước:** đã dừng sau foundation dù còn phần backend độc lập có thể viết. Không gom mọi việc chưa làm thành “chờ G0” hoặc “chờ native”. Đợt này chủ động hoàn thiện các phần độc lập và chỉ đánh dấu phần đã có test/bằng chứng.
-
-Chưa kiểm được cài Python mới sạch: lượt trước TLS đã xác minh nhưng wheel trả HTTP403; tests dùng package có sẵn. Đã thử lại SQLAlchemy/Alembic trong môi trường riêng ở đợt 08–09/11/2026 và vẫn bị HTTP403; [kết quả](evidence/backend-pre-g0-2026-11-08/dependency-recheck.json). Các giới hạn fixture chỉ dùng kiểm cơ chế, chưa là quota/ngân sách nghiệp vụ được duyệt.
+<a id="phần-chưa-hoàn-thành-và-nguyên-nhân"></a>
+[Phần chưa hoàn thành và nguyên nhân](project/implementation-gaps.md#phần-chưa-hoàn-thành-và-nguyên-nhân)

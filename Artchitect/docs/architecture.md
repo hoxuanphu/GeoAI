@@ -1,12 +1,16 @@
 # Kiến trúc triển khai
 
-Cơ sở: [kiến trúc hệ thống 1.1 theo đề xuất v1.4](../kien_truc_he_thong.md), [module và repository](../plans/04_kien_truc_thuc_thi_va_module.md). Đây là cấu trúc đích; contracts metadata SPEC-001 và API/UI foundation SPEC-003 đã triển khai/kiểm; chưa có runtime GIS/AI/solver hay desktop native đã nghiệm thu. Phân bố file và thứ tự ở [hướng dẫn dev](development-guide.md); hiện trạng có bằng chứng ở [roadmap](roadmap.md).
+Cơ sở: [kiến trúc hệ thống 1.1 theo đề xuất v1.4](../kien_truc_he_thong.md), [module và repository](../plans/04_kien_truc_thuc_thi_va_module.md). Đây là cấu trúc đích; contracts metadata SPEC-001 và API/UI foundation SPEC-003 đã triển khai/kiểm; chưa có runtime GIS/AI/solver hay desktop native đã nghiệm thu. Phân bố file và thứ tự ở [hướng dẫn dev](guides/development-guide.md); hiện trạng có bằng chứng ở [roadmap](roadmap.md).
 
-Phạm vi đã xác nhận tại [G0-D01–D07](evidence/g0/decision-record.md): HLS 30 m + lớp phủ/NDVI/EVI/NDMI/MNDWI/thống kê/PDF trước; các nghiệp vụ rừng/mất rừng, đất ngập nước/ngập lụt và profile 10/5/1 m sau. AOI được vẽ/lấy footprint ảnh import/import Shapefile theo [AOI policy](aoi-policy.md); bản đồ đầu có [bảy lớp](landcover-taxonomy.md), gồm wetland/mangrove, `-1` ignore và profile nghiệp vụ T=3 cần kiểm riêng. Nguồn mở/miễn phí trước, ảnh thương mại khi có quyền/ngân sách. Mỗi sensor/product/GSD cần profile dữ liệu/model kiểm riêng, không gán mọi nguồn vào checkpoint HLS. Mục tiêu 20 GB RAM/8 GB VRAM chưa là support matrix; AOI kiểm định cụ thể và nhiều đầu vào G0 còn thiếu.
+Phạm vi đã xác nhận tại [G0-D01–D07](evidence/g0/decision-record.md): HLS 30 m + lớp phủ/NDVI/EVI/NDMI/MNDWI/thống kê/PDF trước; các nghiệp vụ rừng/mất rừng, đất ngập nước/ngập lụt và profile 10/5/1 m sau. AOI được vẽ/lấy footprint ảnh import/import Shapefile theo [AOI policy](domain/aoi-policy.md); bản đồ đầu có [bảy lớp](domain/landcover-taxonomy.md), gồm wetland/mangrove, `-1` ignore và profile nghiệp vụ T=3 cần kiểm riêng. Nguồn mở/miễn phí trước, ảnh thương mại khi có quyền/ngân sách. Mỗi sensor/product/GSD cần profile dữ liệu/model kiểm riêng, không gán mọi nguồn vào checkpoint HLS. Mục tiêu 20 GB RAM/8 GB VRAM chưa là support matrix; AOI kiểm định cụ thể và nhiều đầu vào G0 còn thiếu.
 
 ## Bộ sơ đồ chi tiết
 
-[Bộ sơ đồ Windows desktop](desktop-architecture-diagrams.md) ngày 09/11/2026 trình bày ngữ cảnh, module/tiến trình, execution owner, pipeline Prithvi, sequence publish, state machine, truy nguyên và vòng đời model. Đây là bản vẽ lại thiết kế đích, không thay quyết định ADR hoặc xác nhận runtime đã nghiệm thu.
+[Bộ sơ đồ Windows desktop](platforms/windows/desktop-architecture-diagrams.md) ngày 09/11/2026 trình bày ngữ cảnh, module/tiến trình, execution owner, pipeline Prithvi, sequence publish, state machine, truy nguyên và vòng đời model. Đây là bản vẽ lại thiết kế đích, không thay quyết định ADR hoặc xác nhận runtime đã nghiệm thu.
+
+Bổ sung ngày 10/11/2026: mục tiêu Ubuntu 22.04 LTS và Ubuntu 24.04 LTS đã được yêu cầu. [ADR-012](adr/ADR-012-ubuntu-desktop.md) và [kiến trúc Ubuntu](platforms/ubuntu/ubuntu-desktop-architecture.md) đề xuất WebKitGTK, supervisor trong user service/cgroup, owner theo UID và adapter FD/native I/O; [guide](platforms/ubuntu/ubuntu-development-and-packaging.md) cùng [ma trận UB-01–20](platforms/ubuntu/ubuntu-validation-matrix.md) xác định cách kiểm. Các primitive Windows bên dưới tiếp tục thuộc profile Windows; chưa có runtime Linux hoặc bằng chứng tương thích hai LTS. Phần nghiệp vụ/contracts/coordinator/fencing giữ semantics chung.
+
+[SPEC-010](specs/010-ubuntu-foundation.md) cụ thể hóa profile native/interface và fixture cho nhánh Linux: composition root chọn adapter, namespace thống nhất qua session, Unix socket shell và pipe/FD cha–con, ledger epoch bền vững, worker kết thúc trước finalize/copy private. Không đưa dependencies OS vào contracts hoặc module policy; các thay đổi code/schema được mô tả là deliverable tương lai, chưa triển khai.
 
 ## Tiến trình
 
@@ -23,7 +27,7 @@ flowchart TB
     ASSET --> UI
 ```
 
-Shell cấp cổng/token qua Tauri IPC, quản lý nhóm tiến trình Windows Job Object. Worker chỉ gửi event/checkpoint/candidate; coordinator và dịch vụ ứng dụng kiểm soát đường ghi DB. Training/hiệu chuẩn ở môi trường riêng; pack đã duyệt mới đưa vào runtime.
+Shell cấp cổng/token qua Tauri IPC; profile Windows quản lý nhóm tiến trình bằng Job Object, profile Ubuntu đề xuất supervisor/user service theo ADR-012. Worker chỉ gửi event/checkpoint/candidate; coordinator và dịch vụ ứng dụng kiểm soát đường ghi DB. Training/hiệu chuẩn ở môi trường riêng; pack đã duyệt mới đưa vào runtime.
 
 ## Hướng phụ thuộc được phép
 

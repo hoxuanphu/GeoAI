@@ -1,5 +1,9 @@
 # Quyết định cần chốt và đánh đổi
 
+**Addendum 10/11/2026:** mục tiêu Ubuntu 22.04/24.04 LTS đã được yêu cầu; [ADR-012](../docs/adr/ADR-012-ubuntu-desktop.md) tách yêu cầu này khỏi lựa chọn kỹ thuật WebKitGTK, supervisor/cgroup, UID owner, native I/O và `.deb` chưa Accepted. Bảng cấu hình Windows dưới là baseline Windows; CPU architecture, runtime/lock, session/graphics, offline và support matrix Linux cần bằng chứng riêng, không tự chốt từ tên distro.
+
+[SPEC-010](../docs/specs/010-ubuntu-foundation.md) chọn profile/interface đề xuất cho foundation. Quyết định triển khai thiết kế được review riêng với nghiệm thu runtime/sản phẩm; không chờ đủ UB-01–20 trước viết fixture nền đủ dependency, cũng không đánh ADR Accepted vì spec đã hoàn tất.
+
 > Đồng bộ từ [bản tổng hợp v1.4](../solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md), ngày 08/11/2026. Đây là đề xuất thiết kế; chưa triển khai hoặc benchmark. Số mục được giữ theo tài liệu gốc.
 
 [Mục lục bộ tài liệu](README.md) · [Danh mục nguồn](17_nguon_tham_khao_va_lich_su.md)
@@ -55,6 +59,7 @@ Sổ dưới định danh các quyết định cần quản lý, không tự nâ
 | ADR-009 | JSON-RPC local và fencing theo attempt | Lựa chọn thiết kế đề xuất; wire draft 0.1.0 chưa có transport | Kiểm framing/native log, cancel/retry/crash và stale attempt ở G1; idempotency không thay fencing |
 | ADR-010 | Mô hình toán–vật lý theo Domain Pack | Lựa chọn thiết kế đề xuất; GEO-01 bản đầu, PHY chọn từng feature G4 | Dữ liệu/đơn vị/hiệu chuẩn, solver/uncertainty và gate riêng trước phát hành feature |
 | ADR-011 | Quyền thực thi local dùng chung giữa project/instance | Đề xuất có điều kiện; một phiên sở hữu cho mỗi tài khoản Windows trên máy | G1 kiểm khóa liên session/process, hai project tranh tài nguyên, crash/worker còn sống và recovery; chưa hỗ trợ nhiều tài khoản cùng compute |
+| [ADR-012](../docs/adr/ADR-012-ubuntu-desktop.md) | Mở rộng desktop Ubuntu 22.04/24.04 LTS | Mục tiêu OS đã xác nhận; adapter/packaging còn đề xuất | UB-01–20, review kỹ thuật và bằng chứng hai LTS; không thay acceptance Windows hoặc server G4 |
 
 ADR dự thảo được sửa có lịch sử. Khi quyết định đã được chấp thuận thay đổi, tạo ADR mới liên kết hồ sơ cũ và đánh dấu trạng thái bị thay thế; giữ nguyên nội dung quyết định/bằng chứng lịch sử. Cập nhật bản tổng hợp và toàn bộ tài liệu chuyên biệt chịu ảnh hưởng trong cùng phiên bản. Chưa tạo các file ADR chỉ có tiêu đề hoặc ghi quyết định chưa được chốt là đã chấp thuận.
 

@@ -6,9 +6,9 @@
 
 [Decision record G0](../evidence/g0/decision-record.md) lưu phát biểu trực tiếp của người dùng và phần diễn giải. Đã chốt chia đợt: HLS 30 m + lớp phủ/chỉ số/thống kê/PDF trước; rừng/mất rừng, đất ngập nước/ngập lụt và profile 10/5/1 m sau. Bốn chỉ số đầu là NDVI/EVI/NDMI/MNDWI; chỉ tiêu định lượng chuyên sâu bổ sung sau. Nguồn mở/miễn phí trước, ảnh thương mại sau khi có quyền và ngân sách. Mục tiêu máy dự kiến ít nhất 20 GB RAM/8 GB VRAM, chưa là máy tham chiếu hoặc support matrix đã kiểm.
 
-Cách tạo AOI đã được xác nhận: vẽ trên bản đồ, dựa vào footprint ảnh vệ tinh import hoặc import Shapefile theo [AOI policy](../aoi-policy.md). Đã cung cấp [bộ bảy lớp](../landcover-taxonomy.md) IDs 0–6, `ignore_index = -1` và dấu hiệu đa thời gian T=3; đây là quyết định về yêu cầu, chưa là nhãn/QC/model đã nghiệm thu.
+Cách tạo AOI đã được xác nhận: vẽ trên bản đồ, dựa vào footprint ảnh vệ tinh import hoặc import Shapefile theo [AOI policy](../domain/aoi-policy.md). Đã cung cấp [bộ bảy lớp](../domain/landcover-taxonomy.md) IDs 0–6, `ignore_index = -1` và dấu hiệu đa thời gian T=3; đây là quyết định về yêu cầu, chưa là nhãn/QC/model đã nghiệm thu.
 
-Còn thiếu AOI kiểm định cụ thể/thời gian, QC/crosswalk/nhãn độc lập, policy chọn ba frame/QA/tolerance và thống kê chỉ số, dữ liệu/quyền từng nguồn, coverage thực, hardware/workload và người phụ trách. Người dùng đã cung cấp các giá trị ngưỡng chất lượng/coverage/diện tích/CRS/tài nguyên; protocol, các khoảng lựa chọn và ngân sách thực còn cần khóa theo [tiêu chí nghiệm thu](../acceptance-criteria.md). HLS chỉ ở 30 m; 10/5/1 m cần nguồn/profile/model và kiểm định riêng. Không dùng resample để tuyên bố chi tiết quan trắc mới. Các mốc 002.1–002.3 chưa hoàn tất; [kiểm tài liệu AOI/bộ lớp](../evidence/2026-11-08-aoi-taxonomy-review.md) không thay kiểm dữ liệu hoặc duyệt G0.
+Còn thiếu AOI kiểm định cụ thể/thời gian, QC/crosswalk/nhãn độc lập, policy chọn ba frame/QA/tolerance và thống kê chỉ số, dữ liệu/quyền từng nguồn, coverage thực, hardware/workload và người phụ trách. Người dùng đã cung cấp các giá trị ngưỡng chất lượng/coverage/diện tích/CRS/tài nguyên; protocol, các khoảng lựa chọn và ngân sách thực còn cần khóa theo [tiêu chí nghiệm thu](../domain/acceptance-criteria.md). HLS chỉ ở 30 m; 10/5/1 m cần nguồn/profile/model và kiểm định riêng. Không dùng resample để tuyên bố chi tiết quan trắc mới. Các mốc 002.1–002.3 chưa hoàn tất; [kiểm tài liệu AOI/bộ lớp](../evidence/2026-11-08-aoi-taxonomy-review.md) không thay kiểm dữ liệu hoặc duyệt G0.
 
 ## Input/output
 
@@ -74,7 +74,7 @@ Với weak/proxy labels, phải ghi version/year/license/hash, crosswalk theo ta
 
 ## Bộ ngưỡng người dùng cung cấp và điều kiện khóa protocol
 
-[Tiêu chí nghiệm thu](../acceptance-criteria.md) giữ bảng F1/IoU/PA/UA cho đủ bảy lớp và macro/OA, coverage mùa khô 97%/mùa mưa 90%, sai lệch diện tích lớp 0/1/2 ≤8%, CI 95%, RMSE VN-2000 ≤15 m/diện tích AOI ≤0,1%; ghi tài nguyên/SLA GPU, training cap và early stopping. Các giá trị là yêu cầu cung cấp, chưa là kết quả đã đạt hay chuẩn chung được xác minh từ bài báo.
+[Tiêu chí nghiệm thu](../domain/acceptance-criteria.md) giữ bảng F1/IoU/PA/UA cho đủ bảy lớp và macro/OA, coverage mùa khô 97%/mùa mưa 90%, sai lệch diện tích lớp 0/1/2 ≤8%, CI 95%, RMSE VN-2000 ≤15 m/diện tích AOI ≤0,1%; ghi tài nguyên/SLA GPU, training cap và early stopping. Các giá trị là yêu cầu cung cấp, chưa là kết quả đã đạt hay chuẩn chung được xác minh từ bài báo.
 
 Người dùng đã xác nhận máy GPU 16–24 GB VRAM/RAM 32 GB/SSD 500 GB dùng riêng cho training/benchmark; desktop giữ mục tiêu ít nhất 20 GB RAM/8 GB VRAM (G0-D10). Để khóa 002.3 còn cần protocol lấy mẫu/metric/CI/cỡ mẫu, phạm vi coverage T=3 và hai nhánh số quan sát, ngưỡng diện tích lớp 3/4 và lựa chọn 10–15%, operation/điểm chuẩn, máy thực/CPU SLO, ranh giới đo thời gian và số vòng/chi phí/lịch campaign cụ thể. [Báo cáo đối chiếu](../evidence/2026-11-08-acceptance-review.md) lưu các hiệu chỉnh; không tự chọn 3 hay 5 vòng. G0 chốt budget, không cho tự fine-tune trước dependency SPEC-008.
 

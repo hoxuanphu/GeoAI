@@ -32,7 +32,7 @@ Giảm tải trước hết bằng đọc ít hơn, prefetch có hạn, cửa s�
 
 ### 13.1. Workload và ngân sách CPU bắt buộc
 
-[Tiêu chí nghiệm thu](../docs/acceptance-criteria.md) ghi yêu cầu mới GPU 16–24 GB/RAM 32 GB/SSD 500 GB, VRAM ≤85%, SLA GPU ≤15 phút/tile T=3, cap training 4 GPU-giờ và early stopping. Người dùng xác nhận máy này dùng riêng training/benchmark; giữ mục tiêu desktop ít nhất 20 GB RAM/8 GB VRAM. Máy thực/ranh giới đo, CPU SLO và campaign/chi phí còn chờ khóa; không coi đây là benchmark hoặc support matrix đã đạt. Các ví dụ GPU/chip/epoch không thay đo thực; shape/precision/profile đổi phải đánh giá lại.
+[Tiêu chí nghiệm thu](../docs/domain/acceptance-criteria.md) ghi yêu cầu mới GPU 16–24 GB/RAM 32 GB/SSD 500 GB, VRAM ≤85%, SLA GPU ≤15 phút/tile T=3, cap training 4 GPU-giờ và early stopping. Người dùng xác nhận máy này dùng riêng training/benchmark; giữ mục tiêu desktop ít nhất 20 GB RAM/8 GB VRAM. Máy thực/ranh giới đo, CPU SLO và campaign/chi phí còn chờ khóa; không coi đây là benchmark hoặc support matrix đã đạt. Các ví dụ GPU/chip/epoch không thay đo thực; shape/precision/profile đổi phải đánh giá lại.
 
 G0 chốt trước khi đo nghiệm thu: model CPU cụ thể, số core/thread dùng, RAM khả dụng, loại đĩa, dữ liệu/hash, AOI/số pixel hợp lệ, T, window/overlap, chất lượng tối thiểu, **thời gian job tối đa**, peak RAM và đĩa tạm. Có hai mức: fixture nhỏ kiểm tra tính đúng và workload nghiệp vụ đại diện để quyết định khả năng sử dụng. G1 đo cold/warm time, thời gian riêng I/O/preprocess/inference/postprocess/report và phản hồi UI; không chỉ ghi tốc độ một patch rồi suy ra tốc độ toàn AOI.
 

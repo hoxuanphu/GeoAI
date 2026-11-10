@@ -3,19 +3,26 @@
 **Cập nhật:** 10/11/2026 · **Múi giờ:** Asia/Bangkok (UTC+07:00).
 **Giai đoạn:** chuẩn bị G0, chưa đạt. **Phạm vi hiện tại:** triển khai code theo yêu cầu mới ngày 08/11/2026; bắt đầu phần nền được phép trước G0, theo [nhật ký](evidence/codegen-2026-11-08/progress.md).
 
-**Yêu cầu làm tiếp:** ghi lại [thiếu sót/nguyên nhân](implementation-gaps.md) và hoàn thiện các phần đủ điều kiện. [Kế hoạch backend trước G0](evidence/backend-pre-g0-2026-11-08/plan.md) / [tiến độ](evidence/backend-pre-g0-2026-11-08/progress.md): policy/archive, context/grant, framing và job core độc lập. Không ghi mọi logic chưa làm thành chờ native/G0.
+**Yêu cầu làm tiếp:** ghi lại [thiếu sót/nguyên nhân](project/implementation-gaps.md) và hoàn thiện các phần đủ điều kiện. [Kế hoạch backend trước G0](evidence/backend-pre-g0-2026-11-08/plan.md) / [tiến độ](evidence/backend-pre-g0-2026-11-08/progress.md): policy/archive, context/grant, framing và job core độc lập. Không ghi mọi logic chưa làm thành chờ native/G0.
 
 Đọc [roadmap](roadmap.md) để biết gate/phạm vi, dùng file này theo dõi công việc và mở [spec](specs/README.md) để xem acceptance/test đầy đủ. Tracker không thay spec, quyết định G0 hoặc bằng chứng nghiệm thu. Vai trò dưới đây là trách nhiệm dự kiến, **chưa có tên người được giao hoặc deadline cam kết**.
 
+## Sắp xếp tài liệu theo chủ đề 10/11/2026
+
+Theo yêu cầu người dùng, đã hoàn tất nhóm tài liệu theo nền tảng, nghiệp vụ, hướng dẫn và dự án; các file bắt buộc trong `AGENTS.md` vẫn giữ đường dẫn và nội dung. [Báo cáo](evidence/docs-organization-2026-11-10/review.md) và [kết quả](evidence/docs-organization-2026-11-10/results.json) ghi kiểm liên kết/anchor và bảo toàn bằng chứng. Các mốc runtime và G0–G4 không thay đổi.
+
 ## Yêu cầu Ubuntu LTS và kiểm thử Cloud 10/11/2026
 
+Yêu cầu lập plan thật kỹ bằng Superpowers đã hoàn tất phạm vi tài liệu. [Plan tổng và 5 phần](superpowers/plans/2026-11-10-ubuntu-foundation.md) gồm 26 task/133 bước, catalog/handoff cho AI; [hồ sơ kiểm plan](evidence/ubuntu-plan-2026-11-10/review.md) đóng mốc000.8. Các task A-01–E-05 và mốc code 010.1–010.3 chưa bắt đầu. [Hồ sơ đặc tả](evidence/spec010-2026-11-10/review.md) giữ nguyên.
+
 - Đã ghi yêu cầu hỗ trợ Ubuntu 22.04 LTS và 24.04 LTS trong [SPEC-003](specs/003-desktop-shell.md); [hồ sơ đối chiếu](evidence/2026-11-10-linux-support-assessment.md) có nguồn Tauri/OpenAI, hiện trạng source và các lớp kiểm dự kiến.
-- Trạng thái Linux: đã tiếp nhận yêu cầu, chưa triển khai/chưa chạy kiểm Cloud. Còn chờ ADR mở rộng nền tảng, thiết kế adapter cho SPEC-003/004/009, executor Linux và dependency lock; sau đó kiểm cả hai LTS, native lifecycle/security và bộ cài máy sạch.
+- Đã hoàn tất phạm vi tài liệu [ADR-012](adr/ADR-012-ubuntu-desktop.md), [kiến trúc Ubuntu](platforms/ubuntu/ubuntu-desktop-architecture.md), [guide môi trường/đóng gói](platforms/ubuntu/ubuntu-development-and-packaging.md) và [UB-01–20](platforms/ubuntu/ubuntu-validation-matrix.md), đồng bộ SPEC-003/004/009 và nguồn/plans. [Kiểm cấu trúc](evidence/ubuntu-2026-11-10/results.json) pass, 145 file bảo vệ không đổi; [bàn giao/giới hạn](evidence/ubuntu-2026-11-10/review.md). ADR kỹ thuật vẫn đề xuất.
+- Trạng thái runtime Linux: chưa triển khai/chưa chạy kiểm Cloud. Còn review/chốt thiết kế adapter đề xuất, executor Linux và dependency lock; sau đó kiểm hai LTS, native lifecycle/security, GIS/Prithvi và bộ cài máy sạch theo gate. Không ghi thiếu ADR/tài liệu thiết kế như trước, cũng không coi chúng là implementation.
 - Không thay bằng chứng Windows hiện có hoặc trạng thái G0–G4. [Kiểm tài liệu](evidence/2026-11-10-linux-support-doc-check.json) không là bằng chứng runtime/model/installer.
 
 ## Mốc tài liệu kiến trúc 09/11/2026
 
-- Hoàn tất bản vẽ lại [kiến trúc Windows desktop chi tiết](desktop-architecture-diagrams.md) theo phạm vi người dùng chọn; 8 sơ đồ Mermaid và bảng trách nhiệm/luồng dữ liệu, không triển khai runtime.
+- Hoàn tất bản vẽ lại [kiến trúc Windows desktop chi tiết](platforms/windows/desktop-architecture-diagrams.md) theo phạm vi người dùng chọn; 8 sơ đồ Mermaid và bảng trách nhiệm/luồng dữ liệu, không triển khai runtime.
 - [Bằng chứng trong SPEC-000](specs/000-documentation-baseline.md#vẽ-lại-kiến-trúc-desktop-ngày-09112026): UTF-8/link/fence/loại sơ đồ và delimiter pass; chưa parse/render Mermaid tự động.
 - Còn chờ: kiểm renderer thực nếu cần ảnh xuất; các task runtime/native/model và gate giữ trạng thái riêng, không được coi hoàn tất từ sơ đồ.
 
@@ -45,7 +52,7 @@ Checkbox chỉ đánh dấu đầu ra đã kiểm, không đánh dấu vì đã 
 | --- | --- | --- | --- | --- | --- |
 | [SPEC-000 — Tài liệu](specs/000-documentation-baseline.md) | Hoàn tất | Phụ trách kiến trúc/tài liệu | Baseline v1.4 và yêu cầu người dùng | Duy trì tracker khi có thay đổi đã kiểm | [Baseline/di chuyển](evidence/2026-11-08-documentation-review.md), [bổ sung review](evidence/2026-11-08-review-followup.md) |
 | [SPEC-001 — Contracts](specs/001-contracts-baseline.md) | Hoàn tất phạm vi schema dự thảo | Backend/contracts | Ngữ nghĩa contracts; runtime access context tích hợp SPEC-009 | Tích hợp native context ở SPEC-009; chạy lại suite/schema mỗi khi đổi DTO | [55 tests và artifacts current sau API](evidence/codegen-2026-11-08/handoff.md), [review PASS](evidence/codegen-2026-11-08/final-review-report.md) |
-| [SPEC-002 — Đầu vào G0](specs/002-g0-evidence.md) | Chờ đầu vào | Chủ nghiệp vụ/dự án + GIS/data + ML | AOI thực, QC bộ 7 lớp/T=3, provider/quyền, gate/hardware/budget và người chốt | Xác nhận AOI kiểm định, QC/crosswalk/nhãn độc lập, profile T=3 và nguồn cụ thể; thu dữ liệu thực | [Decision record](evidence/g0/decision-record.md), [AOI policy](aoi-policy.md), [taxonomy](landcover-taxonomy.md), [kiểm đồng bộ](evidence/2026-11-08-aoi-taxonomy-review.md); chưa đủ hồ sơ đóng G0 |
+| [SPEC-002 — Đầu vào G0](specs/002-g0-evidence.md) | Chờ đầu vào | Chủ nghiệp vụ/dự án + GIS/data + ML | AOI thực, QC bộ 7 lớp/T=3, provider/quyền, gate/hardware/budget và người chốt | Xác nhận AOI kiểm định, QC/crosswalk/nhãn độc lập, profile T=3 và nguồn cụ thể; thu dữ liệu thực | [Decision record](evidence/g0/decision-record.md), [AOI policy](domain/aoi-policy.md), [taxonomy](domain/landcover-taxonomy.md), [kiểm đồng bộ](evidence/2026-11-08-aoi-taxonomy-review.md); chưa đủ hồ sơ đóng G0 |
 | [SPEC-003 — Desktop shell](specs/003-desktop-shell.md) | Chờ kiểm tra sau triển khai một phần | Frontend/native + backend | Kiểu nền SPEC-001; ADR-001/006/011 | ctypes owner/process đã kiểm; còn Rust build/WebView2/nested jobs/xuyên session | [Task 7](evidence/backend-pre-g0-2026-11-08/task-7-report.md), [bàn giao](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md); chưa hoàn tất toàn SPEC |
 | [SPEC-004 — Job/publish](specs/004-jobs-and-publish.md) | Chờ kiểm tra tích hợp DB/native | Backend/storage/IPC | Kiểu nền, launcher SPEC-003; nghiệm thu với resolver SPEC-009 | IPC/core/worker/publisher đã kiểm fixture; repository/migration/backup/GC có source và tests chưa chạy DB | [Bàn giao 09/11](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md), [review](evidence/backend-pre-g0-2026-11-08/task-final-review.md); không đóng 004.1–004.3 |
 | [SPEC-005 — Prithvi spike](specs/005-prithvi-spike.md) | Chờ đầu vào | ML/runtime + GIS/data | HLS fixture thực, profile/hardware/budget G0 tương ứng; job/resolver đủ dùng | Khóa fixture/profile rồi đo backbone thật + decoder kỹ thuật | Chưa có tensor fixture thực hoặc benchmark |
@@ -53,6 +60,7 @@ Checkbox chỉ đánh dấu đầu ra đã kiểm, không đánh dấu vì đã 
 | [SPEC-007 — Nền tảng G1](specs/007-g1-platform-validation.md) | Chưa bắt đầu | GIS/viewer/native/report + QA | SPEC-001/003/004/009; fixture/CRS/hardware; SPEC-005 khi đo cùng AI | Chuẩn bị fixture và kiểm CRS/viewer/PDF/bundle theo phạm vi được phép | Chưa có kiểm chứng nền tảng/native |
 | [SPEC-008 — Training/model pack](specs/008-training-evaluation-model-pack.md) | Chờ đầu vào | GIS/data + ML + reviewer độc lập + packaging | Nhãn/split/profile/gate/budget; SPEC-005 giúp sàng lọc, promotion chạy lại G2 | Phân công người thực, chuẩn bị nhãn/split/recipe và checkout training | Mới có spec; chưa dataset/checkpoint/pack nghiệp vụ |
 | [SPEC-009 — Importer/resolver](specs/009-importer-worker-resolver.md) | Thực hiện một phần, còn kiểm acceptance | Backend/storage + GIS/provider + native + QA | Kiểu nền SPEC-001, launcher SPEC-003; tích hợp SPEC-004 | Policy/grant/native reads/extraction/bootstrap fixture có kiểm; còn DB/live provider/driver và ma trận đầy đủ | [Task 8](evidence/backend-pre-g0-2026-11-08/task-8-report.md), [Task 9](evidence/backend-pre-g0-2026-11-08/task-9-report.md); [25 ca runtime](importer-resolver-security.md) chưa nghiệm thu toàn bộ |
+| [SPEC-010 — Ubuntu foundation](specs/010-ubuntu-foundation.md) | Đặc tả và plan hoàn tất; chưa bắt đầu triển khai | Native/Rust + backend/storage + QA | Kiểu SPEC-001 và phần nền SPEC-003/004/009, hai executor LTS khi kiểm native | A-01 theo plan sau yêu cầu triển khai tiếp theo; chuẩn bị executor/lock thật | [Hồ sơ spec](evidence/spec010-2026-11-10/review.md), [hồ sơ plan](evidence/ubuntu-plan-2026-11-10/review.md); chưa có code/test/runtime Ubuntu |
 
 **Tổng quan lúc khởi tạo:** chỉ SPEC-000 hoàn tất phạm vi tài liệu; SPEC-001 có một phần mã đang dừng, SPEC-002/005/008 đang chờ đầu vào, các task triển khai khác chưa bắt đầu. G0–G4 chưa có gate nào được ghi đạt.
 
@@ -63,7 +71,11 @@ Checkbox chỉ đánh dấu đầu ra đã kiểm, không đánh dấu vì đã 
 - [x] 000.1 Bộ docs/ADR/specs, chuyển vào Artchitect và kiểm liên kết — bằng chứng baseline ở bảng trên.
 - [x] 000.2 Bổ sung training/model pack, execution owner và resolver/security sau review — bằng chứng bổ sung ở bảng trên.
 - [x] 000.3 Tạo tracker, nối roadmap/index/hướng dẫn cập nhật và kiểm tài liệu — kết quả ghi tại mục bằng chứng khởi tạo bên dưới.
-- [x] 000.4 Vẽ lại kiến trúc desktop chi tiết ngày 09/11/2026 — [8 sơ đồ và diễn giải](desktop-architecture-diagrams.md), [kiểm cấu trúc và giới hạn](specs/000-documentation-baseline.md#vẽ-lại-kiến-trúc-desktop-ngày-09112026).
+- [x] 000.4 Vẽ lại kiến trúc desktop chi tiết ngày 09/11/2026 — [8 sơ đồ và diễn giải](platforms/windows/desktop-architecture-diagrams.md), [kiểm cấu trúc và giới hạn](specs/000-documentation-baseline.md#vẽ-lại-kiến-trúc-desktop-ngày-09112026).
+- [x] 000.5 Phát triển tài liệu Ubuntu 22.04/24.04 LTS ngày 10/11/2026 — ADR-012, architecture/guide/UB-01–20 và đồng bộ nguồn/spec; [kiểm cấu trúc](evidence/ubuntu-2026-11-10/results.json), [bàn giao](evidence/ubuntu-2026-11-10/review.md). Chỉ hoàn tất tài liệu; runtime Ubuntu chưa chạy.
+- [x] 000.6 Sắp xếp tài liệu theo thư mục chủ đề và cập nhật mục lục/liên kết — [kiểm/bàn giao](evidence/docs-organization-2026-11-10/review.md), [kết quả](evidence/docs-organization-2026-11-10/results.json); chỉ hoàn tất phạm vi tài liệu.
+- [x] 000.7 Hoàn thiện SPEC-010/native profile/interface để làm đầu vào gen code Ubuntu; [review/kiểm tài liệu](evidence/spec010-2026-11-10/review.md) đạt, chưa triển khai code.
+- [x] 000.8 Lập plan Superpowers chi tiết cho SPEC-010/AI gen code; 5 phần/26 task/133 bước và catalog/handoff; [self-review/kiểm tài liệu](evidence/ubuntu-plan-2026-11-10/review.md) đạt, chưa thực thi code.
 
 ### SPEC-001 — Contracts
 
@@ -79,7 +91,7 @@ Checkbox chỉ đánh dấu đầu ra đã kiểm, không đánh dấu vì đã 
 - [ ] 002.2 Thử đọc HLS band/QA có quyền; có coverage ngày/tháng/composite 2–3 năm và manifest có hash.
 - [ ] 002.3 Chốt CRS/điểm chuẩn/tolerance, hardware/workload, ngưỡng tuyệt đối/coverage và ngân sách/điểm dừng; ghi quyết định G0.
 
-G0-D09 ghi [bộ tiêu chí nghiệm thu](acceptance-criteria.md) đã được người dùng cung cấp; G0-D10 xác nhận máy GPU mới dùng riêng training/benchmark và giữ mục tiêu desktop trước đó. 002.3 còn chờ khóa sampling/metric/CI/coverage protocol, operation/điểm chuẩn, máy thực/CPU SLO và số vòng/lịch/chi phí thực. [Đối chiếu kỹ thuật](evidence/2026-11-08-acceptance-review.md) không thay bằng chứng đo model/coverage/benchmark.
+G0-D09 ghi [bộ tiêu chí nghiệm thu](domain/acceptance-criteria.md) đã được người dùng cung cấp; G0-D10 xác nhận máy GPU mới dùng riêng training/benchmark và giữ mục tiêu desktop trước đó. 002.3 còn chờ khóa sampling/metric/CI/coverage protocol, operation/điểm chuẩn, máy thực/CPU SLO và số vòng/lịch/chi phí thực. [Đối chiếu kỹ thuật](evidence/2026-11-08-acceptance-review.md) không thay bằng chứng đo model/coverage/benchmark.
 
 Đã cụ thể hóa nhóm nguồn ảnh/nhãn thành quy tắc X–Y, phân vai weak/giải đoán/thực địa và kiểm thời gian/lưới/ignore/split theo [SPEC-002](specs/002-g0-evidence.md#nhóm-3--nguồn-ảnh-và-đóng-gói-input-x), ghi nhận G0-D08. [Báo cáo đối chiếu](evidence/2026-11-08-input-label-review.md) chỉ xác minh tài liệu; còn nguồn/quyền/nhãn/split thực và người duyệt, không đánh dấu 002.1/002.2 hoàn tất.
 
@@ -101,6 +113,14 @@ Phần nền của 003.1/003.3 đã kiểm: metadata API/session, private pipe d
 grant revocation, ZIP rollback và worker bootstrap đã kiểm với file/process thật.
 [Bàn giao](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md) giữ các mốc
 tổng thể mở vì chưa đủ DB/driver/provider và toàn bộ IMP/NET/RES acceptance.
+
+### SPEC-010 — Ubuntu foundation
+
+- [ ] 010.1 Tách interface/composition và ghi baseline hai LTS/Windows regression; chưa triển khai.
+- [ ] 010.2 Native lifecycle, creator-bound socket, pidfd/owner/journal/FD bootstrap; chưa triển khai.
+- [ ] 010.3 Linux I/O, publisher và fixture process→SQLite integration; chưa triển khai.
+
+Các mốc 010 là implementation tương lai, không đánh hoàn tất từ mốc tài liệu 000.7. Acceptance chi tiết và suite 010-T01–09 ở SPEC-010; G0–G4 giữ trạng thái.
 
 ### SPEC-004 — Job/publish
 
@@ -166,6 +186,8 @@ G3 installer/máy sạch/offline/upgrade và G4 PHY/provider/server được the
 
 | Ngày | Task | Thay đổi | Bằng chứng |
 | --- | --- | --- | --- |
+| 10/11/2026 | SPEC-000 / 000.8; SPEC-010 plan | Hoàn tất plan Superpowers cho AI thực hiện từng task: 5 phần, 26 task/133 bước, interface catalog/prompt/handoff, self-review và coverage9suites. Chỉ đóng tài liệu; task code vẫn chưa bắt đầu | [Hồ sơ plan](evidence/ubuntu-plan-2026-11-10/review.md), [kết quả](evidence/ubuntu-plan-2026-11-10/results.json); 416 file bảo vệ giữ hash |
+| 10/11/2026 | SPEC-000 / 000.7; SPEC-010 đặc tả | Hoàn tất spec/native profile/interface Ubuntu foundation; sửa creator binding, stop race và generation recovery sau review độc lập. Chỉ đóng mốc tài liệu; 010.1–010.3 chưa triển khai | [Hồ sơ review/kiểm](evidence/spec010-2026-11-10/review.md), [kết quả](evidence/spec010-2026-11-10/results.json); 332 file bảo vệ không đổi hash, gate giữ nguyên |
 | 09/11/2026 | SPEC-001/003/004/009 | Tiếp tục code theo plan dù thiếu môi trường: IPC/core, guarded repository/migration, Windows owner/process/I/O, transport/bootstrap, extraction/publisher/GC. 192 Python pass/25 DB skip, 7 DOM và build/artifact checks pass; Rust/DB/gates chưa nghiệm thu | [Bàn giao](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md), [review cuối](evidence/backend-pre-g0-2026-11-08/task-final-review.md), [results](evidence/backend-pre-g0-2026-11-08/final-results.json) |
 | 08/11/2026 | SPEC-000 / 000.3 | Hoàn tất khởi tạo/kiểm tracker SPEC-000–009 từ trạng thái tài liệu và kiểm kê hiện có; chưa tiếp tục code | Mục kiểm khởi tạo bên dưới; kiểm tài liệu đạt, không đóng gate runtime |
 | 08/11/2026 | SPEC-001 / 001.1–001.3 | Yêu cầu code mới; hoàn thiện contracts/run/RPC/private context/exporter. Baseline 30 tests lỗi → 51 tests pass; schema check và review độc lập pass | [Triển khai](evidence/codegen-2026-11-08/task-1-report.md), [review](evidence/codegen-2026-11-08/task-2-review-report.md), [parent kiểm lại](evidence/codegen-2026-11-08/task-1-parent-verify.log); không đóng G0/G1 |

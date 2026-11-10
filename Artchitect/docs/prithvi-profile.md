@@ -4,7 +4,7 @@
 
 [Quyết định G0 từng phần](evidence/g0/decision-record.md) xác nhận HLS 30 m trước và profile 10/5/1 m sau. HLS không có các mức quan trắc gốc 10/5/1 m; resample không tạo chi tiết mới. Sentinel-2 L2A có band khác GSD, gồm B8A/B11/B12 ở 20 m; không coi mọi band là gốc 10 m. Ảnh 5/1 m thiếu SWIR hoặc chỉ RGB cần profile/model phù hợp riêng, không lặp kênh để đưa vào profile HLS. Chưa có nguồn/model mở rộng nào được kiểm; mục tiêu 8 GB VRAM chưa chứng minh inference hay fine-tune 300M + UPerNet khả thi.
 
-Bộ lớp nghiệp vụ 7 lớp và crosswalk WorldCover/JAXA được ghi tại [landcover taxonomy](landcover-taxonomy.md). Profile kỹ thuật giữ T=1 cho spike; người dùng đã xác nhận profile nghiệp vụ T=3 cho bảy lớp. T=3 cần ba quan sát thật, cùng grid và metadata từng frame, fine-tune/evaluation/export riêng; không lặp một ảnh hoặc suy coverage dài hạn từ ba frame.
+Bộ lớp nghiệp vụ 7 lớp và crosswalk WorldCover/JAXA được ghi tại [landcover taxonomy](domain/landcover-taxonomy.md). Profile kỹ thuật giữ T=1 cho spike; người dùng đã xác nhận profile nghiệp vụ T=3 cho bảy lớp. T=3 cần ba quan sát thật, cùng grid và metadata từng frame, fine-tune/evaluation/export riêng; không lặp một ảnh hoặc suy coverage dài hạn từ ba frame.
 
 ## Profile dữ liệu và tensor
 
@@ -45,7 +45,7 @@ CPU chính thức; NVIDIA pack tùy chọn. Dynamic INT8 trên linear/MatMul tra
 
 ## Điểm dừng
 
-Các giá trị người dùng cung cấp nằm trong [tiêu chí nghiệm thu](acceptance-criteria.md); máy GPU mới đã được xác nhận dùng riêng training/benchmark, giữ mục tiêu desktop trước đó. Protocol/máy thực/CPU SLO còn mở. Giữ T=3/224 nghiệp vụ, T=1 spike, S30 trước; median 60–90 ngày/S30+L30, window 512 hoặc DEM là ứng viên phải kiểm riêng. Không tính pixel imputation thành quan sát sạch, không dùng SLA GPU thay CPU SLO; các cap/early stopping cần khóa trong recipe và kiểm bằng log thực.
+Các giá trị người dùng cung cấp nằm trong [tiêu chí nghiệm thu](domain/acceptance-criteria.md); máy GPU mới đã được xác nhận dùng riêng training/benchmark, giữ mục tiêu desktop trước đó. Protocol/máy thực/CPU SLO còn mở. Giữ T=3/224 nghiệp vụ, T=1 spike, S30 trước; median 60–90 ngày/S30+L30, window 512 hoặc DEM là ứng viên phải kiểm riêng. Không tính pixel imputation thành quan sát sạch, không dùng SLA GPU thay CPU SLO; các cap/early stopping cần khóa trong recipe và kiểm bằng log thực.
 
 G0 chốt AOI/lớp/nhãn, ngưỡng tuyệt đối, coverage, thời gian/RAM, số vòng tối đa, trần chi phí/thời gian và người quyết định. Không tự điền F1 hay deadline đã được duyệt. Prithvi đạt gate thì có thể phát hành dù RF tốt hơn; công bố đối chứng cùng split. Hết ngân sách chưa đạt thì hoãn/thu hẹp/đổi yêu cầu có quyết định; không hạ gate hồi tố hoặc thay RF rồi ghi đã nghiệm thu Prithvi.
 
