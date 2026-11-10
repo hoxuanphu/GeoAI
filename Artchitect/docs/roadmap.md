@@ -12,11 +12,30 @@ Theo dõi trạng thái từng SPEC, mốc con, dependency, việc còn chờ v�
 
 **Đợt làm tiếp:** người dùng yêu cầu ghi rõ [thiếu sót/nguyên nhân](implementation-gaps.md) và hoàn thiện trước phần có thể. Thực thi [backend trước G0](evidence/backend-pre-g0-2026-11-08/plan.md) bằng fixture; thiếu native không chặn policy/context/framing/job core thuần. Các điều kiện nghiệm thu native/DB/live/model vẫn giữ nguyên.
 
+**Bàn giao tiếp nối 09/11/2026:** [báo cáo](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md)
+ghi IPC/core, SQLAlchemy/Alembic source, Windows owner/Job Object/I/O,
+worker transport và process→staging→publisher fixture. [Kiểm tổng thể](evidence/backend-pre-g0-2026-11-08/final-results.json):
+192 Python tests pass, 25 DB tests skip; 7 DOM/typecheck/frontend build/schema/client checks pass.
+Không cài thêm dependency. Rust/Tauri chưa build; SPEC-003/004/009 vẫn partial,
+G0/G1/G2 chưa đạt và capability thực thi vẫn tắt.
+
+## Yêu cầu Ubuntu LTS và kiểm thử Cloud 10/11/2026
+
+Ghi nhận mục tiêu hỗ trợ Linux gồm **Ubuntu 22.04 LTS và Ubuntu 24.04 LTS**, bên cạnh Windows, theo yêu cầu người dùng. [Đánh giá khả thi/nguồn và ma trận kiểm](evidence/2026-11-10-linux-support-assessment.md) phân biệt kiểm Cloud/backend/build với nghiệm thu desktop/GPU/máy sạch; [SPEC-003](specs/003-desktop-shell.md) đã ghi yêu cầu. Chưa triển khai Linux hoặc chạy kiểm Cloud; còn ADR mở rộng nền tảng/thiết kế adapter, môi trường và dependency cùng bằng chứng trên hai LTS. Không đóng task/gate từ đánh giá tài liệu này.
+
+## Vẽ lại kiến trúc desktop 09/11/2026
+
+Đã bổ sung [bộ sơ đồ chi tiết](desktop-architecture-diagrams.md) theo lựa chọn Windows desktop của người dùng: tiến trình/module, execution owner, pipeline Prithvi, fencing/publish, provenance/storage và training ngoài runtime. [Bằng chứng kiểm cấu trúc tài liệu](specs/000-documentation-baseline.md#vẽ-lại-kiến-trúc-desktop-ngày-09112026) ghi 8 diagram, link/fence/UTF-8 hợp lệ; chưa parse/render Mermaid tự động. Không thay quyết định ADR, implementation hoặc trạng thái G0–G4.
+
+## Khắc phục môi trường 09/11/2026
+
+[Bằng chứng kiểm](evidence/environment-2026-11-09/results.json): đã lưu `NODE_USE_SYSTEM_CA=1` ở user, npm ping/restore và 7 DOM tests/typecheck/frontend build pass; 57 contracts tests pass bằng Python/package có sẵn. Rustup và Tauri native binding tải GET bị HTTP 403; Python wheel bị `MediaTypeBlocked`; Build Tools hai lần dừng 1602 ở bước elevation/UAC. `.venv-clean` cô lập đã tạo nhưng chưa cài đủ dependency. Chưa khắc phục xong native/clean Python; cần phê duyệt mạng và cài Build Tools tương tác có quyền quản trị. Không tắt TLS hoặc đổi gate; SPEC-003 vẫn partial.
+
 ## Hiện trạng
 
 - Đã có đề xuất v1.4, kiến trúc hệ thống và bộ plans; bộ docs này tổ chức cách đọc cho AI/dev.
 - Đã hoàn thiện Pydantic 0.1.0 trong phạm vi SPEC-001: run/RPC/private context, public registries, exporter và schema sinh. 51 test nền qua và review độc lập không có lỗi chặn; sau DTO API SPEC-003 đã chạy lại 55 tests/schema/client đều pass ở [bàn giao cuối](evidence/codegen-2026-11-08/handoff.md).
-- Đã có FastAPI metadata/session và UI shell kiểm độc lập; Tauri native mới scaffold trả lỗi chưa hỗ trợ. Chưa có launcher/owner/Job Object, GIS/AI/solver, database/migration, model pack nghiệp vụ hay installer đã kiểm.
+- Đã có FastAPI metadata/session và UI shell; Windows owner/Job Object/I/O có source và tests fixture thật. Rust/Tauri launcher, SQLAlchemy repository/migration và publisher đã có source, còn kiểm phụ thuộc môi trường/tích hợp. Chưa có GIS/AI/solver nghiệp vụ, model pack hay installer đã nghiệm thu; [tiến độ backend](evidence/backend-pre-g0-2026-11-08/progress.md) phân biệt source/pass/skip.
 - Chưa có AOI/dataset/nhãn thực đã khóa, khảo sát coverage, CRS/operation/điểm chuẩn và protocol nghiệm thu hoàn chỉnh. Đã có giá trị ngưỡng định lượng do người dùng cung cấp; còn lựa chọn/phạm vi đo, CPU SLO và budget thử nghiệm thực cần khóa.
 - Đã xác nhận [quyết định G0 từng phần](evidence/g0/decision-record.md): chia đợt, HLS 30 m + lớp phủ/chỉ số/thống kê/PDF trước; sau đó rừng/mất rừng, đất ngập nước/ngập lụt và profile 10/5/1 m. Nguồn mở/miễn phí trước; ảnh thương mại khi có quyền/ngân sách. Mục tiêu máy ít nhất 20 GB RAM/8 GB VRAM còn chờ máy tham chiếu và benchmark. [Kiểm tài liệu đợt ghi nhận](evidence/2026-11-08-g0-intake-review.md) chỉ xác minh tài liệu, không đóng G0.
 - Bốn chỉ số đầu đã được chọn: NDVI, EVI, NDMI, MNDWI; chỉ tiêu đất/cây trồng định lượng chuyên sâu bổ sung sau. Chưa chốt policy/QA/tolerance hoặc ngưỡng diễn giải từ các chỉ số.
@@ -41,9 +60,9 @@ Theo dõi trạng thái từng SPEC, mốc con, dependency, việc còn chờ v�
 | [SPEC-000 Tài liệu](specs/000-documentation-baseline.md) | Thiết kế v1.4 và cấu trúc docs người dùng chọn | Có | Hoàn tất phạm vi tài liệu; [bằng chứng 08/11/2026](evidence/2026-11-08-documentation-review.md); không đóng gate runtime |
 | [SPEC-001 Contracts](specs/001-contracts-baseline.md) | Thiết kế v1.4 và ngữ nghĩa contracts | Có, schema dự thảo | Hoàn tất phạm vi schema dự thảo; [51 tests/exporter](evidence/codegen-2026-11-08/task-1-report.md) và [review](evidence/codegen-2026-11-08/task-2-review-report.md); runtime context chờ SPEC-009 |
 | [SPEC-002 Đầu vào G0](specs/002-g0-evidence.md) | Chủ nghiệp vụ/data/ML cung cấp đầu vào | Đây là công việc đóng G0 | Đã chốt phạm vi/thứ tự/chính sách nguồn, cách tạo AOI và bộ bảy lớp; chờ AOI kiểm định, QC/nhãn/dữ liệu và các quyết định còn thiếu |
-| [SPEC-003 Desktop shell](specs/003-desktop-shell.md) | Contracts và ranh giới bảo mật | Có, chỉ skeleton/test máy dev; chưa chốt support matrix | API/session/dev-process/UI foundation đã kiểm; còn native launcher/owner/Job Object, Rust/MSVC/Tauri CLI và harness Windows xuyên session; [bằng chứng](evidence/codegen-2026-11-08/handoff.md) |
-| [SPEC-004 Job/publish](specs/004-jobs-and-publish.md) | Kiểu nền contracts và launcher SPEC-003; nghiệm thu tích hợp resolver SPEC-009 | Có, bằng fixture tổng hợp, không nghiệm thu model | Chưa thực hiện |
-| [SPEC-009 Importer/resolver](specs/009-importer-worker-resolver.md) | Kiểu nền SPEC-001, launcher SPEC-003; tích hợp với SPEC-004, không vòng dependency | Có, ca tổng hợp/offline; live provider cần quyền/policy G0 | Typed context đã kiểm ở SPEC-001; native bootstrap/resolver/importer/provider và IMP/NET/RES chưa thực hiện |
+| [SPEC-003 Desktop shell](specs/003-desktop-shell.md) | Contracts và ranh giới bảo mật | Có, skeleton/test máy dev; chưa chốt support matrix | API/UI và ctypes Windows owner/Job Object có kiểm; Rust launcher source chưa build, còn WebView2/xuyên session/support matrix; [Task 7](evidence/backend-pre-g0-2026-11-08/task-7-report.md) |
+| [SPEC-004 Job/publish](specs/004-jobs-and-publish.md) | Kiểu nền contracts và launcher SPEC-003; nghiệm thu tích hợp resolver SPEC-009 | Có, bằng fixture tổng hợp, không nghiệm thu model | IPC/core/worker/publisher có kiểm fixture; repository/migration/backup/GC có source, tests DB còn skip; [bàn giao](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md), chưa nghiệm thu toàn SPEC |
+| [SPEC-009 Importer/resolver](specs/009-importer-worker-resolver.md) | Kiểu nền SPEC-001, launcher SPEC-003; tích hợp với SPEC-004, không vòng dependency | Có, ca tổng hợp/offline; live provider cần quyền/policy G0 | Policy/grants/native I/O/extraction/bootstrap có kiểm fixture; còn DB/provider/driver và toàn bộ IMP/NET/RES acceptance; [bàn giao](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md) |
 | [SPEC-005 Prithvi spike](specs/005-prithvi-spike.md) | Profile/input fixture thực và hardware/budget G0 tương ứng; job/bundle đủ dùng | Chỉ khi đã có các đầu vào phụ thuộc được chốt | Chưa thực hiện |
 | [SPEC-007 Nền tảng G1](specs/007-g1-platform-validation.md) | SPEC-001/003/004 và fixture; SPEC-005 khi kiểm cùng AI | Có thể chuẩn bị/kiểm cơ chế tổng hợp; chờ CRS/tolerance/hardware được chốt để nghiệm thu | Mới có đặc tả; chưa thực hiện |
 | [SPEC-008 Training/model pack](specs/008-training-evaluation-model-pack.md) | G0/profile/ngân sách tương ứng; nhãn/split; SPEC-005 giúp chọn runtime/profile, promotion chạy lại G2 | Có thể chuẩn bị nhãn/recipe; training/promotion chờ đầu vào được chốt | Mới có đặc tả; chưa dataset/checkpoint/evaluation thật |

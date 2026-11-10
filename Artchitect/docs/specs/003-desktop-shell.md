@@ -1,8 +1,18 @@
 # SPEC-003 — Desktop shell và vòng đời sidecar
 
-**Trạng thái:** thực hiện một phần — API/session, bootstrap pipe dev, UI và scaffold Tauri đã có; còn chờ native launcher/owner/Job Object và WebView2/cross-session acceptance. **Mục tiêu đầy đủ:** Tauri/React khởi động Python API, UI nhận health/capabilities qua phiên local và dừng sạch. Có thể làm skeleton trước G0; không tự chốt hardware/model nghiệp vụ. [Nhật ký/bằng chứng](../evidence/codegen-2026-11-08/progress.md).
+**Trạng thái:** thực hiện một phần — API/session/UI và Python Windows owner/Job Object đã có kiểm fixture; Rust/Tauri launcher đã có source nhưng chưa build, còn WebView2/cross-session acceptance. **Mục tiêu đầy đủ:** Tauri/React khởi động Python API, UI nhận health/capabilities qua phiên local và dừng sạch. Có thể làm skeleton trước G0; không tự chốt hardware/model nghiệp vụ. [Tiến độ backend](../evidence/backend-pre-g0-2026-11-08/progress.md).
+
+## Yêu cầu Linux ghi nhận ngày 10/11/2026
+
+Ngoài Windows, mục tiêu hỗ trợ cần triển khai/kiểm chứng gồm **Ubuntu 22.04 LTS và Ubuntu 24.04 LTS** theo yêu cầu người dùng. [Hồ sơ yêu cầu và đánh giá Cloud](../evidence/2026-11-10-linux-support-assessment.md) ghi nguồn, phụ thuộc Windows hiện có, hướng build trên 22.04 và ma trận kiểm hai LTS. Chưa có runtime/bộ cài Linux hoặc test Cloud đã chạy. Các acceptance Windows bên dưới giữ nguyên phạm vi; phải bổ sung ADR/thiết kế Linux và acceptance tương ứng trước triển khai, không chỉ đổi tên Job Object/WebView2 thành primitive Linux. Python >=3.12, WebKitGTK, process containment/owner, native I/O, Host/Origin và packaging cần kiểm riêng. Chỉ được chuẩn bị phần độc lập trước G0; ghi pass/skip/fail và giới hạn môi trường khi kiểm thực tế.
+
+## Kiểm môi trường 09/11/2026
+
+[Bằng chứng](../evidence/environment-2026-11-09/results.json): npm trust store đã sửa bằng user `NODE_USE_SYSTEM_CA=1`; restore, 7 DOM tests, typecheck/frontend build pass. CLI Tauri vẫn thiếu binding: GET package 2.12.4 trả 403 `MediaTypeBlocked`; Rustup download 403. Build Tools installer có hash hợp lệ nhưng hai lần dừng 1602, bootstrap log nhắc UAC/elevation. WebView2 đã được phát hiện ở lượt chẩn đoán trước, chưa chạy acceptance thực. Python sạch chưa cài đủ dependency do wheel 403; 57 contracts tests chỉ kiểm bằng package có sẵn. Cần xử lý phê duyệt mạng và cài Build Tools với elevation trước native compile. SPEC này vẫn partial, chưa có native acceptance.
 
 ## Input/output và interface
+
+Source tiếp nối ngày 09/11/2026 ở [Task 7](../evidence/backend-pre-g0-2026-11-08/task-7-report.md): exclusive account owner/project writer, retained guard, atomic Job Object/handle-list launcher, native bootstrap mode và Rust handoff/lifecycle. [Review](../evidence/backend-pre-g0-2026-11-08/task-7-review.md) phát hiện các lỗi cần sửa; trạng thái fix/kiểm cuối theo progress, không suy Rust pass từ ctypes. API capability native/owner/writer/inference tiếp tục false; các mốc 003.1–003.3 chưa hoàn tất toàn bộ.
 
 Đọc [architecture](../architecture.md), ADR-001/003/006, [IPC](../ipc-protocol.md). Output dự kiến: `apps/desktop/` với package/pnpm/Cargo/Tauri config, `backend/geoai/bootstrap.py`, `api/app.py`, `api/session.py`, scripts dev/build và hướng dẫn README. Khóa dependency sau resolve thật; không viết lockfile giả.
 

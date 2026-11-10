@@ -899,6 +899,33 @@
       "title": "EvaluationRecord",
       "type": "object"
     },
+    "ExternalReadRegistration": {
+      "additionalProperties": false,
+      "properties": {
+        "absolute_path": {
+          "minLength": 1,
+          "title": "Absolute Path",
+          "type": "string"
+        },
+        "file_identity": {
+          "$ref": "#/$defs/FileIdentity"
+        },
+        "registration_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Registration Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "registration_id",
+        "absolute_path",
+        "file_identity"
+      ],
+      "title": "ExternalReadRegistration",
+      "type": "object"
+    },
     "ExternalRegisteredLocalLocation": {
       "additionalProperties": false,
       "properties": {
@@ -951,6 +978,40 @@
         "file_id"
       ],
       "title": "FileIdentity",
+      "type": "object"
+    },
+    "FixtureOutput": {
+      "additionalProperties": false,
+      "description": "One synthetic artifact in a trusted, attempt-scoped staging root.",
+      "properties": {
+        "absolute_path": {
+          "minLength": 1,
+          "title": "Absolute Path",
+          "type": "string"
+        },
+        "artifact_relative_path": {
+          "minLength": 1,
+          "title": "Artifact Relative Path",
+          "type": "string"
+        },
+        "manifest": {
+          "$ref": "#/$defs/RunManifest"
+        },
+        "staging_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Staging Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "staging_id",
+        "absolute_path",
+        "artifact_relative_path",
+        "manifest"
+      ],
+      "title": "FixtureOutput",
       "type": "object"
     },
     "GridResource": {
@@ -1462,6 +1523,29 @@
         "relative_path"
       ],
       "title": "ManagedLocalLocation",
+      "type": "object"
+    },
+    "ManagedRootRegistration": {
+      "additionalProperties": false,
+      "properties": {
+        "absolute_path": {
+          "minLength": 1,
+          "title": "Absolute Path",
+          "type": "string"
+        },
+        "root_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Root Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "root_id",
+        "absolute_path"
+      ],
+      "title": "ManagedRootRegistration",
       "type": "object"
     },
     "MetricsSnapshot": {
@@ -3463,6 +3547,126 @@
       "title": "WorkerBootstrap",
       "type": "object"
     },
+    "WorkerLaunchPacket": {
+      "additionalProperties": false,
+      "description": "Private, one-use snapshot delivered through an inherited handle.",
+      "properties": {
+        "bootstrap": {
+          "$ref": "#/$defs/WorkerBootstrap"
+        },
+        "candidate_manifest_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Candidate Manifest Id",
+          "type": "string"
+        },
+        "context_json": {
+          "maxLength": 1048576,
+          "minLength": 2,
+          "title": "Context Json",
+          "type": "string"
+        },
+        "execution_owner_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Execution Owner Id",
+          "type": "string"
+        },
+        "external_registrations": {
+          "items": {
+            "$ref": "#/$defs/ExternalReadRegistration"
+          },
+          "title": "External Registrations",
+          "type": "array"
+        },
+        "fixture_mode": {
+          "enum": [
+            "complete",
+            "block",
+            "log",
+            "flood_stderr"
+          ],
+          "title": "Fixture Mode",
+          "type": "string"
+        },
+        "fixture_output": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FixtureOutput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "heartbeat_seconds": {
+          "exclusiveMinimum": 0,
+          "maximum": 60,
+          "title": "Heartbeat Seconds",
+          "type": "number"
+        },
+        "job_json": {
+          "maxLength": 1048576,
+          "minLength": 2,
+          "title": "Job Json",
+          "type": "string"
+        },
+        "managed_roots": {
+          "items": {
+            "$ref": "#/$defs/ManagedRootRegistration"
+          },
+          "title": "Managed Roots",
+          "type": "array"
+        },
+        "owner_epoch": {
+          "exclusiveMinimum": 0,
+          "title": "Owner Epoch",
+          "type": "integer"
+        },
+        "project_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "registry_delivery": {
+          "const": "handle-snapshot",
+          "title": "Registry Delivery",
+          "type": "string"
+        },
+        "snapshot_json": {
+          "maxLength": 1048576,
+          "minLength": 2,
+          "title": "Snapshot Json",
+          "type": "string"
+        },
+        "start": {
+          "$ref": "#/$defs/StartParams"
+        }
+      },
+      "required": [
+        "bootstrap",
+        "registry_delivery",
+        "project_id",
+        "execution_owner_id",
+        "owner_epoch",
+        "context_json",
+        "job_json",
+        "snapshot_json",
+        "start",
+        "managed_roots",
+        "external_registrations",
+        "candidate_manifest_id",
+        "fixture_mode",
+        "heartbeat_seconds"
+      ],
+      "title": "WorkerLaunchPacket",
+      "type": "object"
+    },
     "WorkerReadEntry": {
       "additionalProperties": false,
       "properties": {
@@ -3554,7 +3758,8 @@
     "private_runtime": [
       "SessionDescriptor",
       "WorkerAccessContext",
-      "WorkerBootstrap"
+      "WorkerBootstrap",
+      "WorkerLaunchPacket"
     ],
     "wire": [
       "AcceptedResult",

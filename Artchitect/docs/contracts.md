@@ -108,6 +108,16 @@ Chuỗi chính: `AssetRef → InputSnapshot → JobSpec → RunManifest → Resu
 
 [SPEC-008](specs/008-training-evaluation-model-pack.md) dùng DatasetVersion/EvaluationRecord/ModelSpec đã có khái niệm, đồng thời phải định kiểu recipe/training/pack manifests khi triển khai. Chuỗi hồ sơ phải khóa dataset/split/preprocess/recipe/checkpoint/runtime/hash, không suy quan hệ chỉ từ tên file. Tách evaluation model/pack khỏi acceptance tích hợp của SPEC-006; thiếu gate/nguồn/kiểm runtime thì không promote business.
 
+Draft private `WorkerLaunchPacket` carries exact context/job/snapshot JSON,
+typed `StartParams`, trusted root registrations and optional `FixtureOutput`
+through one inherited handle. `FixtureOutput` binds the attempt staging ID,
+absolute staging root, relative artifact path and candidate `RunManifest`; its
+single artifact must match the fixed synthetic fixture bytes. These types live
+only in `PRIVATE_CONTEXT_MODELS` and are absent from public RPC/client payloads.
+The Windows worker/publisher mechanism check is recorded in
+[Task 8 evidence](evidence/backend-pre-g0-2026-11-08/task-8-report.md); it is
+not a GIS/model validator or database transaction proof.
+
 ## DTO metadata API và private session handoff
 
 SPEC-003 bổ sung `contracts/api.py`: `HealthResponse`/`CapabilitiesResponse` thuộc registry public wire; capabilities chỉ công bố health/capabilities metadata, các cờ inference/native launcher/execution owner/project writer đều false. Không dùng technical metadata ready làm bằng chứng model hay owner sẵn sàng.

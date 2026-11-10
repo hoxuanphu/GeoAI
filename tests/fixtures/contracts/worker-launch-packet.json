@@ -1,0 +1,48 @@
+{
+  "WorkerLaunchPacket": {
+    "bootstrap": {
+      "schema_version": "0.1.0",
+      "protocol_version": "0.1.0",
+      "worker_id": "worker:1",
+      "launch_nonce": "launch:1",
+      "context_registry_path": "C:\\GeoAI-Synthetic\\registry"
+    },
+    "registry_delivery": "handle-snapshot",
+    "project_id": "project:1",
+    "execution_owner_id": "owner:1",
+    "owner_epoch": 1,
+    "context_json": "{}",
+    "job_json": "{}",
+    "snapshot_json": "{}",
+    "start": {
+      "attempt": {
+        "job_id": "job:1",
+        "attempt_id": "attempt:1",
+        "generation_token": "generation:1"
+      },
+      "job_spec_id": "job:1",
+      "input_snapshot_id": "snapshot:1",
+      "access_context_id": "access:1",
+      "access_context_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "resource_budget": {
+        "cpu_threads": 2,
+        "ram_bytes": 1073741824,
+        "temporary_bytes": 2147483648
+      }
+    },
+    "managed_roots": [
+      {"root_id": "root:1", "absolute_path": "C:\\GeoAI-Synthetic\\project"}
+    ],
+    "external_registrations": [
+      {
+        "registration_id": "registration:1",
+        "absolute_path": "C:\\GeoAI-Synthetic\\input.tif",
+        "file_identity": {"volume_id": "volume:fixture", "file_id": "file:fixture"}
+      }
+    ],
+    "candidate_manifest_id": "candidate:1",
+    "fixture_output": null,
+    "fixture_mode": "complete",
+    "heartbeat_seconds": 0.1
+  }
+}

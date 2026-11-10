@@ -4,6 +4,10 @@ Cơ sở: [kiến trúc hệ thống 1.1 theo đề xuất v1.4](../kien_truc_he
 
 Phạm vi đã xác nhận tại [G0-D01–D07](evidence/g0/decision-record.md): HLS 30 m + lớp phủ/NDVI/EVI/NDMI/MNDWI/thống kê/PDF trước; các nghiệp vụ rừng/mất rừng, đất ngập nước/ngập lụt và profile 10/5/1 m sau. AOI được vẽ/lấy footprint ảnh import/import Shapefile theo [AOI policy](aoi-policy.md); bản đồ đầu có [bảy lớp](landcover-taxonomy.md), gồm wetland/mangrove, `-1` ignore và profile nghiệp vụ T=3 cần kiểm riêng. Nguồn mở/miễn phí trước, ảnh thương mại khi có quyền/ngân sách. Mỗi sensor/product/GSD cần profile dữ liệu/model kiểm riêng, không gán mọi nguồn vào checkpoint HLS. Mục tiêu 20 GB RAM/8 GB VRAM chưa là support matrix; AOI kiểm định cụ thể và nhiều đầu vào G0 còn thiếu.
 
+## Bộ sơ đồ chi tiết
+
+[Bộ sơ đồ Windows desktop](desktop-architecture-diagrams.md) ngày 09/11/2026 trình bày ngữ cảnh, module/tiến trình, execution owner, pipeline Prithvi, sequence publish, state machine, truy nguyên và vòng đời model. Đây là bản vẽ lại thiết kế đích, không thay quyết định ADR hoặc xác nhận runtime đã nghiệm thu.
+
 ## Tiến trình
 
 ```mermaid
@@ -71,12 +75,12 @@ Core CPU chính thức; NVIDIA pack tùy chọn. Bộ cài/codec/WASM/font/PROJ 
 
 Khóa writer cũng áp dụng khi hai cửa sổ app cùng mở một project; instance thứ hai phải dùng chế độ đọc hoặc báo project đang được dùng, không tự tạo writer thứ hai. Project ghi ở ổ local; dữ liệu mạng được nhập/tham chiếu theo policy, không đặt SQLite WAL đang hoạt động trên share rồi coi như được hỗ trợ.
 
-Backup dùng cơ chế SQLite nhất quán cùng inventory/hash của artifact cần giữ. Restore kiểm schema, reference, bytes và trạng thái tái lập; không mở lại job cũ như đang chạy. Thiết kế bảng/index, migration và khóa file cụ thể là đầu ra SPEC-004; chưa có database hiện thực.
+Backup dùng cơ chế SQLite nhất quán cùng inventory/hash của artifact cần giữ. Restore kiểm schema, reference, bytes và trạng thái tái lập; không mở lại job cũ như đang chạy. SPEC-004 đã có source repository/bảng/index/migration/backup/restore, nhưng tests DB còn skip do thiếu SQLAlchemy/Alembic; [báo cáo](evidence/backend-pre-g0-2026-11-08/task-6-report.md) không phải bằng chứng DB runtime đạt.
 
 ## Phạm vi scheduler và đường đọc dữ liệu worker
 
 [ADR-011](adr/ADR-011-local-execution-owner.md) đề xuất một execution owner cho mỗi tài khoản Windows trên máy, xuyên session của cùng tài khoản: một project được ghi/thực thi và một job nặng tại một thời điểm. Instance khác xem read-only hoặc báo bận, không tự tạo worker/model resident. Khóa này khác writer lock/project, attempt fencing và dependency pin/lease; chỉ cấp lại sau khi process cũ được xác nhận dừng. Chưa hỗ trợ điều phối nhiều tài khoản hoặc ứng dụng ngoài GeoAI; primitive/ACL/recovery phải được SPEC-003/004 kiểm G1.
 
-[Worker resolver](worker-resolver.md) mô tả bootstrap handle tin cậy, registry context riêng worker và allowlist đọc theo project/attempt. Start truyền context ID/hash; worker không đọc SQLite hoặc nhận credential/provider URL. Metadata đã có schema trong SPEC-001; native registry/resolver chưa có runtime. Catalog materialize remote input trước start; external local file đã đăng ký có thể đọc read-only, output chỉ trong staging được cấp. [SPEC-009](specs/009-importer-worker-resolver.md) và [security acceptance](importer-resolver-security.md) tiếp tục hiện thực/kiểm ranh giới này.
+[Worker resolver](worker-resolver.md) mô tả bootstrap handle tin cậy, registry context riêng worker và allowlist đọc theo project/attempt. Start truyền context ID/hash; worker không đọc SQLite hoặc nhận credential/provider URL. GrantRegistry và native I/O đã được kiểm bằng fixture Windows; bootstrap/worker và publisher đang tích hợp theo [tiến độ](evidence/backend-pre-g0-2026-11-08/progress.md). Catalog materialize remote input trước start; external local file đã đăng ký có thể đọc read-only, output chỉ trong staging được cấp. [SPEC-009](specs/009-importer-worker-resolver.md) và [security acceptance](importer-resolver-security.md) vẫn cần đầy đủ bằng chứng acceptance.
 
 Training tiếp tục ở môi trường ngoài desktop. [SPEC-008](specs/008-training-evaluation-model-pack.md) sản xuất dataset/split/recipe/checkpoint/evaluation/model pack; SPEC-006 tiêu thụ pack đạt điều kiện rồi kiểm tích hợp business. Không coi training spec hoặc readiness field là bằng chứng G2.

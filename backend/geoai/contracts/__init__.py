@@ -22,7 +22,8 @@ from .rpc import (
 )
 from .access import (
     ExternalRegisteredLocalLocation, FileIdentity, ManagedLocalLocation,
-    WorkerAccessContext, WorkerBootstrap, WorkerReadEntry,
+    WorkerAccessContext, WorkerBootstrap, WorkerReadEntry, WorkerLaunchPacket,
+    ManagedRootRegistration, ExternalReadRegistration, FixtureOutput,
 )
 from .api import HealthResponse, CapabilitiesResponse, SessionDescriptor
 from .imports import (
@@ -40,7 +41,7 @@ WIRE_MODELS = {model.__name__: model for model in (
     HealthResponse, CapabilitiesResponse,
 )}
 PRIVATE_CONTEXT_MODELS = {model.__name__: model for model in (
-    WorkerAccessContext, WorkerBootstrap, SessionDescriptor,
+    WorkerAccessContext, WorkerBootstrap, WorkerLaunchPacket, SessionDescriptor,
 )}
 
 __all__ = [
@@ -55,7 +56,8 @@ __all__ = [
     "ErrorParams", "HeartbeatParams", "ProgressParams", "RpcError", "RpcFailure",
     "RpcNotification", "RpcRequest", "RpcSuccess", "ShutdownParams", "StartParams",
     "ExternalRegisteredLocalLocation", "FileIdentity", "ManagedLocalLocation",
-    "WorkerAccessContext", "WorkerBootstrap", "WorkerReadEntry", "CONTRACT_MODELS",
+    "WorkerAccessContext", "WorkerBootstrap", "WorkerReadEntry", "WorkerLaunchPacket",
+    "ManagedRootRegistration", "ExternalReadRegistration", "FixtureOutput", "CONTRACT_MODELS",
     "WIRE_MODELS", "PRIVATE_CONTEXT_MODELS",
     "HealthResponse", "CapabilitiesResponse",
     "SessionDescriptor",

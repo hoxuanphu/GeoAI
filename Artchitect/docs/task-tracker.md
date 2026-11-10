@@ -1,11 +1,30 @@
 # Task tracker GeoAI
 
-**Cập nhật:** 08/11/2026 · **Múi giờ:** Asia/Bangkok (UTC+07:00).
+**Cập nhật:** 10/11/2026 · **Múi giờ:** Asia/Bangkok (UTC+07:00).
 **Giai đoạn:** chuẩn bị G0, chưa đạt. **Phạm vi hiện tại:** triển khai code theo yêu cầu mới ngày 08/11/2026; bắt đầu phần nền được phép trước G0, theo [nhật ký](evidence/codegen-2026-11-08/progress.md).
 
 **Yêu cầu làm tiếp:** ghi lại [thiếu sót/nguyên nhân](implementation-gaps.md) và hoàn thiện các phần đủ điều kiện. [Kế hoạch backend trước G0](evidence/backend-pre-g0-2026-11-08/plan.md) / [tiến độ](evidence/backend-pre-g0-2026-11-08/progress.md): policy/archive, context/grant, framing và job core độc lập. Không ghi mọi logic chưa làm thành chờ native/G0.
 
 Đọc [roadmap](roadmap.md) để biết gate/phạm vi, dùng file này theo dõi công việc và mở [spec](specs/README.md) để xem acceptance/test đầy đủ. Tracker không thay spec, quyết định G0 hoặc bằng chứng nghiệm thu. Vai trò dưới đây là trách nhiệm dự kiến, **chưa có tên người được giao hoặc deadline cam kết**.
+
+## Yêu cầu Ubuntu LTS và kiểm thử Cloud 10/11/2026
+
+- Đã ghi yêu cầu hỗ trợ Ubuntu 22.04 LTS và 24.04 LTS trong [SPEC-003](specs/003-desktop-shell.md); [hồ sơ đối chiếu](evidence/2026-11-10-linux-support-assessment.md) có nguồn Tauri/OpenAI, hiện trạng source và các lớp kiểm dự kiến.
+- Trạng thái Linux: đã tiếp nhận yêu cầu, chưa triển khai/chưa chạy kiểm Cloud. Còn chờ ADR mở rộng nền tảng, thiết kế adapter cho SPEC-003/004/009, executor Linux và dependency lock; sau đó kiểm cả hai LTS, native lifecycle/security và bộ cài máy sạch.
+- Không thay bằng chứng Windows hiện có hoặc trạng thái G0–G4. [Kiểm tài liệu](evidence/2026-11-10-linux-support-doc-check.json) không là bằng chứng runtime/model/installer.
+
+## Mốc tài liệu kiến trúc 09/11/2026
+
+- Hoàn tất bản vẽ lại [kiến trúc Windows desktop chi tiết](desktop-architecture-diagrams.md) theo phạm vi người dùng chọn; 8 sơ đồ Mermaid và bảng trách nhiệm/luồng dữ liệu, không triển khai runtime.
+- [Bằng chứng trong SPEC-000](specs/000-documentation-baseline.md#vẽ-lại-kiến-trúc-desktop-ngày-09112026): UTF-8/link/fence/loại sơ đồ và delimiter pass; chưa parse/render Mermaid tự động.
+- Còn chờ: kiểm renderer thực nếu cần ảnh xuất; các task runtime/native/model và gate giữ trạng thái riêng, không được coi hoàn tất từ sơ đồ.
+
+## Mốc môi trường 09/11/2026
+
+- Đã sửa trust store Node bền vững ở user (`NODE_USE_SYSTEM_CA=1`), npm ping/restore pass; 7 DOM tests, typecheck và frontend build pass.
+- 57 contracts tests pass bằng Python/package có sẵn; `.venv-clean` không dùng system packages nhưng cài dependency chưa thành công.
+- Còn chờ: cho phép tải Rustup/Tauri native/Python wheels qua chính sách mạng (GET trả 403; npm/pip ghi `MediaTypeBlocked`) và cài Build Tools tương tác có quyền quản trị (hai lần 1602, log nhắc UAC).
+- [Bằng chứng/lệnh/kết quả](evidence/environment-2026-11-09/results.json). Không đóng SPEC-003/G1 hoặc xác nhận clean Python/native build.
 
 ## Quy ước trạng thái
 
@@ -27,13 +46,13 @@ Checkbox chỉ đánh dấu đầu ra đã kiểm, không đánh dấu vì đã 
 | [SPEC-000 — Tài liệu](specs/000-documentation-baseline.md) | Hoàn tất | Phụ trách kiến trúc/tài liệu | Baseline v1.4 và yêu cầu người dùng | Duy trì tracker khi có thay đổi đã kiểm | [Baseline/di chuyển](evidence/2026-11-08-documentation-review.md), [bổ sung review](evidence/2026-11-08-review-followup.md) |
 | [SPEC-001 — Contracts](specs/001-contracts-baseline.md) | Hoàn tất phạm vi schema dự thảo | Backend/contracts | Ngữ nghĩa contracts; runtime access context tích hợp SPEC-009 | Tích hợp native context ở SPEC-009; chạy lại suite/schema mỗi khi đổi DTO | [55 tests và artifacts current sau API](evidence/codegen-2026-11-08/handoff.md), [review PASS](evidence/codegen-2026-11-08/final-review-report.md) |
 | [SPEC-002 — Đầu vào G0](specs/002-g0-evidence.md) | Chờ đầu vào | Chủ nghiệp vụ/dự án + GIS/data + ML | AOI thực, QC bộ 7 lớp/T=3, provider/quyền, gate/hardware/budget và người chốt | Xác nhận AOI kiểm định, QC/crosswalk/nhãn độc lập, profile T=3 và nguồn cụ thể; thu dữ liệu thực | [Decision record](evidence/g0/decision-record.md), [AOI policy](aoi-policy.md), [taxonomy](landcover-taxonomy.md), [kiểm đồng bộ](evidence/2026-11-08-aoi-taxonomy-review.md); chưa đủ hồ sơ đóng G0 |
-| [SPEC-003 — Desktop shell](specs/003-desktop-shell.md) | Chờ đầu vào native sau phần nền | Frontend/native + backend | Kiểu nền SPEC-001; ADR-001/006/011 | Build/kiểm launcher/owner/Job Object với Rust/MSVC, Tauri CLI và Windows cross-session harness | API/session/dev process/UI có log ở [SPEC-003](specs/003-desktop-shell.md#bàn-giao-phần-nền-ngày-08112026); chưa hoàn tất task |
-| [SPEC-004 — Job/publish](specs/004-jobs-and-publish.md) | Chưa bắt đầu | Backend/storage/IPC | Kiểu nền, launcher SPEC-003; nghiệm thu với resolver SPEC-009 | Khi tiếp tục code: job fixture, SQLite, fencing/cancel/publish/recovery | Chưa có integration test hoặc database |
+| [SPEC-003 — Desktop shell](specs/003-desktop-shell.md) | Chờ kiểm tra sau triển khai một phần | Frontend/native + backend | Kiểu nền SPEC-001; ADR-001/006/011 | ctypes owner/process đã kiểm; còn Rust build/WebView2/nested jobs/xuyên session | [Task 7](evidence/backend-pre-g0-2026-11-08/task-7-report.md), [bàn giao](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md); chưa hoàn tất toàn SPEC |
+| [SPEC-004 — Job/publish](specs/004-jobs-and-publish.md) | Chờ kiểm tra tích hợp DB/native | Backend/storage/IPC | Kiểu nền, launcher SPEC-003; nghiệm thu với resolver SPEC-009 | IPC/core/worker/publisher đã kiểm fixture; repository/migration/backup/GC có source và tests chưa chạy DB | [Bàn giao 09/11](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md), [review](evidence/backend-pre-g0-2026-11-08/task-final-review.md); không đóng 004.1–004.3 |
 | [SPEC-005 — Prithvi spike](specs/005-prithvi-spike.md) | Chờ đầu vào | ML/runtime + GIS/data | HLS fixture thực, profile/hardware/budget G0 tương ứng; job/resolver đủ dùng | Khóa fixture/profile rồi đo backbone thật + decoder kỹ thuật | Chưa có tensor fixture thực hoặc benchmark |
 | [SPEC-006 — Workflow nghiệp vụ](specs/006-landcover-workflow.md) | Chưa bắt đầu | Workflow/UI/review/report + QA | G0 đóng, G1 phần phụ thuộc đạt, model pack SPEC-008 | Nhận pack có evaluation rồi kiểm luồng tới reviewed report/PDF | Chưa có workflow/evaluation G2 |
 | [SPEC-007 — Nền tảng G1](specs/007-g1-platform-validation.md) | Chưa bắt đầu | GIS/viewer/native/report + QA | SPEC-001/003/004/009; fixture/CRS/hardware; SPEC-005 khi đo cùng AI | Chuẩn bị fixture và kiểm CRS/viewer/PDF/bundle theo phạm vi được phép | Chưa có kiểm chứng nền tảng/native |
 | [SPEC-008 — Training/model pack](specs/008-training-evaluation-model-pack.md) | Chờ đầu vào | GIS/data + ML + reviewer độc lập + packaging | Nhãn/split/profile/gate/budget; SPEC-005 giúp sàng lọc, promotion chạy lại G2 | Phân công người thực, chuẩn bị nhãn/split/recipe và checkout training | Mới có spec; chưa dataset/checkpoint/pack nghiệp vụ |
-| [SPEC-009 — Importer/resolver](specs/009-importer-worker-resolver.md) | Chờ đầu vào native sau phần kiểu | Backend/storage + GIS/provider + native + QA | Kiểu nền SPEC-001, launcher SPEC-003; tích hợp SPEC-004 | Bootstrap/registry/native resolver, policy và ca IMP/NET/RES sau launcher | Typed context/start đã kiểm ở [SPEC-001](evidence/codegen-2026-11-08/task-1-report.md); [25 ca runtime](importer-resolver-security.md) chưa kiểm |
+| [SPEC-009 — Importer/resolver](specs/009-importer-worker-resolver.md) | Thực hiện một phần, còn kiểm acceptance | Backend/storage + GIS/provider + native + QA | Kiểu nền SPEC-001, launcher SPEC-003; tích hợp SPEC-004 | Policy/grant/native reads/extraction/bootstrap fixture có kiểm; còn DB/live provider/driver và ma trận đầy đủ | [Task 8](evidence/backend-pre-g0-2026-11-08/task-8-report.md), [Task 9](evidence/backend-pre-g0-2026-11-08/task-9-report.md); [25 ca runtime](importer-resolver-security.md) chưa nghiệm thu toàn bộ |
 
 **Tổng quan lúc khởi tạo:** chỉ SPEC-000 hoàn tất phạm vi tài liệu; SPEC-001 có một phần mã đang dừng, SPEC-002/005/008 đang chờ đầu vào, các task triển khai khác chưa bắt đầu. G0–G4 chưa có gate nào được ghi đạt.
 
@@ -44,6 +63,7 @@ Checkbox chỉ đánh dấu đầu ra đã kiểm, không đánh dấu vì đã 
 - [x] 000.1 Bộ docs/ADR/specs, chuyển vào Artchitect và kiểm liên kết — bằng chứng baseline ở bảng trên.
 - [x] 000.2 Bổ sung training/model pack, execution owner và resolver/security sau review — bằng chứng bổ sung ở bảng trên.
 - [x] 000.3 Tạo tracker, nối roadmap/index/hướng dẫn cập nhật và kiểm tài liệu — kết quả ghi tại mục bằng chứng khởi tạo bên dưới.
+- [x] 000.4 Vẽ lại kiến trúc desktop chi tiết ngày 09/11/2026 — [8 sơ đồ và diễn giải](desktop-architecture-diagrams.md), [kiểm cấu trúc và giới hạn](specs/000-documentation-baseline.md#vẽ-lại-kiến-trúc-desktop-ngày-09112026).
 
 ### SPEC-001 — Contracts
 
@@ -77,11 +97,21 @@ Phần nền của 003.1/003.3 đã kiểm: metadata API/session, private pipe d
 - [ ] 009.2 Hiện thực policy và chạy IMP-01–11, NET-01–06, RES-01–08, ca dương và sentinel ngoài staging.
 - [ ] 009.3 Tích hợp context/start/candidate với SPEC-004, chạy native/process cases và lưu bằng chứng.
 
+09/11/2026: managed/external registered reads, hash/identity, reparse/hardlink,
+grant revocation, ZIP rollback và worker bootstrap đã kiểm với file/process thật.
+[Bàn giao](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md) giữ các mốc
+tổng thể mở vì chưa đủ DB/driver/provider và toàn bộ IMP/NET/RES acceptance.
+
 ### SPEC-004 — Job/publish
 
 - [ ] 004.1 Có queue/attempt/token/lease và SQLite migration/repository qua worker fixture thật.
 - [ ] 004.2 Kiểm cancel/retry/stale attempt, race publish, crash/reconcile và resolver/candidate khác project/attempt.
 - [ ] 004.3 Kiểm quyền tài nguyên liên project, worker cũ/compute release, GC/pin/restore và lưu integration log.
+
+09/11/2026: IPC/coordinator và process→staging→publisher đã kiểm bằng fixture;
+repository/Alembic/backup/restore/GC và native→SQLite composition có source/test
+nhưng các tests DB skip do thiếu dependency. [Kết quả tổng thể](evidence/backend-pre-g0-2026-11-08/final-results.json)
+ghi 192 Python pass/25 DB skip; chưa đóng các checkbox acceptance.
 
 ### SPEC-005 — Spike Prithvi kỹ thuật
 
@@ -119,8 +149,8 @@ SPEC-002 thu thập đầu vào song song các task nền tảng được phép 
 | WAIT-01 | Đã gỡ: người dùng yêu cầu thực thi code ngày 08/11/2026 | Tiếp tục theo dependency và gate; không tự đóng G0 |
 | WAIT-02 | Đã chốt cách tạo AOI, bộ 7 lớp và T profile; còn AOI kiểm định/thời gian frame, QC/crosswalk/nhãn độc lập, dữ liệu/quyền, gate/hardware/budget và nhân sự | Hoàn thiện hồ sơ SPEC-002 theo decision record; chưa có ngày cam kết |
 | WAIT-03 | Chưa có nhãn/split/recipe/checkpoint và test nghiệp vụ | SPEC-008 chịu trách nhiệm sản xuất đầu vào, không giao ngầm cho SPEC-006 |
-| WAIT-04 | ADR-011 còn đề xuất; khóa/resolver chưa kiểm Windows | Review phạm vi execution owner, sau đó kiểm SPEC-003/004/009 khi triển khai; không coi tài liệu là Accepted/runtime pass |
-| WAIT-05 | Chưa có Rust/Cargo/MSVC và harness kiểm cùng tài khoản xuyên Windows session | Chặn build/native acceptance SPEC-003; tiếp tục API/UI độc lập. SPEC-009/004 tích hợp đợi launcher/owner được kiểm; [môi trường](evidence/codegen-2026-11-08/setup-experiments.md) |
+| WAIT-04 | ADR-011 còn đề xuất; có tests Windows cùng session nhưng chưa đủ phạm vi acceptance | Hoàn thiện review/fix và kiểm xuyên session, recovery, integration; không coi ctypes fixture là toàn bộ G1 |
+| WAIT-05 | Chưa có Rust/Cargo/MSVC và harness cùng tài khoản xuyên Windows session | Chặn Rust/Tauri build, WebView2 và acceptance xuyên session; không chặn viết source hoặc tests ctypes/process có sẵn; [Task 7](evidence/backend-pre-g0-2026-11-08/task-7-report.md) |
 | WAIT-06 | Fresh Python package install bị HTTP 403 khi tải wheel sau khi TLS đã xác minh | Dùng interpreter/package đã có để kiểm, ghi version thực; chưa kết luận cài mới sạch/offline pack |
 
 G3 installer/máy sạch/offline/upgrade và G4 PHY/provider/server được theo dõi ở roadmap; chưa có spec thực thi riêng. Chỉ thêm task có ID/spec sau khi xác định nhu cầu và đầu vào, không tạo task solver trống hoặc tự cam kết lịch.
@@ -136,6 +166,7 @@ G3 installer/máy sạch/offline/upgrade và G4 PHY/provider/server được the
 
 | Ngày | Task | Thay đổi | Bằng chứng |
 | --- | --- | --- | --- |
+| 09/11/2026 | SPEC-001/003/004/009 | Tiếp tục code theo plan dù thiếu môi trường: IPC/core, guarded repository/migration, Windows owner/process/I/O, transport/bootstrap, extraction/publisher/GC. 192 Python pass/25 DB skip, 7 DOM và build/artifact checks pass; Rust/DB/gates chưa nghiệm thu | [Bàn giao](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md), [review cuối](evidence/backend-pre-g0-2026-11-08/task-final-review.md), [results](evidence/backend-pre-g0-2026-11-08/final-results.json) |
 | 08/11/2026 | SPEC-000 / 000.3 | Hoàn tất khởi tạo/kiểm tracker SPEC-000–009 từ trạng thái tài liệu và kiểm kê hiện có; chưa tiếp tục code | Mục kiểm khởi tạo bên dưới; kiểm tài liệu đạt, không đóng gate runtime |
 | 08/11/2026 | SPEC-001 / 001.1–001.3 | Yêu cầu code mới; hoàn thiện contracts/run/RPC/private context/exporter. Baseline 30 tests lỗi → 51 tests pass; schema check và review độc lập pass | [Triển khai](evidence/codegen-2026-11-08/task-1-report.md), [review](evidence/codegen-2026-11-08/task-2-review-report.md), [parent kiểm lại](evidence/codegen-2026-11-08/task-1-parent-verify.log); không đóng G0/G1 |
 | 08/11/2026 | SPEC-003 foundation / SPEC-001 DTOs | Metadata API/session/dev pipe process, private handoff DTO/client, React UI/state/retry/timeout, Tauri scaffold chưa hỗ trợ native. Lượt cuối: 55+14+2 Python và 7 DOM pass; artifacts/typecheck/build pass; chưa đóng các mốc native | [Bàn giao](evidence/codegen-2026-11-08/handoff.md), [review cuối](evidence/codegen-2026-11-08/final-review-report.md); chờ Rust/MSVC/Tauri CLI/cross-session harness, resolver/job và input thực G0 |

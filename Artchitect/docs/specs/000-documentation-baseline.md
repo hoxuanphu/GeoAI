@@ -46,3 +46,15 @@ Ngày 08/11/2026, người dùng yêu cầu chuyển bộ tài liệu vào `Artc
 Ngày 08/11/2026, bổ sung [task tracker](../task-tracker.md) theo yêu cầu người dùng: bảng SPEC-000–009, mốc con, dependency, vai trò dự kiến, việc chờ, bằng chứng và lịch sử cập nhật. Không suy phần trăm dự án từ checkbox hoặc coi tài liệu/spec đã viết là code đã nghiệm thu. Trạng thái khởi tạo và kết quả kiểm được ghi tại [bằng chứng tracker](../task-tracker.md#tracker-verification); không thay kết quả lịch sử của các đợt baseline/review trước.
 
 Đã hoàn tất phạm vi khởi tạo tracker sau kiểm cấu trúc/độ phủ và hash file implementation; các task triển khai và gate giữ nguyên trạng thái.
+
+## Vẽ lại kiến trúc desktop ngày 09/11/2026
+
+**Trạng thái:** hoàn tất phạm vi tài liệu sau kiểm cấu trúc; không nghiệm thu renderer hoặc runtime. Người dùng chọn Windows desktop theo thiết kế GeoAI hiện tại, lưu Markdown và trình bày sơ đồ trong chat; không chọn kiến trúc web/server của hướng dẫn đính kèm.
+
+- [x] Tạo [bộ sơ đồ desktop chi tiết](../desktop-architecture-diagrams.md): 6 flowchart, 1 sequence diagram, 1 state diagram; kèm trách nhiệm module, quyền ghi, pipeline, provenance, storage, training và ánh xạ gate.
+- [x] Nối từ [architecture](../architecture.md), đồng bộ roadmap/tracker; không thay yêu cầu, schema, mã nguồn, dependency hoặc trạng thái ADR.
+- [x] Đối chiếu với architecture/ADR-011, IPC/resolver, contracts, Prithvi/domain rules và SPEC-008; giữ G0 chưa đạt và tách thiết kế đích khỏi hiện trạng triển khai.
+
+**Bằng chứng kiểm trực tiếp:** PowerShell trên Windows, 09/11/2026, đọc UTF-8 strict bằng `System.Text.UTF8Encoding(false, true)`; regex kiểm link Markdown cục bộ qua URI decode + `Test-Path`, đếm code fence/loại diagram và cặp dấu bao; `git diff --check` cho tài liệu liên quan. Bộ sơ đồ: 26 links tới file/thư mục có thật, 16 fence cân bằng, 8 diagram (6 flowchart + 1 sequence + 1 state), cặp dấu bao cân bằng. Architecture: 16 links hợp lệ, 2 fence cân bằng. Lần kiểm đầu đặt nhầm kỳ vọng 9 diagram nên báo lỗi; đã sửa kỳ vọng theo 8 diagram thực tế và chạy lại pass, không thêm sơ đồ chỉ để đạt số đếm.
+
+**Giới hạn:** không có Mermaid parser/CLI sẵn trong môi trường đã probe; không cài dependency chỉ để kiểm tài liệu. Chưa parse/render Mermaid tự động; kiểm dấu bao không thay parser. Không chạy suite runtime vì chỉ thay tài liệu; bằng chứng này không chứng minh GIS/model/native/database/installer hoặc G0–G4 đạt. Giữ nguyên các thay đổi backend và môi trường có sẵn trong working tree.

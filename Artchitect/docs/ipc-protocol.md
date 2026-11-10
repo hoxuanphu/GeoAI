@@ -4,6 +4,22 @@
 
 ## Transport và framing
 
+Private launch draft 0.1.0: the trusted coordinator sends one bounded
+`WorkerLaunchPacket` frame through an explicitly inherited Windows handle. The
+packet includes `WorkerBootstrap`, exact UTF-8 context/job/snapshot JSON bytes,
+the expected typed `StartParams`, trusted local root registrations and one
+coordinator-issued fixture candidate ID. Optional `FixtureOutput` binds one
+attempt staging root, one relative artifact path and a candidate `RunManifest`
+whose single artifact matches fixed synthetic bytes. `context_registry_path` remains the
+trusted registry directory namespace; it is not a public RPC input or a path
+used to deliver the context. Worker revalidates all bindings through
+`GrantRegistry`, then verifies every read entry through `WorkerIOResolver`
+before replying `accepted=true`. With `FixtureOutput`, the fixture writes and
+flushes its artifact through `NativeRoot` before candidate/completed events.
+Without it, the fixture emits a structured missing-resource error and no
+candidate/completed event. The packet is private runtime data and the fixture
+handler advertises no GIS/model capability.
+
 - JSON-RPC 2.0 qua stdin/stdout riêng mỗi worker. Một object JSON UTF-8 mỗi dòng, kết thúc đúng byte LF. Newline bên trong chuỗi phải escape; không pretty-print nhiều dòng.
 - Giới hạn ban đầu 1.048.576 byte **gồm LF**. Đọc theo byte có giới hạn, xử lý partial read/EOF; dòng trống, UTF-8 sai, JSON lỗi, oversized hoặc dữ liệu native lạc vào là protocol error. Không chấp nhận JSON NaN/Infinity.
 - Chưa hỗ trợ JSON-RPC batch. Request ID là string hoặc integer, không boolean/null; chỉ response lỗi parse/invalid request có thể id=null. Notification không có id.
