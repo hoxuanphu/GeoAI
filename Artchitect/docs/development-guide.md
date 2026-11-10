@@ -19,7 +19,7 @@
 
 ## File hiện có và cấu trúc đích
 
-Đã có: contracts common/geography/models/runs/rpc/access/API DTOs, public/private registries, schema và OpenAPI/TypeScript client sinh; FastAPI session/metadata routes, dev pipe bootstrap, React/Vite UI và scaffold Tauri trả lỗi chưa hỗ trợ. Test/fixture và [bằng chứng](evidence/codegen-2026-11-08/progress.md) ghi phạm vi thực. Native launcher/owner/Job Object, resolver/importer/provider, database/job, GIS/AI/solver và installer chưa được triển khai/nghiệm thu. Không dùng file scaffold làm bằng chứng runtime.
+Đã có contracts/schema/client, metadata API/UI và [backend trước G0](evidence/backend-pre-g0-2026-11-08/progress.md): IPC/coordinator, policy/grant, Windows owner/Job Object/I/O, bounded extraction và publisher. SQLAlchemy/Alembic repository/migration và Rust/Tauri launcher đã có source nhưng còn kiểm phụ thuộc môi trường; worker transport đã tích hợp luồng process → staging → publisher bằng fixture. [Bàn giao 09/11/2026](evidence/backend-pre-g0-2026-11-08/handoff-2026-11-09.md) ghi 192 Python tests pass/25 DB skip và các kiểm frontend/schema. Chưa có runtime GIS/AI/solver nghiệp vụ, live provider hay installer được nghiệm thu. Source, unit/process tests và gate có trạng thái riêng; không suy native Rust/DB pass từ Python/Vite.
 
 ```text
 apps/desktop/                    # SPEC-003: Tauri/React và adapter viewer

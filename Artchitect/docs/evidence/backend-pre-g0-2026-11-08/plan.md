@@ -22,3 +22,15 @@ Yêu cầu: ghi lại thiếu sót/nguyên nhân và hoàn thiện trước nh�
 | Task 4 ↔ ADR-002 | SQLAlchemy/Alembic chưa có | Không tự đổi thiết kế DB; core thuần trước, DB còn chờ resolve và tích hợp |
 
 Workspace chưa có Git; dùng baseline/hash, không init/commit hoặc worktree giả. TDD trước production, reviewer độc lập sau task. Các agent thực hiện tuần tự để tránh xung đột schema/shared files. Policy và budget test chỉ là fixture. Handoff không tuyên bố đạt IMP/NET/RES native hoặc toàn bộ SPEC-004/009 từ unit tests.
+
+## Mở rộng theo yêu cầu 09/11/2026
+
+Người dùng yêu cầu bỏ qua thiếu sót môi trường và tiếp tục gen đầy đủ code. Không thử cài toolchain/dependency thêm; thiếu môi trường chỉ chặn phép kiểm phụ thuộc nó, không chặn viết implementation và test. Các task 1–4 vẫn là foundation có review; tiếp sau đó triển khai adapter thật trong phạm vi pre-G0 được SPEC-003/004/009 cho phép. Không tự bỏ dependency dữ liệu/nghiệp vụ của SPEC-005/006/008, không đóng gate bằng code chưa chạy.
+
+6. Repository SQLAlchemy/Alembic: schema, migration, SQLite WAL, intent/idempotency, attempt fencing/cancel/publication transaction, dependency leases và recovery/backup. Test dùng SQLite thật qua SQLAlchemy khi có dependency; thiếu dependency báo chưa chạy, không thay bằng sqlite3 repository khác.
+7. Native Windows lifecycle: owner lock theo SID xuyên session, writer lock, Job Object và suspended process assignment/handle allowlist; native launcher/handoff và shutdown có deadline. Ghi rõ Rust build/cross-session harness chưa chạy; không bật capability dựa vào source code.
+8. Worker process transport: bootstrap handle tin cậy, binary serialized protocol writer/native stdout redirection, bounded stdout/stderr readers, correlation, heartbeat/cancel trong khi handler bận, shutdown/terminate và kiểm process thật. Handler fixture chỉ chứng minh cơ chế, không giả model/GIS.
+9. Storage I/O: handle-based Windows reads/staging/candidate identity, bounded archive extraction, hash verification, immutable publish/DB registration và reconcile. Dùng policy/registry đã kiểm; từ chối kiểu/nguồn chưa hỗ trợ. Không bật provider live hoặc parser GIS khi chưa có adapter/policy/đầu vào đủ.
+10. Chạy các kiểm khả dụng, review cuối, đồng bộ trạng thái: phân biệt đã chạy pass, code đã viết/chưa chạy và đầu vào nghiệp vụ còn chờ. Lưu thiếu sót/nguyên nhân mới theo bằng chứng.
+
+Ruling: code adapter có dependency chưa cài vẫn được triển khai và compile/syntax-check trong phạm vi công cụ có sẵn; không ghi test phụ thuộc dependency là pass hay xóa điều kiện nghiệm thu. Thứ tự 6–9 có thể điều chỉnh để tránh vòng import; architecture vẫn ràng buộc storage không import jobs.

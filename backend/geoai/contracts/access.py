@@ -11,6 +11,9 @@ from .common import (
     AttemptKey, Contract, Identifier, NonNegativeInt, PositiveInt,
     ResourceBudget, Sha256, Text, ValueModel,
 )
+from .runs import RunManifest
+
+FIXTURE_ARTIFACT_BYTES = b"GeoAI synthetic artifact\n"
 
 
 class FileIdentity(ValueModel):
@@ -79,3 +82,68 @@ class WorkerBootstrap(ValueModel):
     worker_id: Identifier
     launch_nonce: Identifier
     context_registry_path: Text
+
+
+class ManagedRootRegistration(ValueModel):
+    root_id: Identifier
+    absolute_path: Text
+
+
+class ExternalReadRegistration(ValueModel):
+    registration_id: Identifier
+    absolute_path: Text
+    file_identity: FileIdentity
+
+
+class FixtureOutput(ValueModel):
+    """One synthetic artifact in a trusted, attempt-scoped staging root."""
+    staging_id: Identifier
+    absolute_path: Text
+    artifact_relative_path: Text
+    manifest: RunManifest
+
+    @model_validator(mode="after")
+    def fixed_artifact(self):
+        from hashlib import sha256
+        artifacts = self.manifest.artifacts
+        if (self.manifest.publication_state != "candidate" or len(artifacts) != 1
+                or artifacts[0].size_bytes != len(FIXTURE_ARTIFACT_BYTES)
+                or artifacts[0].sha256 != sha256(FIXTURE_ARTIFACT_BYTES).hexdigest()):
+            raise ValueError("fixture artifact must match fixed synthetic bytes")
+        return self
+
+
+class WorkerLaunchPacket(ValueModel):
+    """Private, one-use snapshot delivered through an inherited handle."""
+    bootstrap: WorkerBootstrap
+    registry_delivery: Literal["handle-snapshot"]
+    project_id: Identifier
+    execution_owner_id: Identifier
+    owner_epoch: PositiveInt
+    context_json: Annotated[str, Field(min_length=2, max_length=1_048_576)]
+    job_json: Annotated[str, Field(min_length=2, max_length=1_048_576)]
+    snapshot_json: Annotated[str, Field(min_length=2, max_length=1_048_576)]
+    start: "StartParams"
+    managed_roots: tuple[ManagedRootRegistration, ...]
+    external_registrations: tuple[ExternalReadRegistration, ...]
+    candidate_manifest_id: Identifier
+    fixture_output: FixtureOutput | None = None
+    fixture_mode: Literal["complete", "block", "log", "flood_stderr"]
+    heartbeat_seconds: Annotated[float, Field(gt=0, le=60)]
+
+    @model_validator(mode="after")
+    def unique_registrations(self):
+        if len({root.root_id for root in self.managed_roots}) != len(self.managed_roots):
+            raise ValueError("duplicate managed root")
+        if len({entry.registration_id for entry in self.external_registrations}) != len(self.external_registrations):
+            raise ValueError("duplicate external registration")
+        if self.fixture_output is not None and (
+                self.fixture_output.manifest.attempt != self.start.attempt
+                or self.fixture_output.manifest.job_id != self.start.job_spec_id
+                or self.fixture_output.manifest.input_snapshot_id != self.start.input_snapshot_id):
+            raise ValueError("fixture manifest does not match start")
+        return self
+
+
+from .rpc import StartParams
+WorkerLaunchPacket.model_rebuild()

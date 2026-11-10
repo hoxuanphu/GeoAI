@@ -1,0 +1,15 @@
+# Task 7 independent review - 09/11/2026
+
+Scope: SPEC-003/004, ADR-011, Task 7 brief/preflight/report; `windows_owner.py`, `native_process.py`, native bootstrap, Tauri Rust source/config and native integration tests. This is a source review; Rust/Cargo and cross-session/WebView2 acceptance were unavailable. Task 8 transport and Task 9 resolver changes are outside this review.
+
+## Findings
+
+1. **P1 - Rust native launcher cannot compile as written.** `apps/desktop/src-tauri/src/windows_native.rs:33-34`, `:58-67`: `#[derive(Default)]` is applied to `SecurityAttributes`, `StartupInfo`, and `StartupInfoEx`, which contain raw pointer fields (`*mut c_void`, `*mut u16`, `*mut u8`). Rust raw pointers do not implement `Default`, so derive emits E0277 when this Windows module is built. This blocks the native launcher before any runtime checks. Provide explicit `Default` implementations or checked zero initialization for these C structs, then run Cargo on Windows. The Python tests do not compile this file.
+
+2. **P1 - `ManagedProcess` handle teardown is not serialized.** `backend/geoai/jobs/native_process.py:266-293`: `terminate_group()` and `close()` read `_closed`, query/use `_job`, then close `_process` and `_job`, and only afterward set `_closed`. No lock protects these operations. Two cancellation/shutdown callers can both pass the check and close the same Win32 handle twice; a recycled handle value can then refer to an unrelated object. A simultaneous `group_stopped()` or `wait()` can also query a handle after close. Reproduce by coordinating two threads at the pre-close check or instrumenting `CloseHandle` while one thread is in `close()` and another calls `terminate_group()`. Use one lifecycle lock and invalidate owned handles under it; preserve the resource on uncertain stop.
+
+3. **P2 - Attribute-list cleanup runs after failed initialization.** `backend/geoai/jobs/native_process.py:181-182,224-226`: `attrs` becomes non-`None` before `InitializeProcThreadAttributeList` succeeds, but `finally` always calls `DeleteProcThreadAttributeList(attrs)`. Windows requires deletion only for an initialized list. If initialization fails on an unsupported/limited host, cleanup operates on uninitialized memory, potentially crashing instead of returning `process_attributes_unavailable`. Track initialization separately and delete only after success; add a failure-injection test at the second initialization call.
+
+## Verification and limits
+
+The implementer's report records 17 passing Windows Python native integration tests and 57 contracts tests. I inspected their native test cases and the source paths above; I did not rerun the suite because Task 8 is concurrently changing shared imports. `cargo`/`rustc` are absent, so the Rust compile finding is static and must be confirmed by a Windows Cargo build after correction. Same-account cross-session contention, nested jobs, WebView2 navigation/handoff, and shell-death cleanup remain unverified; Task 7 cannot be marked native accepted from these tests.

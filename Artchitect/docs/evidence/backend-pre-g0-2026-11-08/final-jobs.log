@@ -1,0 +1,22 @@
+test_cancel_after_retryable_failure_blocks_requeue (test_coordinator.CoordinatorTests.test_cancel_after_retryable_failure_blocks_requeue) ... ok
+test_checkpoint_checks_every_identity (test_coordinator.CoordinatorTests.test_checkpoint_checks_every_identity) ... ok
+test_claim_cancel_and_confirm_stop (test_coordinator.CoordinatorTests.test_claim_cancel_and_confirm_stop) ... ok
+test_idempotency_scoped_and_immutable_intent (test_coordinator.CoordinatorTests.test_idempotency_scoped_and_immutable_intent) ... ok
+test_owner_context_and_dependency_retention (test_coordinator.CoordinatorTests.test_owner_context_and_dependency_retention) ... ok
+test_owner_epoch_is_positive_integer (test_coordinator.CoordinatorTests.test_owner_epoch_is_positive_integer) ... ok
+test_publication_id_unique_within_project (test_coordinator.CoordinatorTests.test_publication_id_unique_within_project) ... ok
+test_publish_then_late_cancel_and_queued_cancel (test_coordinator.CoordinatorTests.test_publish_then_late_cancel_and_queued_cancel) ... ok
+test_retry_requires_stop_and_old_token_is_stale (test_coordinator.CoordinatorTests.test_retry_requires_stop_and_old_token_is_stale) ... ok
+test_encode_rejects_nonfinite_surrogate_and_size (test_protocol.ProtocolTests.test_encode_rejects_nonfinite_surrogate_and_size) ... ok
+test_envelope_precedes_method_and_params (test_protocol.ProtocolTests.test_envelope_precedes_method_and_params) ... ok
+test_exact_limit_and_poison (test_protocol.ProtocolTests.test_exact_limit_and_poison) ... ok
+test_invalid_json_forms_and_eof (test_protocol.ProtocolTests.test_invalid_json_forms_and_eof) ... ok
+test_null_error_id_and_malformed_notification (test_protocol.ProtocolTests.test_null_error_id_and_malformed_notification) ... ok
+test_response_correlation_and_failure_envelopes (test_protocol.ProtocolTests.test_response_correlation_and_failure_envelopes) ... ok
+test_split_utf8_and_multiple_frames (test_protocol.ProtocolTests.test_split_utf8_and_multiple_frames) ... ok
+test_versions_response_and_notifications (test_protocol.ProtocolTests.test_versions_response_and_notifications) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.012s
+
+OK

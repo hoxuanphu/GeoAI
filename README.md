@@ -2,7 +2,7 @@
 
 Ứng dụng Windows desktop xử lý GIS/AI cục bộ, thiết kế theo [đề xuất v1.4](Artchitect/solution/de_xuat_kien_truc_he_thong_geoai_tong_hop.md). Feature đầu đề xuất: HLS 30 m → Prithvi-EO-2.0 + UPerNet → review → thống kê → PDF.
 
-Đã triển khai contracts Pydantic dự thảo, JSON-RPC/context metadata, exporter, API health/capabilities và UI shell React. Native Tauri mới là scaffold trả lỗi chưa hỗ trợ; chưa có launcher/owner/Job Object đã kiểm, database, GIS/AI/solver hay installer. Trạng thái và đầu vào còn chờ ở [roadmap](Artchitect/docs/roadmap.md), [task tracker](Artchitect/docs/task-tracker.md) và [nhật ký triển khai](Artchitect/docs/evidence/codegen-2026-11-08/progress.md). G0 chưa đạt.
+Đã có contracts Pydantic dự thảo, IPC/coordinator core, policy/grant/resolver, native Windows owner/Job Object và I/O đã kiểm bằng fixture, source repository SQLAlchemy/Alembic và publisher. API vẫn chỉ health/capabilities; UI shell React giữ capability thực thi tắt. Rust/Tauri đã có source launcher nhưng chưa build; tests DB còn skip vì thiếu dependency. Chưa có GIS/AI/solver nghiệp vụ hoặc installer đã nghiệm thu. Trạng thái và bằng chứng ở [roadmap](Artchitect/docs/roadmap.md), [task tracker](Artchitect/docs/task-tracker.md) và [tiến độ backend](Artchitect/docs/evidence/backend-pre-g0-2026-11-08/progress.md). G0 chưa đạt.
 
 ## Bắt đầu
 
@@ -25,7 +25,7 @@ $env:PYTHONPATH = 'backend'
 .venv\Scripts\python.exe tools/export_api_client.py --check
 ```
 
-Đợt kiểm hiện tại dùng Python/package đã có trên máy vì tải wheel mới bị HTTP 403 sau khi TLS đã xác minh; chưa chứng minh cài mới sạch. [Môi trường và thử thiết lập](Artchitect/docs/evidence/codegen-2026-11-08/setup-experiments.md) ghi giới hạn này. Không tắt xác minh TLS để cài dependency.
+Đợt kiểm 09/11/2026 có 57 contracts tests pass bằng Python/package đã có; `.venv-clean` đã tạo với system packages tắt nhưng tải wheel vẫn bị HTTP 403 `MediaTypeBlocked`, chưa chứng minh cài mới sạch. [Kết quả sửa môi trường](Artchitect/docs/evidence/environment-2026-11-09/results.json): đã lưu user `NODE_USE_SYSTEM_CA=1`, npm restore/7 DOM tests/typecheck/frontend build pass; Rustup/Tauri native còn bị 403, Build Tools dừng 1602 ở bước UAC/elevation. [Môi trường và thử thiết lập](Artchitect/docs/evidence/codegen-2026-11-08/setup-experiments.md) ghi giới hạn này. Không tắt xác minh TLS để cài dependency.
 
 Sinh lại artifact bằng `python tools/export_contract_schemas.py` và `python tools/export_api_client.py`; Pydantic là nguồn kiểu, không sửa tay JSON Schema/OpenAPI/client. Các test không tải model/provider hay yêu cầu GPU. Process test chỉ kiểm metadata API dev qua pipe riêng; chưa chứng minh native shell crash containment hoặc chất lượng nghiệp vụ.
 
@@ -43,4 +43,4 @@ npm run build
 npm run dev
 ```
 
-Trust store Windows giữ xác minh TLS. Lockfile được resolve thực; Rollup/esbuild dùng package WASM để build frontend trong môi trường chặn binary native. UI trình duyệt hiện trạng thái chưa nhận phiên desktop; nút thử lại và state panel hoạt động nhưng chưa có native handoff thật. [README shell](apps/desktop/README.md) mô tả session/Host/Origin/token, dev pipe protocol và phần native cần triển khai. `npm run build` chỉ build frontend; chưa có Cargo/Tauri/WebView2 hoặc installer test.
+Trust store Windows giữ xác minh TLS. Lockfile được resolve thực; Rollup/esbuild dùng package WASM để build frontend trong môi trường chặn binary native. [README shell](apps/desktop/README.md) mô tả session/Host/Origin/token, dev pipe protocol và source native. `npm run build` chỉ build frontend; Cargo/Tauri/WebView2 và installer vẫn chưa có phép kiểm thực. Kiểm khả dụng không cài dependency: `python Artchitect/docs/evidence/backend-pre-g0-2026-11-08/verify.py`; báo cáo tách pass/skip và không đóng gate bằng fixture.

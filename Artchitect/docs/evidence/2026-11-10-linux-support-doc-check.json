@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-10",
+  "timezone": "Asia/Bangkok",
+  "command": "Python pathlib UTF-8 decode, local Markdown link existence and Ubuntu target checks on four changed documents",
+  "checks": [
+    "utf8",
+    "local_link_paths",
+    "both_ubuntu_targets"
+  ],
+  "files": [
+    "Artchitect/docs/evidence/2026-11-10-linux-support-assessment.md",
+    "Artchitect/docs/specs/003-desktop-shell.md",
+    "Artchitect/docs/roadmap.md",
+    "Artchitect/docs/task-tracker.md"
+  ],
+  "errors": [],
+  "status": "pass",
+  "limits": "Documentation only. No Linux/Cloud execution, native build, desktop, GPU, model or installer validation. URL reachability and Markdown anchors are not checked by this script."
+}

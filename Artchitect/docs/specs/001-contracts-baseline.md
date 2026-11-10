@@ -13,6 +13,14 @@ Interfaces: record bền vững có schema_version/created_at; các class public
 
 Bổ sung draft sau review: RPC start có access_context_id/hash theo [worker resolver](../worker-resolver.md). Đã định kiểu `access.py`, đồng bộ RPC/registries/exporter và fixture/test start/context ở SPEC-001. [SPEC-009](009-importer-worker-resolver.md) tiếp tục phần native/resolver và phải chạy lại các ca tích hợp. Không tạo vòng phụ thuộc đòi resolver native hoàn tất mới viết được kiểu nền; schema metadata chưa chứng minh quyền I/O thực.
 
+Draft extension 09/11/2026: `WorkerLaunchPacket` and optional `FixtureOutput`
+are private Pydantic values in `access.py`, exported only under
+`PRIVATE_CONTEXT_MODELS`. A typed fixture output binds one staging root,
+candidate manifest and fixed synthetic artifact hash/size. The generated
+schema and fixture are synchronized; [Task 8 report](../evidence/backend-pre-g0-2026-11-08/task-8-report.md)
+records the contracts suite and process test. This does not change public RPC
+or establish a business output profile.
+
 ## Kiểm kê bàn giao hiện tại
 
 | Hạng mục | Trạng thái quan sát được |

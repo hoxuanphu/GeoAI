@@ -1,0 +1,14 @@
+test_actual_stream_budget_length_request_budget_deadline_and_cancel (test_resolver_network_policy.ProviderPolicyTests.test_actual_stream_budget_length_request_budget_deadline_and_cancel) ... ok
+test_all_supplied_dns_addresses_must_be_public_and_record_count_is_bounded (test_resolver_network_policy.ProviderPolicyTests.test_all_supplied_dns_addresses_must_be_public_and_record_count_is_bounded) ... ok
+test_allowlisted_asset_and_endpoint_pass_without_exposing_url (test_resolver_network_policy.ProviderPolicyTests.test_allowlisted_asset_and_endpoint_pass_without_exposing_url) ... ok
+test_every_redirect_is_checked_and_cross_origin_drops_all_forwarded_headers (test_resolver_network_policy.ProviderPolicyTests.test_every_redirect_is_checked_and_cross_origin_drops_all_forwarded_headers) ... ok
+test_headers_cannot_inject_fields_or_leak_in_validation_errors (test_resolver_network_policy.ProviderPolicyTests.test_headers_cannot_inject_fields_or_leak_in_validation_errors) ... ok
+test_iterator_failure_is_sanitized_and_partial_bytes_remain_in_total_budget (test_resolver_network_policy.ProviderPolicyTests.test_iterator_failure_is_sanitized_and_partial_bytes_remain_in_total_budget) ... ok
+test_missing_profile_identity_mismatch_arbitrary_url_and_malformed_origins_fail_closed (test_resolver_network_policy.ProviderPolicyTests.test_missing_profile_identity_mismatch_arbitrary_url_and_malformed_origins_fail_closed) ... ok
+test_retry_classification_keeps_same_asset_version_and_never_consumes_unlimited_requests (test_resolver_network_policy.ProviderPolicyTests.test_retry_classification_keeps_same_asset_version_and_never_consumes_unlimited_requests) ... ok
+test_trusted_rfc1918_profile_allows_only_its_private_subnet_never_control_loopback (test_resolver_network_policy.ProviderPolicyTests.test_trusted_rfc1918_profile_allows_only_its_private_subnet_never_control_loopback) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.004s
+
+OK

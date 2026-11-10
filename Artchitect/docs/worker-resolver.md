@@ -46,6 +46,16 @@ Hash input xác minh theo file bytes đã cố định và provenance; với fil
 
 Canonicalize và so prefix chuỗi chưa đủ trên Windows. Adapter cần policy path theo volume/case/file identity, kiểm ancestor/reparse và handle thực sau open, bảo vệ race đổi symlink/junction giữa check và use. Vùng staging không được cho worker khác ghi. Các phép kiểm và giới hạn cụ thể ở [ma trận bảo mật](importer-resolver-security.md).
 
+Current Windows fixture transport sends a `WorkerLaunchPacket` through one
+explicitly inherited private handle. The packet preserves exact JSON bytes for
+hash validation and carries typed root registrations. Its optional
+`FixtureOutput` binds a trusted staging root and candidate `RunManifest` to one
+fixed synthetic artifact. Worker verifies every read entry before start ACK,
+then writes and flushes the artifact before sending candidate/completed. The
+coordinator separately registers the candidate with `Publisher`, which checks
+bytes and attempt fencing; this fixture does not provide a business profile
+validator or a database commit. See [Task 8 evidence](evidence/backend-pre-g0-2026-11-08/task-8-report.md).
+
 ## Thu hồi, retry và lỗi
 
 Coordinator thu hồi quyền start/publish khi cancel/retry/owner mất hiệu lực; không gửi thêm grant. Context mới có ID/attempt/token mới; worker cũ không được publish bằng context của lần mới. File context tĩnh không thể tự thu hồi handle read đang mở: dừng worker/đóng handle và reconcile được yêu cầu trước cấp tài nguyên lại; không tuyên bố capability file là sandbox chống tiến trình cùng tài khoản bị chiếm quyền.

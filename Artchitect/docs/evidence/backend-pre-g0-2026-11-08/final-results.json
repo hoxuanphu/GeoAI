@@ -1,0 +1,187 @@
+{
+  "date": "2026-11-09T21:59:57.551059+07:00",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.4",
+  "packages": {
+    "pydantic": "2.13.2",
+    "fastapi": "0.141.1",
+    "uvicorn": "0.49.0",
+    "httpx": "0.28.1",
+    "SQLAlchemy": null,
+    "alembic": null
+  },
+  "checks": [
+    {
+      "name": "architecture",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests\\architecture",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "final-architecture.log",
+      "tests": 2,
+      "skipped": 0
+    },
+    {
+      "name": "catalog",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests\\catalog",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "final-catalog.log",
+      "tests": 9,
+      "skipped": 0
+    },
+    {
+      "name": "contracts",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests\\contracts",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "final-contracts.log",
+      "tests": 58,
+      "skipped": 0
+    },
+    {
+      "name": "integration",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests\\integration",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "final-integration.log",
+      "tests": 56,
+      "skipped": 2
+    },
+    {
+      "name": "jobs",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests\\jobs",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "final-jobs.log",
+      "tests": 17,
+      "skipped": 0
+    },
+    {
+      "name": "storage",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests\\storage",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "final-storage.log",
+      "tests": 75,
+      "skipped": 23
+    },
+    {
+      "name": "syntax",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "compileall",
+        "-q",
+        "backend",
+        "tests",
+        "tools",
+        "migrations"
+      ],
+      "exit_code": 0,
+      "log": "final-syntax.log"
+    },
+    {
+      "name": "schema",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "tools/export_contract_schemas.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "final-schema.log"
+    },
+    {
+      "name": "client",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "tools/export_api_client.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "final-client.log"
+    },
+    {
+      "name": "dom",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.19.0-win-x64\\npm.cmd",
+        "test"
+      ],
+      "exit_code": 0,
+      "log": "final-dom.log"
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.19.0-win-x64\\npm.cmd",
+        "run",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "log": "final-typecheck.log"
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "C:\\Users\\phuhx1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.19.0-win-x64\\npm.cmd",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "log": "final-frontend-build.log"
+    },
+    {
+      "name": "documentation",
+      "exit_code": 0,
+      "log": "final-documentation.json"
+    }
+  ],
+  "native_rust": "not run: cargo unavailable",
+  "scope": "synthetic foundation checks; no G0/G1/G2 closure",
+  "python_test_totals": {
+    "discovered": 217,
+    "skipped": 25,
+    "passed": 192
+  }
+}

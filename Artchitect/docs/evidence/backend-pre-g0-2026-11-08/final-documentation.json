@@ -1,0 +1,18 @@
+{
+  "markdown_files": 85,
+  "local_links": 530,
+  "missing_targets": [],
+  "protected_files": 25,
+  "protected_changes": [
+    "backend/geoai/contracts/access.py",
+    "backend/geoai/contracts/__init__.py",
+    "schemas/contracts-v0.1.0.json"
+  ],
+  "authorized_contract_extension": [
+    "backend/geoai/contracts/__init__.py",
+    "backend/geoai/contracts/access.py",
+    "schemas/contracts-v0.1.0.json"
+  ],
+  "unexpected_protected_changes": [],
+  "scope": "target existence and protected file hashes; anchors/rendering not checked"
+}

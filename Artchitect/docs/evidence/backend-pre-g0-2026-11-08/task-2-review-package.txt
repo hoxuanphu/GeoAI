@@ -1,0 +1,282 @@
+﻿backend/geoai/storage/resolver.py
+"""Launch-scoped, in-memory metadata grants. No OS lock, file I/O or sandbox.
+
+Caller must be the trusted coordinator, not a public request handler. Native
+adapters still verify handles, bytes, ownership and transaction-time fencing.
+All state transitions must be serialized by the coordinator.
+"""
+from dataclasses import dataclass
+from hashlib import sha256
+import re
+
+from pydantic import ValidationError
+from geoai.contracts import WorkerAccessContext, StartParams, JobSpec, InputSnapshot, AttemptKey
+
+
+class GrantError(ValueError):
+    """Stable sanitized failure; never interpolate private input values."""
+    def __init__(self, code='invalid_input'):
+        self.code = code
+        super().__init__('Grant metadata rejected: ' + code)
+
+
+@dataclass
+class _Grant:
+    context: bytes
+    start: bytes
+    job: bytes
+    snapshot: bytes
+    state: str = 'registered'
+
+
+class GrantRegistry:
+    """Private application metadata only; construction does not prove OS ownership."""
+    def __init__(self, *, worker_id, launch_nonce, project_id, execution_owner_id, owner_epoch):
+        self._identity = (worker_id, launch_nonce, project_id, execution_owner_id, owner_epoch)
+        self._grants = {}
+        self._candidates = {}
+        self._used_attempts = set()
+        self._used_tokens = set()
+        self._active = None
+        self._closed = False
+
+    def register(self, *, context_bytes: bytes, job_bytes: bytes, snapshot_bytes: bytes,
+                 expected_start: StartParams, required_ref_ids=()):
+        """Snapshot exact coordinator bytes against independently trusted start intent."""
+        try:
+            if self._closed or self._active is not None:
+                raise GrantError('stale_attempt')
+            if not all(type(x) is bytes for x in (context_bytes, job_bytes, snapshot_bytes)):
+                raise GrantError()
+            start = StartParams.model_validate_json(expected_start.model_dump_json())
+            c = WorkerAccessContext.model_validate_json(context_bytes)
+            j = JobSpec.model_validate_json(job_bytes)
+            s = InputSnapshot.model_validate_json(snapshot_bytes)
+            attempt_id = (c.attempt.job_id, c.attempt.attempt_id)
+            if c.access_context_id in self._grants or attempt_id in self._used_attempts or c.attempt.generation_token in self._used_tokens:
+                raise GrantError('stale_attempt')
+            if (c.worker_id,c.launch_nonce,c.project_id,c.execution_owner_id,c.owner_epoch) != self._identity:
+                raise GrantError('stale_attempt')
+            expected = StartParams(attempt=c.attempt,job_spec_id=c.job_spec_id,input_snapshot_id=c.input_snapshot_id,
+                                   access_context_id=c.access_context_id,access_context_sha256=sha256(context_bytes).hexdigest(),resource_budget=c.resource_budget)
+            if expected != start:
+                raise GrantError()
+            if (sha256(job_bytes).hexdigest(),sha256(snapshot_bytes).hexdigest()) != (c.job_spec_sha256,c.input_snapshot_sha256):
+                raise GrantError()
+            if (j.job_id,j.input_snapshot_id,j.project_id,j.grid_id,j.resource_budget) != (c.job_spec_id,c.input_snapshot_id,c.project_id,s.grid_id,c.resource_budget):
+                raise GrantError()
+            if (s.snapshot_id,s.project_id) != (c.input_snapshot_id,c.project_id):
+                raise GrantError()
+            refs = {e.ref_id:e for e in c.read_entries}
+            for ref, data in ((j.job_id,job_bytes),(s.snapshot_id,snapshot_bytes)):
+                if refs[ref].size_bytes != len(data):
+                    raise GrantError()
+            required = {j.job_id,s.snapshot_id,j.workflow_id,j.grid_id,s.qa_policy_id,*j.model_ids,*j.physical_model_ids,
+                        *j.parameter_snapshot_ids,*s.asset_ids,*s.transform_ids,*s.dependency_ids,*required_ref_ids}
+            if s.mosaic_recipe_id:
+                required.add(s.mosaic_recipe_id)
+            if not required.issubset(refs):
+                raise GrantError('missing_resource')
+            self._grants[c.access_context_id] = _Grant(context_bytes,start.model_dump_json().encode(),job_bytes,snapshot_bytes)
+            self._active = c.access_context_id
+            self._used_attempts.add(attempt_id)
+            self._used_tokens.add(c.attempt.generation_token)
+            return sha256(context_bytes).hexdigest()
+        except (ValidationError,TypeError,AttributeError,KeyError):
+            raise GrantError() from None
+
+    def accept(self, start: StartParams):
+        """Consume start exactly once; returns no filesystem authority."""
+        try:
+            start = StartParams.model_validate_json(start.model_dump_json())
+            grant = self._grants.get(start.access_context_id)
+            if self._closed or grant is None or self._active != start.access_context_id or grant.state != 'registered':
+                raise GrantError('stale_attempt')
+            if StartParams.model_validate_json(grant.start) != start:
+                raise GrantError()
+            grant.state = 'accepted'
+        except (ValidationError,TypeError,AttributeError):
+            raise GrantError() from None
+
+    def _current(self, access_context_id, attempt):
+        grant = self._grants.get(access_context_id)
+        if self._closed or grant is None or self._active != access_context_id or grant.state != 'accepted':
+            raise GrantError('stale_attempt')
+        c = WorkerAccessContext.model_validate_json(grant.context)
+        if c.attempt != attempt:
+            raise GrantError('stale_attempt')
+        return c
+
+    def resolve(self, access_context_id: str, attempt: AttemptKey, ref_id: str):
+        """Return a fresh allowlisted read entry, never open or concatenate paths."""
+        c = self._current(access_context_id,attempt)
+        for entry in c.read_entries:
+            if entry.ref_id == ref_id:
+                return entry
+        raise GrantError('missing_resource')
+
+    def revoke(self, access_context_id: str):
+        grant = self._grants.get(access_context_id)
+        if grant is None:
+            raise GrantError('missing_resource')
+        grant.state = 'revoked'
+        if self._active == access_context_id:
+            self._active = None
+
+    def close(self):
+        """End launch lifetime. Never deletes shared dependencies or any file bytes."""
+        self._closed = True
+        for grant in self._grants.values():
+            grant.state = 'revoked'
+        self._active = None
+
+    def register_candidate(self, candidate_id, access_context_id, *, project_id, attempt, staging_id):
+        """Coordinator-issued IDs only; worker event paths are never accepted."""
+        c = self._current(access_context_id,attempt)
+        if not isinstance(candidate_id,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:-]{0,255}',candidate_id):
+            raise GrantError()
+        if candidate_id in self._candidates or (project_id,staging_id) != (c.project_id,c.staging_id):
+            raise GrantError()
+        self._candidates[candidate_id] = (access_context_id,project_id,c.attempt.model_dump_json(),staging_id)
+
+    def check_candidate(self, candidate_id, access_context_id, *, project_id, attempt):
+        c = self._current(access_context_id,attempt)
+        expected = (access_context_id,project_id,c.attempt.model_dump_json(),c.staging_id)
+        if project_id != c.project_id or self._candidates.get(candidate_id) != expected:
+            raise GrantError()
+        return c.staging_id
+tests/storage/test_grant_registry.py
+"""Metadata grant tests; no native permissions or file reads are asserted."""
+from copy import deepcopy
+import importlib
+import json
+from hashlib import sha256
+from pathlib import Path
+import unittest
+from geoai.contracts import WorkerAccessContext, StartParams, JobSpec, InputSnapshot
+
+ROOT = Path(__file__).resolve().parents[2]
+F = json.loads((ROOT / 'tests/fixtures/contracts/workflow.json').read_text())
+C = json.loads((ROOT / 'tests/fixtures/contracts/worker-access-context.json').read_text())
+try:
+    resolver = importlib.import_module('geoai.storage.resolver')
+except ModuleNotFoundError:
+    resolver = None
+
+def encoded(value):
+    return json.dumps(value, sort_keys=True, separators=(',', ':')).encode()
+
+class GrantTests(unittest.TestCase):
+    def setUp(self):
+        self.assertIsNotNone(resolver, 'metadata grant registry is not implemented')
+        self.job = deepcopy(F['JobSpec']); self.snapshot = deepcopy(F['InputSnapshot'])
+        self.context = deepcopy(C['WorkerAccessContext'])
+        self.refresh()
+        self.registry = resolver.GrantRegistry(worker_id='worker:1', launch_nonce='launch:1', project_id='project:1', execution_owner_id='owner:1', owner_epoch=1)
+
+    def refresh(self):
+        self.jb, self.sb = encoded(self.job), encoded(self.snapshot)
+        c = self.context
+        c['job_spec_sha256'], c['input_snapshot_sha256'] = sha256(self.jb).hexdigest(), sha256(self.sb).hexdigest()
+        refs = {self.job['workflow_id'], self.job['grid_id'], *self.job['model_ids'], *self.job['physical_model_ids'], *self.job['parameter_snapshot_ids'], *self.snapshot['asset_ids'], self.snapshot['qa_policy_id'], *self.snapshot['transform_ids'], *self.snapshot['dependency_ids']}
+        if self.snapshot.get('mosaic_recipe_id'): refs.add(self.snapshot['mosaic_recipe_id'])
+        c['read_entries'] = c['read_entries'][:3]
+        for entry, data in zip(c['read_entries'], (self.jb, self.sb)):
+            entry['sha256'] = sha256(data).hexdigest(); entry['size_bytes'] = len(data)
+        for ref in sorted(refs - {e['ref_id'] for e in c['read_entries']}):
+            entry = deepcopy(c['read_entries'][0]); entry.update(ref_id=ref, kind='profile'); c['read_entries'].append(entry)
+        self.cb = encoded(c)
+        self.start = StartParams(attempt=c['attempt'], job_spec_id=c['job_spec_id'], input_snapshot_id=c['input_snapshot_id'], access_context_id=c['access_context_id'], access_context_sha256=sha256(self.cb).hexdigest(), resource_budget=c['resource_budget'])
+
+    def register(self, **changes):
+        args = dict(context_bytes=self.cb, job_bytes=self.jb, snapshot_bytes=self.sb, expected_start=self.start, required_ref_ids=())
+        args.update(changes)
+        return self.registry.register(**args)
+
+    def test_managed_and_external_entries_resolve(self):
+        self.register(); self.registry.accept(self.start)
+        self.assertEqual(self.registry.resolve('access:1', self.start.attempt, 'job:1').location.kind, 'managed-local')
+        self.assertEqual(self.registry.resolve('access:1', self.start.attempt, 'local:input:1').location.kind, 'external-registered-local')
+
+    def test_exact_context_and_manifest_bytes_are_hashed(self):
+        for field in ('context_bytes', 'job_bytes', 'snapshot_bytes'):
+            with self.subTest(field=field), self.assertRaises(resolver.GrantError):
+                self.register(**{field: dict(context_bytes=self.cb, job_bytes=self.jb, snapshot_bytes=self.sb)[field] + b' '})
+
+    def test_full_launch_binding_matrix(self):
+        for field, value in [('worker_id','worker:bad'),('launch_nonce','nonce:bad'),('project_id','project:bad'),('execution_owner_id','owner:bad'),('owner_epoch',2)]:
+            c = deepcopy(self.context); c[field] = value
+            with self.subTest(field=field), self.assertRaises(resolver.GrantError): self.register(context_bytes=encoded(c), expected_start=self.start.model_copy(update={'access_context_sha256':sha256(encoded(c)).hexdigest()}))
+
+    def test_start_binding_matrix(self):
+        self.register()
+        for field, value in [('access_context_id','missing'),('access_context_sha256','b'*64),('input_snapshot_id','other'),('resource_budget',dict(cpu_threads=1,ram_bytes=1,temporary_bytes=0)),('attempt',dict(job_id='job:1',attempt_id='old',generation_token='old'))]:
+            payload = self.start.model_dump(); payload[field] = value
+            start = StartParams.model_validate(payload)
+            with self.subTest(field=field), self.assertRaises(resolver.GrantError): self.registry.accept(start)
+        self.registry.accept(self.start)
+
+    def test_missing_explicit_and_manifest_dependencies(self):
+        with self.assertRaises(resolver.GrantError): self.register(required_ref_ids=('absent',))
+        c = deepcopy(self.context); c['read_entries'] = [e for e in c['read_entries'] if e['ref_id'] != self.job['model_ids'][0]]
+        cb = encoded(c); start = self.start.model_copy(update={'access_context_sha256':sha256(cb).hexdigest()})
+        with self.assertRaises(resolver.GrantError): self.register(context_bytes=cb, expected_start=start)
+
+    def test_manifest_project_and_grid_must_match(self):
+        for field in ('project_id','grid_id'):
+            original = self.snapshot[field]; self.snapshot[field]='different'; self.refresh()
+            with self.subTest(field=field), self.assertRaises(resolver.GrantError): self.register()
+            self.snapshot[field]=original; self.refresh()
+
+    def test_registration_snapshots_nested_mutable_intent(self):
+        job = JobSpec.model_validate(self.job); snapshot = InputSnapshot.model_validate(self.snapshot)
+        self.register(); job.parameters['evil'] = []; snapshot.band_mapping['evil']='bad'
+        self.context['read_entries'][0]['location']['relative_path']='changed'
+        self.registry.accept(self.start)
+        self.assertNotEqual(self.registry.resolve('access:1', self.start.attempt, 'job:1').location.relative_path, 'changed')
+
+    def test_one_use_revoke_and_duplicate_context(self):
+        self.register()
+        with self.assertRaises(resolver.GrantError): self.register()
+        self.registry.accept(self.start)
+        with self.assertRaises(resolver.GrantError): self.registry.accept(self.start)
+        self.registry.revoke('access:1')
+        for action in (lambda:self.registry.accept(self.start),lambda:self.registry.resolve('access:1',self.start.attempt,'job:1')):
+            with self.assertRaises(resolver.GrantError): action()
+
+    def test_next_attempt_requires_close_and_new_ids(self):
+        self.register(); self.registry.accept(self.start)
+        self.context['access_context_id']='access:2'; self.context['attempt']['attempt_id']='attempt:2'; self.context['attempt']['generation_token']='generation:2'; self.refresh()
+        with self.assertRaises(resolver.GrantError): self.register()
+        self.registry.revoke('access:1'); self.register(); self.registry.accept(self.start)
+        self.assertEqual(self.registry.resolve('access:2',self.start.attempt,'job:1').ref_id,'job:1')
+        self.registry.close()
+        with self.assertRaises(resolver.GrantError): self.registry.resolve('access:2',self.start.attempt,'job:1')
+
+    def test_unknown_ref_and_stale_attempt(self):
+        self.register(); self.registry.accept(self.start)
+        for ref in ('unknown','C:\\private\\file'):
+            with self.assertRaises(resolver.GrantError) as caught: self.registry.resolve('access:1', self.start.attempt, ref)
+            self.assertNotIn(ref,str(caught.exception))
+        with self.assertRaises(resolver.GrantError): self.registry.resolve('access:1',self.start.attempt.model_copy(update={'generation_token':'old'}),'job:1')
+
+    def test_candidate_scope_duplicate_and_revocation(self):
+        self.register(); self.registry.accept(self.start)
+        self.registry.register_candidate('candidate:1', 'access:1', project_id='project:1', attempt=self.start.attempt, staging_id='staging:1')
+        self.assertEqual(self.registry.check_candidate('candidate:1', 'access:1', project_id='project:1', attempt=self.start.attempt), 'staging:1')
+        for kwargs in [dict(project_id='other'), dict(staging_id='other'), dict(attempt=self.start.attempt.model_copy(update={'attempt_id':'old'})), dict(candidate_id='C:\\file')]:
+            args=dict(candidate_id='candidate:2',access_context_id='access:1',project_id='project:1',attempt=self.start.attempt,staging_id='staging:1'); args.update(kwargs)
+            with self.assertRaises(resolver.GrantError): self.registry.register_candidate(**args)
+        with self.assertRaises(resolver.GrantError): self.registry.register_candidate('candidate:1','access:1',project_id='project:1',attempt=self.start.attempt,staging_id='staging:1')
+        self.registry.revoke('access:1')
+        with self.assertRaises(resolver.GrantError): self.registry.check_candidate('candidate:1','access:1',project_id='project:1',attempt=self.start.attempt)
+    def test_revoked_attempt_cannot_be_regranted_under_new_context(self):
+        self.register(); self.registry.revoke('access:1')
+        self.context['access_context_id']='access:replay'; self.refresh()
+        with self.assertRaises(resolver.GrantError): self.register()
+
+    def test_context_attempt_binding_independent_of_hash(self):
+        for field in ('attempt_id','generation_token'):
+            c=deepcopy(self.context); c['attempt'][field]='changed'; cb=encoded(c)
+            start=self.start.model_copy(update={'access_context_sha256':sha256(cb).hexdigest()})
+            with self.subTest(field=field), self.assertRaises(resolver.GrantError): self.register(context_bytes=cb,expected_start=start)

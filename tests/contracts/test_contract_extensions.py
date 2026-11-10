@@ -1,5 +1,6 @@
 """Missing draft boundary behavior, using synthetic data only."""
 from copy import deepcopy
+from hashlib import sha256
 import importlib
 import json
 from pathlib import Path
@@ -9,6 +10,7 @@ import tempfile
 import unittest
 
 from pydantic import ValidationError
+from geoai.contracts.access import FIXTURE_ARTIFACT_BYTES
 
 c = importlib.import_module("geoai.contracts")
 ROOT = Path(__file__).resolve().parents[2]
@@ -219,8 +221,32 @@ class ExtendedContractTests(unittest.TestCase):
         p = deepcopy(START); p["context_registry_path"] = "C:\\GeoAI-Synthetic\\registry"
         self.reject("RpcRequest", {"jsonrpc": "2.0", "id": "1", "method": "start", "params": p})
 
+    def test_private_launch_packet_is_versioned_and_strict(self):
+        payload = json.loads((FIXTURES / "worker-launch-packet.json").read_text(encoding="utf-8"))["WorkerLaunchPacket"]
+        self.validate("WorkerLaunchPacket", payload)
+        for change in (
+            {"registry_delivery": "path"},
+            {"unknown_secret": "x"},
+            {"bootstrap": {**payload["bootstrap"], "protocol_version": "9.0"}},
+            {"managed_roots": payload["managed_roots"] * 2},
+        ):
+            with self.subTest(change=list(change)):
+                self.reject("WorkerLaunchPacket", {**payload, **change})
+        output = deepcopy(WORKFLOW["RunManifest"])
+        output["publication_state"] = "candidate"
+        output["artifacts"][0].update(
+            sha256=sha256(FIXTURE_ARTIFACT_BYTES).hexdigest(),
+            size_bytes=len(FIXTURE_ARTIFACT_BYTES))
+        configured = {**payload, "fixture_output": {
+            "staging_id": "staging:1", "absolute_path": "C:\\GeoAI-Synthetic\\staging",
+            "artifact_relative_path": "result.bin", "manifest": output}}
+        self.validate("WorkerLaunchPacket", configured)
+        wrong_hash = deepcopy(configured)
+        wrong_hash["fixture_output"]["manifest"]["artifacts"][0]["sha256"] = HASH
+        self.reject("WorkerLaunchPacket", wrong_hash)
+
     def test_complete_rpc_and_private_fixtures_round_trip(self):
-        for filename, registry_name in (("rpc-workflow.json", "WIRE_MODELS"), ("worker-access-context.json", "PRIVATE_CONTEXT_MODELS")):
+        for filename, registry_name in (("rpc-workflow.json", "WIRE_MODELS"), ("worker-access-context.json", "PRIVATE_CONTEXT_MODELS"), ("worker-launch-packet.json", "PRIVATE_CONTEXT_MODELS")):
             with self.subTest(filename=filename):
                 path = FIXTURES / filename
                 self.assertTrue(path.is_file(), "missing complete wire/private fixture")
@@ -243,7 +269,7 @@ class ExtendedContractTests(unittest.TestCase):
             self.assertEqual(repeated.returncode, 0, repeated.stderr)
             self.assertEqual(first, output.read_bytes())
             definitions = json.loads(first)["$defs"]
-            for name in ("JobSpec", "RpcRequest", "RpcNotification", "WorkerAccessContext", "WorkerBootstrap"):
+            for name in ("JobSpec", "RpcRequest", "RpcNotification", "WorkerAccessContext", "WorkerBootstrap", "WorkerLaunchPacket"):
                 self.assertIn(name, definitions)
             output.write_bytes(b"{}\n")
             stale = subprocess.run(command + ["--check"], cwd=directory, capture_output=True, text=True)

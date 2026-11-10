@@ -1,0 +1,102 @@
+[
+  {
+    "path": "backend/geoai/contracts/access.py",
+    "sha256": "926391e013d3d3ee2cdd827fe8218ce1002e13d41226a7a0da3b2e91076c1fe4"
+  },
+  {
+    "path": "backend/geoai/contracts/api.py",
+    "sha256": "5576320acd0340a1af7e15eb1f7c19a144c76311fb40910c94534f91b1bb4be0"
+  },
+  {
+    "path": "backend/geoai/contracts/common.py",
+    "sha256": "4488ed6bab0295b2e7b9024e3a21d9ab1ca89138acee4e55068f0bca3c7af7a5"
+  },
+  {
+    "path": "backend/geoai/contracts/geography.py",
+    "sha256": "07f104365463b20eb8153507dd8fecf4a688ce60a333ecf2bab58cd532145659"
+  },
+  {
+    "path": "backend/geoai/contracts/imports.py",
+    "sha256": "1c9e2e5e22189600b3ba1779b6cf9b97816ef4cf64da229318ec398a26ed21d1"
+  },
+  {
+    "path": "backend/geoai/contracts/models.py",
+    "sha256": "7baa1fcc8597bd4fc0d30c70cac51ab4980b4a45c887602baf26f62ad9f472e3"
+  },
+  {
+    "path": "backend/geoai/contracts/rpc.py",
+    "sha256": "b07b21ab671bdb266c771bf76ee0993a520de29c7521a624d088b0d1f250e535"
+  },
+  {
+    "path": "backend/geoai/contracts/runs.py",
+    "sha256": "e5ffdf4510a86b8336ae446d473585902558109af4c94d46fc488a45231b4dfb"
+  },
+  {
+    "path": "backend/geoai/contracts/__init__.py",
+    "sha256": "c5d3c70a32a2ca94111e1b311d1b9058ab8be38c888aafb6edc80d7606dde783"
+  },
+  {
+    "path": "backend/geoai/api/app.py",
+    "sha256": "860c2b8c1f6aef2b2ab1a5c15723cec8a1933eff4186317f1724d4b903a10c0e"
+  },
+  {
+    "path": "backend/geoai/api/session.py",
+    "sha256": "d9d5c011afad32a4c8cd4aa117be6d121c9ce1a525e826a2ac62ed617e9d7d1c"
+  },
+  {
+    "path": "backend/geoai/api/__init__.py",
+    "sha256": "87c425544508a20120b93b7077abdcd9d413a26439824d6480a3830c12e05ff2"
+  },
+  {
+    "path": "tests/fixtures/contracts/api.json",
+    "sha256": "b9920e4cedc219545b84cc78826e6a3850aa63a66a2fdf3c93d4077f8639b7c0"
+  },
+  {
+    "path": "tests/fixtures/contracts/import-policy.json",
+    "sha256": "43a923ef72fecfd267b8b8925f8daf46bb7b495cdbff7a6d4f95cf55f1b2a59f"
+  },
+  {
+    "path": "tests/fixtures/contracts/rpc-workflow.json",
+    "sha256": "af195ef63078c83cdbfb406862a3d6d229cb233a4931f558dbc3068e836c5bad"
+  },
+  {
+    "path": "tests/fixtures/contracts/worker-access-context.json",
+    "sha256": "a9df1563bdd5c09aaae1bbbea8231cc518adbc41afe3c91881ad671e12b4f8f4"
+  },
+  {
+    "path": "tests/fixtures/contracts/workflow.json",
+    "sha256": "0bb59caae2b7390f98a874044fac140ef8545b97f0355ec52a03158c7543abcc"
+  },
+  {
+    "path": "schemas/contracts-v0.1.0.json",
+    "sha256": "de81e5c619ec456f04a0127be479b091c9b2692a4377cf0206556e02b6d8fc14"
+  },
+  {
+    "path": "schemas/openapi-v0.1.0.json",
+    "sha256": "d370acd1600266a404f529ff2fc74bf13bf5a5bfa197a5a1d9052e569a396714"
+  },
+  {
+    "path": "apps/desktop/src/App.test.tsx",
+    "sha256": "698adbec221b04e4f6c11b9bfc956c2e89f7d850383727f3658c2e3fff05439a"
+  },
+  {
+    "path": "apps/desktop/src/App.tsx",
+    "sha256": "f083fc90394f6cdb61ea2c411665539fac6baa21c77e375976572ae72ab887ef"
+  },
+  {
+    "path": "apps/desktop/src/handoff.ts",
+    "sha256": "cd3e77cc55a6917aaa5afa8097edd1840600176b62edfd867f790126936008b4"
+  },
+  {
+    "path": "apps/desktop/src/main.tsx",
+    "sha256": "6ffe860e4d896ece11f7c075cee6accac505b614e27a5461bd94eaf2dccd6880"
+  },
+  {
+    "path": "apps/desktop/src/style.css",
+    "sha256": "3a58b89184573c1c1f94db9c27e8f877255b3833f1b142399f7be0b76e6775b1"
+  },
+  {
+    "path": "apps/desktop/src/generated/api.ts",
+    "sha256": "be174bd424856006ba5ce8e809e308fb50068bd498c5343221d11b7ea2e6029c"
+  }
+]
