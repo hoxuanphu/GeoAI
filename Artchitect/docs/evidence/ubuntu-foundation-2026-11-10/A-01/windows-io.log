@@ -1,0 +1,14 @@
+Command: C:\Users\phuhx1\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests/storage -p test_windows_io.py -v
+Exit: 0
+test_create_and_verify_read_without_write_or_delete_sharing (test_windows_io.WindowsIOTests.test_create_and_verify_read_without_write_or_delete_sharing) ... ok
+test_external_identity_and_reparse_root (test_windows_io.WindowsIOTests.test_external_identity_and_reparse_root) ... ok
+test_invalid_paths_and_hardlink_preserve_external_sentinel (test_windows_io.WindowsIOTests.test_invalid_paths_and_hardlink_preserve_external_sentinel) ... ok
+test_junction_root_and_ancestor_are_rejected (test_windows_io.WindowsIOTests.test_junction_root_and_ancestor_are_rejected) ... ok
+test_quota_cancel_no_overwrite_hash_and_closed_scope (test_windows_io.WindowsIOTests.test_quota_cancel_no_overwrite_hash_and_closed_scope) ... ok
+test_reader_holds_root_lifetime_and_same_size_mutation_is_rejected (test_windows_io.WindowsIOTests.test_reader_holds_root_lifetime_and_same_size_mutation_is_rejected) ... ok
+test_verified_move_is_atomic_no_overwrite_and_delete_checks_bytes (test_windows_io.WindowsIOTests.test_verified_move_is_atomic_no_overwrite_and_delete_checks_bytes) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.086s
+
+OK

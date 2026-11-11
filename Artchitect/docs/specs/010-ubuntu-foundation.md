@@ -119,3 +119,6 @@ Các suite là deliverable, chưa tồn tại/chưa chạy nếu chưa được 
 Lệnh nền có thật: `PYTHONPATH=backend python -m unittest discover -s tests/contracts -v`, các suite `tests/architecture`, `tests/storage`, `tests/integration`; exporter contracts/API `--check`; frontend `npm test`, `npm run typecheck`, `npm run build`. Khi thêm suite Linux, README phải có lệnh `unittest` cụ thể tương ứng và lệnh native Tauri thực; không báo pass trước khi chạy. Dependency/lock/build/OS/cgroup/FS/fixture hash, exit code và log đã lọc theo [testing strategy](../guides/testing-strategy.md).
 
 **Tình trạng tại đợt đặc tả:** 010.1–010.3 chưa bắt đầu; ADR kỹ thuật vẫn đề xuất; UB runtime chưa chạy. Phần review và kiểm tài liệu được lưu ở [báo cáo SPEC-010](../evidence/spec010-2026-11-10/review.md), tách khỏi kết quả triển khai tương lai.
+
+
+C?p nh?t 10/11/2026: A-01 m?i t?ch hai ki?u I/O chung, ch?a c? factory/protocol; [handoff v? log](../evidence/ubuntu-foundation-2026-11-10/A-01/handoff.md). C?c m?c 010.1?010.3 v? acceptance native v?n m?.

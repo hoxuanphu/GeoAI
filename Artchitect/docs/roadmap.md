@@ -80,3 +80,6 @@ Ghi nhận mục tiêu hỗ trợ Linux gồm **Ubuntu 22.04 LTS và Ubuntu 24.0
 Task hoàn tất phải ghi lệnh kiểm tra, kết quả, ngày và artifact/log có thể xem; kiểm tra local và benchmark nghiệp vụ là bằng chứng khác nhau. SPEC-001 hoàn tất không làm G0/G1 đạt. Cập nhật trạng thái task sau mỗi bàn giao; ghi giới hạn và việc còn chờ, không tự chuyển các giá trị đề xuất thành số đã được duyệt.
 
 Việc tiếp theo là hoàn thiện phần native SPEC-003 trong môi trường có Rust/MSVC và harness Windows, rồi resolver SPEC-009 và tích hợp SPEC-004. SPEC-002/008 vẫn cần đầu vào G0/nhân sự thực và review ADR-011 còn đề xuất. SPEC-005/007 thực hiện theo dependency; nhãn/recipe/training SPEC-008 chỉ chạy khi có input/budget, promotion pack trước SPEC-006. G1 cần đủ shell/job/resolver/GIS/viewer/PDF/bundle/spike; G2 cần evaluation model và workflow business. [Hướng dẫn dev](guides/development-guide.md) và [ma trận kiểm tra](guides/testing-strategy.md) là đầu mối bàn giao.
+
+
+C?p nh?t 10/11/2026: SPEC-010 A-01 ?ang th?c hi?n m?t ph?n; [handoff](evidence/ubuntu-foundation-2026-11-10/A-01/handoff.md). Ch?a ??ng m?c hay gate.

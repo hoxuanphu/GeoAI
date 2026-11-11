@@ -1,0 +1,8 @@
+Command: C:\Users\phuhx1\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests/storage -p test_native_factory.py -v
+Exit: 0
+test_windows_reexports_shared_identity_and_error (test_native_factory.NativeSharedTypesTests.test_windows_reexports_shared_identity_and_error) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.194s
+
+OK

@@ -9,7 +9,6 @@ from __future__ import annotations
 from contextlib import contextmanager, ExitStack
 import ctypes
 from ctypes import wintypes
-from dataclasses import dataclass
 import hashlib
 import os
 from pathlib import Path
@@ -20,16 +19,7 @@ import time
 from geoai.storage.importer import ImportRejected, _name
 
 
-class StorageIOError(ValueError):
-    def __init__(self, code="invalid_input"):
-        self.code = code
-        super().__init__(code)
-
-
-@dataclass(frozen=True)
-class NativeIdentity:
-    volume_id: str
-    file_id: str
+from geoai.storage.native_io import NativeIdentity, StorageIOError
 
 
 if os.name == "nt":

@@ -204,3 +204,6 @@ G3 installer/máy sạch/offline/upgrade và G4 PHY/provider/server được the
 Ngày 08/11/2026, kiểm trực tiếp qua `python -X utf8 -` bằng stdin, exit code 0: 60 file Markdown, 531 lượt liên kết nội bộ (75 lượt có anchor), 127 bảng và code fence không phát hiện lỗi trong bộ kiểm cấu trúc hiện có; 5 block JSON parse được. Tám block Mermaid chỉ kiểm nội dung/fence, chưa render. Đối chiếu tracker xác nhận đủ 10 SPEC duy nhất và 31 ID mốc con duy nhất, không có checkbox triển khai chưa kiểm bị đánh dấu hoàn tất.
 
 SHA-256 của cả 8 file mã/test/fixture/config trong inventory trước/sau không đổi; chỉ thêm tracker và cập nhật 5 file Markdown điều hướng/spec. Chưa gán nhân sự/deadline và không cập nhật lại số đo lịch sử của các báo cáo trước. Không chạy suite contracts/runtime/model vì đợt này chỉ tạo tài liệu theo dõi; bằng chứng này chỉ đóng mốc tài liệu 000.3, không xác nhận G0–G4.
+
+
+C?p nh?t 10/11/2026: A-01 **partial**, m?i t?ch ki?u I/O chung; xem [handoff v? log](evidence/ubuntu-foundation-2026-11-10/A-01/handoff.md). 010.1?010.3 ch?a ho?n t?t; A-02?E-05 ch?a b?t ??u.

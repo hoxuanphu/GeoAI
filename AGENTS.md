@@ -26,3 +26,4 @@ Nguồn thiết kế là [đề xuất tổng hợp v1.4](Artchitect/solution/de
 - Sửa quyết định đã chấp thuận bằng ADR thay thế có liên kết; cập nhật tài liệu nguồn bị ảnh hưởng. Hồ sơ ADR chính thức đặt trong `Artchitect/docs/adr/` theo yêu cầu người dùng.
 - Kiểm tra hiện có: `$env:PYTHONPATH = 'backend'; python -m unittest discover -s tests/contracts -v`.
 - Hiện chưa có runtime desktop/GIS/AI/solver; pass test schema không chứng minh model, installer hoặc CRS đã chạy đúng.
+- Không tự ý tạo nhánh mới, push code, ghi commit khi chưa có lệnh.
