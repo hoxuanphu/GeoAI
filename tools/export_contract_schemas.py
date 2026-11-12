@@ -10,12 +10,12 @@ sys.path.insert(0, str(ROOT / "backend"))
 from pydantic.json_schema import models_json_schema
 
 from geoai.contracts import (
-    CONTRACT_MODELS, PRIVATE_CONTEXT_MODELS, SCHEMA_VERSION, WIRE_MODELS,
+    CONTRACT_MODELS, PRIVATE_CONTEXT_MODELS, PRIVATE_NATIVE_MODELS, SCHEMA_VERSION, WIRE_MODELS,
 )
 
 
 def schema_bytes() -> bytes:
-    models = {**CONTRACT_MODELS, **WIRE_MODELS, **PRIVATE_CONTEXT_MODELS}
+    models = {**CONTRACT_MODELS, **WIRE_MODELS, **PRIVATE_CONTEXT_MODELS, **PRIVATE_NATIVE_MODELS}
     _, schema = models_json_schema(
         [(model, "validation") for _, model in sorted(models.items())],
         title=f"GeoAI draft contracts {SCHEMA_VERSION}",
@@ -28,6 +28,7 @@ def schema_bytes() -> bytes:
     schema["x-geoai-registries"] = {
         "durable": sorted(CONTRACT_MODELS), "wire": sorted(WIRE_MODELS),
         "private_runtime": sorted(PRIVATE_CONTEXT_MODELS),
+        "private_native": sorted(PRIVATE_NATIVE_MODELS),
     }
     return (json.dumps(schema, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False) + "\n").encode("utf-8")
 

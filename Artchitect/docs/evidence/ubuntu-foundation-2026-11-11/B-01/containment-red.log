@@ -1,0 +1,27 @@
+   Compiling geoai-desktop v0.1.0 (/workspace/GeoAI/apps/desktop/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.09s
+     Running unittests src/lib.rs (/state/target/debug/deps/geoai_desktop-0aa5f54c89a1626b)
+
+running 5 tests
+test linux_runtime::runtime::tests::runtime_resolves_fixed_packaged_layout ... ok
+test linux_runtime::runtime::tests::runtime_rejects_path_outside_resource_root ... FAILED
+test session::tests::descriptor_accepts_valid_loopback ... ok
+test session::tests::descriptor_preserves_url_and_token_validation ... ok
+test session::tests::descriptor_rejects_userinfo_query_fragment_unknown_fields ... ok
+
+failures:
+
+---- linux_runtime::runtime::tests::runtime_rejects_path_outside_resource_root stdout ----
+
+thread 'linux_runtime::runtime::tests::runtime_rejects_path_outside_resource_root' (11618) panicked at src/linux_runtime/runtime.rs:85:13:
+assertion failed: matches!(resolve_runtime(&fixture.0, None),
+    Err(NativeError::LinuxRuntimeUnavailable))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    linux_runtime::runtime::tests::runtime_rejects_path_outside_resource_root
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `--lib`

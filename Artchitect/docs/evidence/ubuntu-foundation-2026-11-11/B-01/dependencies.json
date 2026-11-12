@@ -1,0 +1,37 @@
+{
+  "rustc": "1.99.1 (58cf8f9c3 2026-10-13)",
+  "cargo": "1.99.1 (5f94df478 2026-08-27)",
+  "direct_linux_dependencies": [
+    {
+      "name": "getrandom",
+      "version": "0.3.4",
+      "license": "MIT OR Apache-2.0",
+      "rust_version": "1.63"
+    },
+    {
+      "name": "getrandom",
+      "version": "0.4.3",
+      "license": "MIT OR Apache-2.0",
+      "rust_version": "1.85"
+    },
+    {
+      "name": "libc",
+      "version": "0.2.191",
+      "license": "MIT OR Apache-2.0",
+      "rust_version": "1.65"
+    },
+    {
+      "name": "nix",
+      "version": "0.31.3",
+      "license": "MIT",
+      "rust_version": "1.69"
+    },
+    {
+      "name": "zbus",
+      "version": "6.2.1",
+      "license": "MIT",
+      "rust_version": "1.89"
+    }
+  ],
+  "note": "Resolved by actual Cargo. Direct getrandom is 0.4.3; older getrandom is transitive. Minimum toolchain not separately certified; tests use Rust 1.99.1."
+}

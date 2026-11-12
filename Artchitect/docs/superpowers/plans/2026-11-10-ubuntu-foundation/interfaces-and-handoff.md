@@ -6,7 +6,7 @@
 
 | Nguồn/tạo ở task | Signature hoặc shape chính xác | Consumer |
 | --- | --- | --- |
-| A-01 `storage/native_io.py` | `NativeIdentity(volume_id: str, file_id: str)` frozen dataclass; `StorageIOError(RuntimeError)` chỉ chứa reason code | Windows/Linux I/O, resolver |
+| A-01 `storage/native_io.py` | `NativeIdentity(volume_id: str, file_id: str)` frozen dataclass; `StorageIOError(ValueError)` chỉ chứa reason code (giữ base của Windows hiện có theo ruling A-01) | Windows/Linux I/O, resolver |
 | A-01 cùng file | `NativeReader` và `NativeRoot` Protocol có đúng properties/methods ở interface spec; native method nhận `deadline: float` tuyệt đối, `cancelled: Callable[[], bool]`; `open_read`, create/move/delete không reset deadline | A-02, D |
 | A-01 cùng file | `NativeIOFactory.open_registered_root(root_id: str, absolute_path: Path, *, purpose: Literal['read','staging','publication']) -> NativeRoot`; `require_root(root: NativeRoot, *, purpose: str) -> None`; `open_external(registration: ExternalRegistration, *, sha256: str, size_bytes: int, cancelled, deadline: float) -> NativeReader` | Trusted composition, shared resolver/publisher |
 | A-01 cùng file | `ExternalRegistration(path: Path, identity: NativeIdentity)` chuyển từ io_resolver; io_resolver re-export tên cũ để caller hiện tại không mất import; factory giữ strong references tới roots đã tạo và purpose | A-02, worker entry |

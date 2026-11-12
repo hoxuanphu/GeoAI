@@ -66,3 +66,11 @@ Báo cáo chỉ trỏ tới artifact thực sự tồn tại hoặc kho đã ki�
 Task hoàn tất cần đủ acceptance, phép kiểm đã chạy và đường dẫn bằng chứng. Gate hoàn tất cần tập hợp đủ task/phép kiểm của gate cùng quyết định có thẩm quyền. `readiness=business`, review của người dùng và schema validation là các điều kiện khác nhau: tự gán một trường không thay evaluation, quyền duyệt hoặc fencing.
 
 Ngưỡng nghiệp vụ, tolerance kỹ thuật, chu kỳ heartbeat/cancel và support matrix cần được chọn đúng chủ trì theo G0/G1, có nguồn và phạm vi. Số `0.1 m`, RAM, coverage `0.75` hoặc seed trong fixture JSON chỉ là ví dụ cấu trúc, không phải thông số đã được chủ nghiệp vụ chấp thuận.
+
+Runner foundation đã triển khai tại `tools/ubuntu_foundation_preflight.py` và
+`tools/ubuntu_foundation_check.py`. Chạy preflight rồi `--layer portable --output <directory-mới>`
+như [guide Ubuntu](../platforms/ubuntu/ubuntu-development-and-packaging.md#runner-foundation-hiện-có-11112026).
+Kết quả phân biệt pass/fail/skip/not_run, suite zero-test bị fail và suite toàn skip
+không thành pass. Các trường `native_acceptance`/`gates` luôn `not_evaluated` ở tầng này.
+Không tái sử dụng directory lịch sử để làm mới bằng chứng; Windows/Ubuntu LTS chưa có
+executor phải ghi `not_run`. Debian chỉ là kiểm portable bổ sung, không thay Ubuntu LTS.

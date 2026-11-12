@@ -10,6 +10,8 @@ from contextlib import contextmanager, ExitStack
 import ctypes
 from ctypes import wintypes
 import hashlib
+import math
+import uuid
 import os
 from pathlib import Path
 import re
@@ -19,7 +21,7 @@ import time
 from geoai.storage.importer import ImportRejected, _name
 
 
-from geoai.storage.native_io import NativeIdentity, StorageIOError
+from geoai.storage.native_io import ExternalRegistration, NativeIdentity, StorageIOError
 
 
 if os.name == "nt":
@@ -292,15 +294,19 @@ class NativeRoot:
                     _Close(handle)
                     raise
 
-    def delete_verified(self, relative_path, *, sha256, size_bytes):
+    def delete_verified(self, relative_path, *, sha256, size_bytes,
+                        cancelled=lambda: False, deadline_seconds=60):
         """Delete the exact verified staging file, by handle; no path reopen."""
         with self._verified_reader(relative_path, sha256=sha256, size_bytes=size_bytes,
-                                   for_delete=True) as source:
+                                   for_delete=True, cancelled=cancelled, deadline_seconds=deadline_seconds) as source:
+            if cancelled():
+                raise StorageIOError("cancelled_or_deadline")
             disposition = wintypes.BOOL(True)
             if not _SetInfo(source._handle, 4, ctypes.byref(disposition), ctypes.sizeof(disposition)):
                 raise StorageIOError("delete_failed")
 
-    def move_verified(self, relative_path, destination_root, destination_path, *, sha256, size_bytes):
+    def move_verified(self, relative_path, destination_root, destination_path, *, sha256, size_bytes,
+                      cancelled=lambda: False, deadline_seconds=60):
         """Rename one verified file on its volume without replacing a destination.
 
         The source handle denies other write/delete access while identity and
@@ -315,7 +321,7 @@ class NativeRoot:
                 locks.enter_context(root._mutex)
                 root._assert_open()
             with self._verified_reader(relative_path, sha256=sha256, size_bytes=size_bytes,
-                                       for_delete=True) as source:
+                                       for_delete=True, cancelled=cancelled, deadline_seconds=deadline_seconds) as source:
                 with destination_root._parents(target, create=True) as parents:
                     destination_handle = parents[-1] if parents else destination_root._ancestors[-1]
                     if _identity(_info(destination_handle, directory=True)).volume_id != source.identity.volume_id:
@@ -334,6 +340,8 @@ class NativeRoot:
                     info.root = None
                     info.length = len(target_bytes)
                     ctypes.memmove(ctypes.addressof(info) + _RenameInfo.name.offset, target_bytes, len(target_bytes))
+                    if cancelled():
+                        raise StorageIOError("cancelled_or_deadline")
                     if not _SetInfo(source._handle, 3, ctypes.byref(info), ctypes.sizeof(info)):
                         raise StorageIOError("rename_failed_or_destination_exists")
                     if _final_path(source._handle) != os.path.normcase(str(destination_root.path / target)):
@@ -409,3 +417,219 @@ class NativeRoot:
 
     def __exit__(self, *_):
         self.close()
+
+
+def _native_call(operation, *args, **kwargs):
+    try:
+        return operation(*args, **kwargs)
+    except OSError:
+        raise StorageIOError("native_io_failed") from None
+
+
+class _ReaderAdapter:
+    """Keep a verified legacy reader (and optional external root) alive."""
+    def __init__(self, reader, owned_root=None):
+        self._reader, self._owned_root = reader, owned_root
+        self._closed = False
+        self._mutex = threading.RLock()
+
+    @property
+    def identity(self):
+        return self._reader.identity
+
+    @property
+    def size_bytes(self):
+        return self._reader.size_bytes
+
+    def read(self, size=-1):
+        with self._mutex:
+            if self._closed:
+                raise StorageIOError("reader_closed_or_invalid")
+            return _native_call(self._reader.read, size)
+
+    def seek(self, offset):
+        with self._mutex:
+            if self._closed:
+                raise StorageIOError("reader_closed_or_invalid")
+            _native_call(self._reader.seek, offset)
+            return offset
+
+    def close(self):
+        with self._mutex:
+            if not self._closed:
+                _native_call(self._reader.close)
+                if self._owned_root is not None:
+                    self._owned_root.close()
+                self._closed = True
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_):
+        self.close()
+
+
+def _deadline_options(cancelled, deadline):
+    if type(deadline) not in (int, float) or not math.isfinite(deadline) or not callable(cancelled):
+        raise StorageIOError("invalid_budget")
+    def stop():
+        try:
+            return bool(cancelled()) or time.monotonic() >= deadline
+        except Exception:
+            raise StorageIOError("cancellation_unavailable") from None
+    remaining = deadline - time.monotonic()
+    if remaining <= 0 or stop():
+        raise StorageIOError("cancelled_or_deadline")
+    # Legacy Win32 accepts durations capped at a day. The callback independently
+    # checks the original absolute deadline even after waiting for a native lock.
+    return dict(cancelled=stop, deadline_seconds=min(remaining, 86400.0))
+
+
+class _RegisteredRoot:
+    def __init__(self, factory, root_id, legacy, purpose):
+        self._factory, self._root_id = factory, root_id
+        self._legacy, self._purpose, self._closed = legacy, purpose, False
+        self._mutex = threading.RLock()
+
+    @contextmanager
+    def _operation(self, cancelled, deadline):
+        budget = _deadline_options(cancelled, deadline)
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0 or budget['cancelled']():
+                raise StorageIOError("cancelled_or_deadline")
+            if self._mutex.acquire(timeout=min(remaining, .05)):
+                break
+        try:
+            _deadline_options(cancelled, deadline)
+            yield
+        finally:
+            self._mutex.release()
+
+    def _authorize(self, *, write=False):
+        self._factory._require(self)
+        if write and self._purpose == "read":
+            raise StorageIOError("root_purpose_mismatch")
+
+    def open_read(self, relative_path, *, sha256, size_bytes, expected_identity=None,
+                  cancelled, deadline):
+        with self._operation(cancelled, deadline):
+            self._authorize()
+            if expected_identity is not None:
+                if type(expected_identity) is not NativeIdentity:
+                    raise StorageIOError("invalid_identity")
+                expected_identity = (expected_identity.volume_id, expected_identity.file_id)
+            reader = _native_call(self._legacy.open_read, relative_path, sha256=sha256, size_bytes=size_bytes,
+                expected_identity=expected_identity, **_deadline_options(cancelled, deadline))
+            return _ReaderAdapter(reader)
+
+    def create_file(self, relative_path, chunks, *, max_bytes, cancelled, deadline,
+                    max_chunk_bytes=1048576):
+        with self._operation(cancelled, deadline):
+            self._authorize(write=True)
+            return _native_call(self._legacy.create_file, relative_path, chunks, max_bytes=max_bytes,
+                max_chunk_bytes=max_chunk_bytes, **_deadline_options(cancelled, deadline))
+
+    def ensure_directory(self, relative_path):
+        # This protocol method has no budget parameter; fail busy instead of
+        # introducing an unbounded lock wait into a budgeted extraction loop.
+        if not self._mutex.acquire(blocking=False):
+            raise StorageIOError("native_io_busy")
+        try:
+            self._authorize(write=True)
+            return _native_call(self._legacy.ensure_directory, relative_path)
+        finally:
+            self._mutex.release()
+
+    def move_verified(self, relative_path, destination_root, destination_path, *,
+                      sha256, size_bytes, cancelled, deadline):
+        self._factory.require_root(destination_root, purpose="publication")
+        with ExitStack() as locks:
+            roots = (self,) if self is destination_root else sorted((self, destination_root), key=id)
+            for root in roots:
+                locks.enter_context(root._operation(cancelled, deadline))
+            self._authorize(write=True)
+            self._factory.require_root(destination_root, purpose="publication")
+            return _native_call(self._legacy.move_verified, relative_path, destination_root._legacy, destination_path,
+                sha256=sha256, size_bytes=size_bytes, **_deadline_options(cancelled, deadline))
+
+    def delete_verified(self, relative_path, *, sha256, size_bytes, cancelled, deadline):
+        with self._operation(cancelled, deadline):
+            self._authorize(write=True)
+            return _native_call(self._legacy.delete_verified, relative_path, sha256=sha256, size_bytes=size_bytes,
+                **_deadline_options(cancelled, deadline))
+
+    def close(self):
+        with self._mutex:
+            if not self._closed:
+                # A reader still alive makes legacy.close fail: retain registration
+                # and pins so a failed close never releases native authority.
+                _native_call(self._legacy.close)
+                with self._factory._mutex:
+                    self._closed = True
+                    del self._factory._roots[id(self)]
+                    del self._factory._root_ids[self._root_id]
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_):
+        self.close()
+
+
+class WindowsIOFactory:
+    """Trusted composition only. Registry identity, not protocol shape, grants use."""
+    def __init__(self):
+        self._roots, self._root_ids = {}, {}
+        self._mutex = threading.RLock()
+
+    def _require(self, root):
+        with self._mutex:
+            if id(root) not in self._roots or self._roots[id(root)] is not root:
+                raise StorageIOError("unregistered_root")
+            if root._closed:
+                raise StorageIOError("root_closed")
+
+    def open_registered_root(self, root_id, absolute_path, *, purpose):
+        with self._mutex:
+            if (type(root_id) is not str or not root_id or root_id in self._root_ids
+                    or purpose not in ("read", "staging", "publication")
+                    or not isinstance(absolute_path, Path) or not absolute_path.is_absolute()):
+                raise StorageIOError("invalid_root_registration")
+            reservation = object()
+            self._root_ids[root_id] = reservation
+        try:
+            legacy = _native_call(NativeRoot, absolute_path)
+            root = _RegisteredRoot(self, root_id, legacy, purpose)
+        except BaseException:
+            with self._mutex:
+                if self._root_ids.get(root_id) is reservation:
+                    del self._root_ids[root_id]
+            raise
+        with self._mutex:
+            self._roots[id(root)] = root  # Strong reference prevents id reuse.
+            self._root_ids[root_id] = root
+        return root
+
+    def require_root(self, root, *, purpose):
+        with self._mutex:
+            self._require(root)
+            if root._purpose != purpose:
+                raise StorageIOError("root_purpose_mismatch")
+
+    def open_external(self, registration, *, sha256, size_bytes, cancelled, deadline):
+        if (type(registration) is not ExternalRegistration
+                or not isinstance(registration.path, Path)
+                or type(registration.identity) is not NativeIdentity):
+            raise StorageIOError("unregistered_external_input")
+        _deadline_options(cancelled, deadline)  # Reject expiry before opening native handles.
+        root = self.open_registered_root("external:" + uuid.uuid4().hex,
+                                         registration.path.parent, purpose="read")
+        try:
+            reader = root.open_read(registration.path.name, sha256=sha256, size_bytes=size_bytes,
+                expected_identity=registration.identity, cancelled=cancelled, deadline=deadline)
+            # Transfer the verified legacy reader, so close releases reader before root.
+            return _ReaderAdapter(reader._reader, owned_root=root)
+        except BaseException:
+            root.close()
+            raise

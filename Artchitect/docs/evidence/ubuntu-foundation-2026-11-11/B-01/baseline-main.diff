@@ -1,0 +1,22 @@
+diff --git a/apps/desktop/src-tauri/src/main.rs b/apps/desktop/src-tauri/src/main.rs
+index 82dec5a..e4abb5c 100644
+--- a/apps/desktop/src-tauri/src/main.rs
++++ b/apps/desktop/src-tauri/src/main.rs
+@@ -72,7 +72,7 @@ fn bootstrap_session(window: tauri::WebviewWindow, state: tauri::State<'_, Sessi
+     }
+     #[cfg(not(windows))]
+     {
+-        let _ = session;
++        drop(session);
+         Err("windows_required".into())
+     }
+ }
+@@ -101,7 +101,7 @@ fn main() {
+                         #[cfg(not(windows))]
+                         let _ = session;
+                     }
+-                }
++                };
+             }
+         })
+         .run(tauri::generate_context!())

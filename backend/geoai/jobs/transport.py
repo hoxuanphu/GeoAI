@@ -1,4 +1,4 @@
-"""Private bounded JSON-RPC transport over a contained Windows process."""
+"""Private bounded JSON-RPC transport over an injected native process."""
 from __future__ import annotations
 
 import os
@@ -9,7 +9,7 @@ import time
 import math
 
 from geoai.contracts import RpcNotification, RpcRequest, RpcSuccess, RpcFailure, WorkerLaunchPacket
-from geoai.jobs.native_process import ManagedProcess
+from geoai.jobs.process import ProcessFactory
 from geoai.jobs.protocol import JsonLines, ProtocolError, classify, correlate_response, encode
 
 
@@ -40,63 +40,29 @@ class WorkerTransport:
         self._reader.start()
 
     @classmethod
-    def launch(cls, executable: Path, packet: WorkerLaunchPacket, *, owner=None,
-               bootstrap_timeout=10):
-        if os.name != "nt":
-            raise TransportError("windows_required")
+    def launch(cls, executable: Path, packet: WorkerLaunchPacket, *, process_factory: ProcessFactory,
+               owner, bootstrap_timeout=10):
+        if (type(bootstrap_timeout) not in (int,float) or not math.isfinite(bootstrap_timeout)
+                or not 0 < bootstrap_timeout <= 60):
+            raise ValueError("invalid_bootstrap_timeout")
+        deadline = time.monotonic() + bootstrap_timeout
         if not isinstance(packet, WorkerLaunchPacket):
             raise TypeError("validated_launch_packet_required")
         if owner is not None and (owner.owner_id, owner.owner_epoch) != (
                 packet.execution_owner_id, packet.owner_epoch):
             raise TransportError("launch_owner_mismatch")
-        if (type(bootstrap_timeout) not in (int, float) or not math.isfinite(bootstrap_timeout)
-                or not 0 < bootstrap_timeout <= 60):
-            raise ValueError("invalid_bootstrap_timeout")
-        import msvcrt
-        read_fd, write_fd = os.pipe()
-        process = None
+        if time.monotonic() >= deadline:
+            raise TransportError("bootstrap_timeout")
+        process = process_factory.launch_worker(Path(executable), packet, owner=owner, deadline=deadline)
         try:
-            os.set_inheritable(read_fd, True)
-            handle = msvcrt.get_osfhandle(read_fd)
-            worker_file = Path(__file__).resolve().parents[1] / "workers" / "main.py"
-            process = ManagedProcess.launch(Path(executable), [str(worker_file), str(handle)],
-                                            child_handles=(handle,), owner=owner)
-            os.close(read_fd)
-            read_fd = -1
-            payload = encode(packet.model_dump(mode="json"))
-            sent_state = []
-            def write_bootstrap():
-                try:
-                    view = memoryview(payload)
-                    while view:
-                        sent = os.write(write_fd, view)
-                        if sent <= 0:
-                            raise TransportError("bootstrap_pipe_closed")
-                        view = view[sent:]
-                except BaseException as exc:
-                    sent_state.append(exc)
-            bootstrap_writer = threading.Thread(target=write_bootstrap, daemon=True)
-            bootstrap_writer.start()
-            bootstrap_writer.join(bootstrap_timeout)
-            if bootstrap_writer.is_alive():
-                process.terminate_group(5)
-                bootstrap_writer.join(1)
-                raise TransportError("bootstrap_timeout")
-            if sent_state:
-                raise TransportError("bootstrap_pipe_closed") from None
-            os.close(write_fd)
-            write_fd = -1
-            return cls(process, expected_attempt=packet.start.attempt,
-                       candidate_id=packet.candidate_manifest_id)
+            result = cls(process, expected_attempt=packet.start.attempt,
+                         candidate_id=packet.candidate_manifest_id)
+            result._process_factory = process_factory
+            return result
         except BaseException:
-            if process is not None:
-                process.terminate_group(5)
+            if not process.terminate_group(time.monotonic()+5):
+                raise TransportError("bootstrap_cleanup_unproved") from None
             raise
-        finally:
-            if read_fd >= 0:
-                os.close(read_fd)
-            if write_fd >= 0:
-                os.close(write_fd)
 
     @property
     def stderr_bytes_seen(self):
@@ -109,7 +75,7 @@ class WorkerTransport:
                 pending.put_nowait(None)
             self._pending.clear()
         try:
-            if self.process.terminate_group(5):
+            if self.process.terminate_group(time.monotonic()+5):
                 self._stopped = True
         except Exception:
             pass
@@ -232,27 +198,32 @@ class WorkerTransport:
             raise TransportError(self._failure or "event_timeout") from None
 
     def group_stopped(self, timeout=0):
-        return self._stopped or self.process.group_stopped(timeout)
+        return self._stopped or self.process.group_stopped(time.monotonic()+timeout)
 
     def shutdown(self, grace_seconds=1, terminate_seconds=5):
         if self._stopped:
             self._stop_threads()
             return True
+        for value in (grace_seconds, terminate_seconds):
+            if type(value) not in (int,float) or not math.isfinite(value) or not 0 <= value <= 86400:
+                raise ValueError("invalid_shutdown_budget")
+        grace_deadline = time.monotonic()+grace_seconds
+        termination_deadline = grace_deadline+terminate_seconds
         with self._state:
             already_closing = self._closing
         if not already_closing and not self._failure:
             try:
-                self.request("shutdown", {"graceful": True}, grace_seconds)
+                self.request("shutdown", {"graceful": True}, max(0.,grace_deadline-time.monotonic()))
             except TransportError:
                 pass
         with self._state:
             self._closing = True
-        if self.process.group_stopped(grace_seconds):
+        if self.process.group_stopped(grace_deadline):
             self.process.close()
             self._stopped = True
             self._stop_threads()
             return True
-        if self.process.terminate_group(terminate_seconds):
+        if self.process.terminate_group(termination_deadline):
             self._stopped = True
             self._stop_threads()
             return True

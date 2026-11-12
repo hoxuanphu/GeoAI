@@ -54,14 +54,14 @@ API dùng `WorkerLaunchPacket` hiện có qua pipe, packet tổng sau encode ph�
 
 ## 4. Owner epoch và project writer
 
-SUP giữ kernel lock cho toàn phiên. API nhận FD native đã xác minh và là bên duy nhất cập nhật ledger/project writer dưới mutex nội bộ. Ledger là nhật ký generation, **không ghi đè chỉ giữ owner mới nhất**. Các private Pydantic model sau dự kiến tạo trong task code; phải có source/registry/fixture/exporter tests cùng SPEC-001 trước serialize, hiện schema chưa có:
+SUP giữ kernel lock cho toàn phiên. API nhận FD native đã xác minh và là bên duy nhất cập nhật ledger/project writer dưới mutex nội bộ. Ledger là nhật ký generation, **không ghi đè chỉ giữ owner mới nhất**. Các private Pydantic model sau đã có source/registry/fixture/codec và schema sinh ở task A-04 ngày 11/11/2026 (`contracts/native.py`); journal writer/native observer vẫn cần triển khai và kiểm riêng:
 
 | Model dự kiến | Fields và invariant |
 | --- | --- |
 | `LinuxOwnerLedger` | Private Contract có `schema_version="0.1.0"`, `created_at` UTC, `epoch_high_watermark: PositiveInt`, `generations: tuple[LinuxOwnerGeneration,...]` ít nhất 1 record; owner ID và epoch duy nhất; high watermark không nhỏ hơn bất kỳ record; giới hạn kỹ thuật foundation 1024 records/1,048,576 encoded bytes gồm LF |
 | `LinuxOwnerGeneration` | `project_id`, `owner_id` là Identifier; `owner_epoch: PositiveInt`; `project_root_identity: FileIdentity`; `boot_id` UUID; `invocation_id` 32 hex lowercase; `supervisor_pid`, `supervisor_start_ticks` là PositiveInt; `cgroup_path` canonical absolute dưới user unit được OS xác minh; `cgroup_identity: FileIdentity` từ directory FD kernel; `state` active/closed chỉ để chẩn đoán |
 
-Journal là provenance/counter, không là stop evidence hoặc nội dung project export. Hai model thuộc private registry dự kiến `PRIVATE_NATIVE_MODELS`, không thuộc CONTRACT_MODELS/WIRE_MODELS của record project/public RPC. V1 giữ records, không tự GC record generation, kể cả khi đổi project; đầy giới hạn thì chặn generation mới và báo resource_exhausted, không xóa record chưa reconcile. Sau này compact cần task/policy riêng có bằng chứng, không sửa budget nghiệp vụ bằng giới hạn fixture này.
+Journal là provenance/counter, không là stop evidence hoặc nội dung project export. Hai model thuộc private registry `PRIVATE_NATIVE_MODELS`, không thuộc CONTRACT_MODELS/WIRE_MODELS của record project/public RPC. V1 giữ records, không tự GC record generation, kể cả khi đổi project; đầy giới hạn thì chặn generation mới và báo resource_exhausted, không xóa record chưa reconcile. Sau này compact cần task/policy riêng có bằng chứng, không sửa budget nghiệp vụ bằng giới hạn fixture này.
 
 Trước mỗi generation nhận project:
 

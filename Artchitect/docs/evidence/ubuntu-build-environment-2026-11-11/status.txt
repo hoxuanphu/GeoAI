@@ -1,0 +1,15 @@
+preflight exit=0
+contracts exit=0
+integration exit=0
+architecture exit=0
+catalog exit=0
+storage exit=1
+jobs exit=0
+schemas exit=0
+api-client exit=0
+pip exit=0
+frontend-tests exit=0
+frontend-build exit=0
+display exit=0
+native-link exit=0
+cargo-check exit=0

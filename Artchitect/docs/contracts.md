@@ -4,7 +4,7 @@
 
 ## Quy ước chung
 
-[SPEC-010](specs/010-ubuntu-foundation.md) dự kiến thêm private `LinuxOwnerLedger` khi triển khai, với layout trong [native profile](platforms/ubuntu/ubuntu-native-profile.md). Model này chưa có trong Pydantic/schema hiện hành; phải thêm source/registry/fixture/exporter/tests cùng task contracts trước sử dụng. Profile control shell dùng hằng byte native và SessionDescriptor hiện có, không tạo public RPC hoặc nới capabilities Literal false bằng tài liệu.
+[SPEC-010](specs/010-ubuntu-foundation.md) đã có private `LinuxOwnerLedger`/`LinuxOwnerGeneration` ở task A-04, với layout trong [native profile](platforms/ubuntu/ubuntu-native-profile.md). Source Pydantic, PRIVATE_NATIVE_MODELS, fixture, codec, exporter và tests đã thêm; journal writer và native observer vẫn cần triển khai/kiểm riêng. Profile control shell dùng hằng byte native và SessionDescriptor hiện có, không tạo public RPC hoặc nới capabilities Literal false bằng tài liệu.
 
 - Mọi record lưu lâu dài có `schema_version = "0.1.0"` và `created_at`; thời gian phải có timezone và được chuẩn hóa UTC. Kiểu giá trị lồng như CrsRef/AttemptKey không lặp metadata record.
 - Từ chối version khác và trường không biết. ID nội bộ gồm chữ/số, dấu chấm/gạch/gạch dưới/hai chấm; asset ID có namespace provider. ID không phải URL, đường dẫn hay credential.
@@ -134,3 +134,9 @@ SPEC-003 bổ sung `contracts/api.py`: `HealthResponse`/`CapabilitiesResponse` t
 4. Routes FastAPI metadata ở SPEC-003 dùng Pydantic, sinh [OpenAPI](../../schemas/openapi-v0.1.0.json) và [TypeScript client](../../apps/desktop/src/generated/api.ts) bằng `python tools/export_api_client.py`; kiểm `--check` tương tự, không viết lại type frontend bằng tay.
 
 Ví dụ cấu trúc ở [fixture workflow](../../tests/fixtures/contracts/workflow.json). Đây là tập payload tổng hợp đã qua suite contracts, chưa phải workflow có thể chạy: chỉ có một asset blue, không đủ sáu band của ModelSpec; hash/normalization/tolerance/coverage là số giả. Fixture không thay ảnh HLS/nhãn/checkpoint hoặc hồ sơ G0. [Fixture RPC](../../tests/fixtures/contracts/rpc-workflow.json) và [private context](../../tests/fixtures/contracts/worker-access-context.json) kiểm cấu trúc start/context, không thay handshake hoặc I/O thực.
+
+## Private Linux owner journal — A-04, 11/11/2026
+
+`contracts/native.py` định nghĩa LinuxOwnerGeneration/ LinuxOwnerLedger, registry `PRIVATE_NATIVE_MODELS` và codec encode_ledger/decode_ledger. Hai model chỉ là metadata journal, không thuộc durable project records, private worker launch registry hoặc public wire/API. Không syscall/OS probe trong contracts; native observer phải xác minh FD/UID/unit/invocation/root/cgroup thực trước dùng làm recovery provenance. Không dùng JSON state active/closed làm stop evidence.
+
+Ledger giữ ít nhất 1 và tối đa 1024 generations, owner ID/epoch duy nhất, high watermark bao mọi epoch; PositiveInt strict không nhận bool. Codec giới hạn độc lập 1,048,576 UTF-8 bytes gồm đúng một LF cuối, từ chối duplicate JSON keys, NaN/Infinity, trailing JSON, UTF-8 lỗi và schema/version/field không hợp lệ. Cgroup path chỉ kiểm cú pháp canonical và tên unit v1, không tự cấp quyền. Fixture tổng hợp tại `tests/fixtures/contracts/native-ledger.json`; schema chỉ sinh qua exporter. SessionDescriptor/WorkerLaunchPacket/CapabilitiesResponse và API artifact giữ nguyên.

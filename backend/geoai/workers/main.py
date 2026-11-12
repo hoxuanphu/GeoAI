@@ -35,7 +35,7 @@ def run(handle):
     from geoai.jobs.protocol import JsonLines, ProtocolError, classify, encode, failure
     from geoai.storage.resolver import GrantRegistry, GrantError
     from geoai.storage.io_resolver import WorkerIOResolver, ExternalRegistration
-    from geoai.storage.windows_io import NativeRoot, NativeIdentity, StorageIOError
+    from geoai.storage.windows_io import NativeRoot, NativeIdentity, StorageIOError, WindowsIOFactory
     from geoai.workers.bootstrap import read_launch_packet
 
     packet = read_launch_packet(handle)
@@ -54,11 +54,12 @@ def run(handle):
                              owner_epoch=packet.owner_epoch)
     registry.register(context_bytes=context_bytes, job_bytes=job_bytes,
                       snapshot_bytes=snapshot_bytes, expected_start=packet.start)
+    io_factory = WindowsIOFactory()
     roots = {}
     staging_root = None
     try:
         for item in packet.managed_roots:
-            roots[item.root_id] = NativeRoot(Path(item.absolute_path))
+            roots[item.root_id] = io_factory.open_registered_root(item.root_id, Path(item.absolute_path), purpose="read")
         if packet.fixture_output is not None:
             if packet.fixture_output.staging_id != context.staging_id:
                 raise ValueError("fixture_staging_mismatch")
@@ -67,7 +68,7 @@ def run(handle):
             Path(item.absolute_path), NativeIdentity(item.file_identity.volume_id,
                                                      item.file_identity.file_id))
                     for item in packet.external_registrations}
-        resolver = WorkerIOResolver(registry, roots, external)
+        resolver = WorkerIOResolver(registry, roots, external, io_factory=io_factory)
         writer_lock = threading.Lock()
         cancelled = threading.Event()
         done = threading.Event()

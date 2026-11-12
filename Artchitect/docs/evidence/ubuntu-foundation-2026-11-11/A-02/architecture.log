@@ -1,0 +1,8 @@
+test_contracts_require_only_standard_library_and_pydantic (test_import_boundaries.ImportBoundaryTests.test_contracts_require_only_standard_library_and_pydantic) ... ok
+test_internal_dependencies_follow_architecture (test_import_boundaries.ImportBoundaryTests.test_internal_dependencies_follow_architecture) ... ok
+test_shared_imports_do_not_load_windows_adapters (test_native_adapters.NativeAdapterImportTests.test_shared_imports_do_not_load_windows_adapters) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.618s
+
+OK

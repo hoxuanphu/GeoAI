@@ -1,0 +1,56 @@
+
+> geoai-desktop-foundation@0.1.0 tauri
+> tauri build --debug --ci --bundles deb --config {"bundle":{"active":true,"targets":["deb"],"shortDescription":"GeoAI desktop foundation preview","longDescription":"Development preview of the GeoAI desktop shell. Native Linux backend execution is not available in this build.","icon":["icons/icon.png"],"resources":{"icons/LICENSE_APACHE-2.0":"third-party/tauri-icon/LICENSE_APACHE-2.0","icons/README.md":"third-party/tauri-icon/README.md"}}} -- --locked
+
+        Info Looking up installed tauri packages to check mismatched versions...
+     Running beforeBuildCommand `npm run build`
+
+> geoai-desktop-foundation@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 33 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.35 kB │ gzip:  0.26 kB
+dist/assets/index-BI_Yx7UG.css    1.21 kB │ gzip:  0.58 kB
+dist/assets/index-DCfWIAfF.js   226.37 kB │ gzip: 70.95 kB
+✓ built in 6.02s
+   Compiling geoai-desktop v0.1.0 (/workspace/GeoAI/apps/desktop/src-tauri)
+warning: variable does not need to be mutable
+  --> src/main.rs:58:9
+   |
+58 |     let mut session = state.0.lock().map_err(|_| "session_state_unavailable")?;
+   |         ----^^^^^^^
+   |         |
+   |         help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> src/main.rs:96:33
+   |
+96 |                     if let Some(mut session) = guard.take() {
+   |                                 ----^^^^^^^
+   |                                 |
+   |                                 help: remove this `mut`
+
+warning: method `validate` is never used
+  --> src/main.rs:19:8
+   |
+18 | impl SessionDescriptor {
+   | ---------------------- method in this implementation
+19 |     fn validate(&self) -> Result<(), &'static str> {
+   |        ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `geoai-desktop` (bin "geoai-desktop") generated 3 warnings (run `cargo fix --bin "geoai-desktop" -p geoai-desktop` to apply 2 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.75s
+       Built application at: /state/target/debug/geoai-desktop
+        Info Patching /state/target/debug/geoai-desktop with bundle type information: deb
+    Bundling GeoAI_0.1.0_amd64.deb (/state/target/debug/bundle/deb/GeoAI_0.1.0_amd64.deb)
+    Finished 1 bundle at:
+        /state/target/debug/bundle/deb/GeoAI_0.1.0_amd64.deb (46.89 MiB)
+

@@ -285,7 +285,7 @@ class RepositoryTests(unittest.TestCase):
         self.repo.confirm_stopped("job:2", cancelled)
         engine = create_engine(f"sqlite:///{self.db.as_posix()}")
         with engine.connect() as conn:
-            states = dict(conn.execute(text("SELECT job_id,state FROM attempts")))
+            states = {job_id: state for job_id, state in conn.execute(text("SELECT job_id,state FROM attempts")).all()}
             self.assertEqual(states, {"job:1": "succeeded", "job:2": "cancelled"})
         engine.dispose()
 

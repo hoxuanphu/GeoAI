@@ -1,6 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use serde::{Deserialize, Serialize};
+use geoai_desktop::session::SessionDescriptor;
 use std::sync::Mutex;
 use tauri::{Manager, WebviewUrl, WebviewWindowBuilder};
 use url::Url;
@@ -8,32 +8,6 @@ use url::Url;
 #[cfg(windows)]
 mod windows_native;
 
-#[derive(Clone, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-struct SessionDescriptor {
-    base_url: String,
-    token: String,
-}
-
-impl SessionDescriptor {
-    fn validate(&self) -> Result<(), &'static str> {
-        let url = Url::parse(&self.base_url).map_err(|_| "invalid_session_descriptor")?;
-        if url.scheme() != "http"
-            || url.host_str() != Some("127.0.0.1")
-            || !matches!(url.port(), Some(1..=65535))
-            || url.path() != "/"
-            || url.query().is_some()
-            || url.fragment().is_some()
-            || !url.username().is_empty()
-            || url.password().is_some()
-            || self.token.len() != 43
-            || !self.token.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_')
-        {
-            return Err("invalid_session_descriptor");
-        }
-        Ok(())
-    }
-}
 
 fn trusted_window_url(url: &Url) -> bool {
     let allowed = (url.scheme() == "tauri" && url.host_str() == Some("localhost") && url.port().is_none())
@@ -72,7 +46,7 @@ fn bootstrap_session(window: tauri::WebviewWindow, state: tauri::State<'_, Sessi
     }
     #[cfg(not(windows))]
     {
-        let _ = session;
+        drop(session);
         Err("windows_required".into())
     }
 }
@@ -101,7 +75,7 @@ fn main() {
                         #[cfg(not(windows))]
                         let _ = session;
                     }
-                }
+                };
             }
         })
         .run(tauri::generate_context!())

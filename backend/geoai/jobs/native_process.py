@@ -11,8 +11,7 @@ import time
 import uuid
 
 
-class NativeProcessError(RuntimeError):
-    """A child could not be contained or its stop could not be proved."""
+from geoai.jobs.process import NativeProcessError, remaining_seconds
 
 
 if os.name == "nt":
@@ -325,3 +324,221 @@ class ManagedProcess:
             _check(CloseHandle(self._job), "job_handle_close_failed")
             self._job = None
         self._closed = True
+
+
+class _OwnedFD:
+    """Close exactly once, before the OS may reuse this descriptor number."""
+    def __init__(self, fd):
+        self.fd = fd
+        self._mutex = threading.Lock()
+
+    def close(self):
+        with self._mutex:
+            fd, self.fd = self.fd, None
+            if fd is not None:
+                os.close(fd)
+
+
+class WindowsManagedProcess:
+    """Deadline adapter for an existing native process; grants no stop proof."""
+    def __init__(self, native):
+        self._native = native
+        self._lease = None
+        self._lease_mutex = threading.RLock()
+
+    def _release_writer(self):
+        with self._lease_mutex:
+            if self._lease is not None:
+                self._lease.close()
+                self._lease = None
+
+    @property
+    def stdin(self): return self._native.stdin
+    @property
+    def stdout(self): return self._native.stdout
+    @property
+    def stderr(self): return self._native.stderr
+    @property
+    def pid(self): return self._native.pid
+    @property
+    def stderr_bytes_seen(self): return self._native.stderr_bytes_seen
+
+    def start_stderr_drain(self, max_count=65536):
+        self._native.start_stderr_drain(max_count=max_count)
+
+    def wait(self, deadline):
+        return self._native.wait(remaining_seconds(deadline))
+
+    def group_stopped(self, deadline):
+        return self._native.group_stopped(remaining_seconds(deadline))
+
+    def terminate_group(self, deadline):
+        stopped = self._native.terminate_group(remaining_seconds(deadline))
+        if stopped:
+            self._release_writer()
+        return stopped
+
+    def close(self):
+        self._native.close()
+        self._release_writer()
+
+
+class _WindowsManagedProcess(WindowsManagedProcess):
+    """Factory-registered process with immutable project/attempt/owner binding."""
+    def __init__(self, native, factory, owner, writer, packet, *, lease=None):
+        super().__init__(native)
+        self._lease = lease
+        self._factory, self._owner, self._writer = factory, owner, writer
+        self._binding = (packet.project_id, packet.start.attempt.model_dump_json(),
+                         packet.execution_owner_id, packet.owner_epoch)
+
+
+class _WindowsStopEvidence:
+    def __init__(self, process, project_id, attempt):
+        self._process, self._project = process, project_id
+        self._attempt = attempt.model_dump_json()
+
+    def assert_stopped(self, project_id, attempt):
+        process = self._process
+        owner = process._owner
+        if (project_id != self._project or attempt.model_dump_json() != self._attempt
+                or (project_id,self._attempt) != process._binding[:2] or owner is None
+                or owner._closed or owner._recovery_required
+                or (owner.owner_id,owner.owner_epoch) != process._binding[2:]
+                or owner._writers.get(project_id) is not process._writer):
+            raise NativeProcessError('workload_stop_binding_invalid')
+        process._writer.assert_held(project_id)
+        # Always re-observe the same native Job Object, not a captured bool/PID.
+        if not process.group_stopped(time.monotonic()):
+            raise NativeProcessError('workload_still_active')
+
+
+class _BootstrapCleanupUnproved(NativeProcessError):
+    """The factory retained both native process and writer lease for recovery."""
+
+
+class WindowsProcessFactory:
+    def __init__(self):
+        import weakref
+        self._processes = weakref.WeakValueDictionary()
+        self._unproved = []
+        self._mutex = threading.RLock()
+
+    def launch_worker(self, executable, packet, *, owner, deadline):
+        from geoai.contracts import WorkerLaunchPacket
+        from geoai.storage.windows_owner import ExecutionOwner, WindowsExecutionOwner
+        if remaining_seconds(deadline) <= 0:
+            raise NativeProcessError('bootstrap_timeout')
+        if not isinstance(packet,WorkerLaunchPacket):
+            raise TypeError('validated_launch_packet_required')
+        if os.name != 'nt':
+            raise NativeProcessError('windows_required')
+        if type(owner) is WindowsExecutionOwner:
+            owner = owner._native
+        writer = None
+        if owner is not None:
+            if type(owner) is not ExecutionOwner or owner._closed or owner._recovery_required:
+                raise NativeProcessError('unverified_execution_owner')
+            if (owner.owner_id,owner.owner_epoch) != (packet.execution_owner_id,packet.owner_epoch):
+                raise NativeProcessError('launch_owner_mismatch')
+            writer = owner._writers.get(packet.project_id)
+            if writer is None:
+                raise NativeProcessError('project_not_claimed')
+            writer.assert_held(packet.project_id)
+        # Explicit owner=None preserves low-level contained Windows fixtures;
+        # it can never produce workload/owner stop evidence for publication.
+        lease = writer.retain(packet.project_id) if writer is not None else None
+        try:
+            native = self._launch_with_bootstrap(Path(executable),packet,owner,deadline,lease=lease)
+        except _BootstrapCleanupUnproved:
+            raise  # The quarantine owns the lease until native recovery is proved.
+        except BaseException:
+            if lease is not None: lease.close()
+            raise
+        result = _WindowsManagedProcess(native,self,owner,writer,packet,lease=lease)
+        with self._mutex:
+            self._processes[id(result)] = result
+        return result
+
+    def _launch_with_bootstrap(self, executable, packet, owner, deadline, *, lease=None):
+        from geoai.jobs.protocol import encode
+        import msvcrt
+        payload = encode(packet.model_dump(mode='json'))
+        if remaining_seconds(deadline) <= 0:
+            raise NativeProcessError('bootstrap_timeout')
+        read_fd,write_fd = os.pipe()
+        read,write = _OwnedFD(read_fd),_OwnedFD(write_fd)
+        process,writer_thread = None,None
+        start_lock = threading.Lock()
+        state = {'started':False,'abort':False}
+        errors = []
+        try:
+            os.set_inheritable(read.fd,True)
+            handle = msvcrt.get_osfhandle(read.fd)
+            worker_file = Path(__file__).resolve().parents[1]/'workers'/'main.py'
+            if remaining_seconds(deadline) <= 0:
+                raise NativeProcessError('bootstrap_timeout')
+            process = ManagedProcess.launch(executable,[str(worker_file),str(handle)],
+                                            child_handles=(handle,),owner=owner)
+            read.close()
+            def send():
+                try:
+                    # Thread.start sets its started event before entering target.
+                    # This handshake prevents writes after an interrupted start
+                    # while the parent still owns cleanup of the descriptor.
+                    with start_lock:
+                        aborted = state['abort']
+                    if aborted: return
+                    view = memoryview(payload)
+                    while view:
+                        sent = os.write(write.fd,view)
+                        if sent <= 0: raise NativeProcessError('bootstrap_pipe_closed')
+                        view = view[sent:]
+                except BaseException as error:
+                    errors.append(error)
+                finally:
+                    write.close()
+            writer_thread = threading.Thread(target=send,daemon=True)
+            with start_lock:
+                try:
+                    writer_thread.start()
+                    state['started'] = True
+                except BaseException:
+                    state['abort'] = True
+                    raise
+            writer_thread.join(remaining_seconds(deadline))
+            if writer_thread.is_alive():
+                raise NativeProcessError('bootstrap_timeout')
+            if errors:
+                raise NativeProcessError('bootstrap_pipe_closed') from None
+            if remaining_seconds(deadline) <= 0:
+                raise NativeProcessError('bootstrap_timeout')
+            return process
+        except BaseException:
+            if process is not None:
+                try:
+                    stopped = process.terminate_group(5)  # Legacy duration boundary.
+                except BaseException:
+                    stopped = False
+                if not stopped:
+                    with self._mutex: self._unproved.append((process,lease))
+                    raise _BootstrapCleanupUnproved('bootstrap_cleanup_unproved') from None
+                if writer_thread is not None and state['started']:
+                    writer_thread.join(1)
+                    if writer_thread.is_alive():
+                        raise NativeProcessError('bootstrap_pipe_state_unknown') from None
+            raise
+        finally:
+            read.close()
+            # Once started, only the writer thread closes its FD. Closing it in
+            # this finally could hit a blocked write or a recycled descriptor.
+            if not state['started']:
+                write.close()
+
+    def stop_evidence(self, process, *, project_id, attempt):
+        with self._mutex:
+            if id(process) not in self._processes or self._processes[id(process)] is not process:
+                raise NativeProcessError('unregistered_process')
+            if process._binding[:2] != (project_id,attempt.model_dump_json()) or process._owner is None:
+                raise NativeProcessError('workload_stop_binding_invalid')
+            return _WindowsStopEvidence(process,project_id,attempt)

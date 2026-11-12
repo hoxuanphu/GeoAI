@@ -1,3 +1,4 @@
+from geoai.jobs.native_process import WindowsProcessFactory, WindowsManagedProcess
 """Real Windows worker process and private-handle transport checks."""
 from copy import deepcopy
 from hashlib import sha256
@@ -18,7 +19,7 @@ from geoai.jobs.transport import WorkerTransport, TransportError
 from geoai.jobs.publisher import Publisher, PublicationError
 from geoai.storage.io_resolver import WorkerIOResolver, ExternalRegistration
 from geoai.storage.resolver import GrantRegistry
-from geoai.storage.windows_io import NativeRoot, NativeIdentity
+from geoai.storage.windows_io import NativeRoot, WindowsIOFactory, NativeIdentity
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -115,7 +116,7 @@ class WorkerTransportTests(unittest.TestCase):
 
     def launch(self, **overrides):
         payload = dict(self.payload, **overrides)
-        process = WorkerTransport.launch(Path(sys.executable), WorkerLaunchPacket.model_validate(payload))
+        process = WorkerTransport.launch(Path(sys.executable), WorkerLaunchPacket.model_validate(payload), process_factory=WindowsProcessFactory(), owner=None)
         self.addCleanup(process.shutdown, 0.1, 3)
         response = process.request("capabilities", {"protocol_version": "0.1.0", "schema_version": "0.1.0"}, 3)
         self.assertIn("fixture", response.result["features"])
@@ -177,7 +178,7 @@ class WorkerTransportTests(unittest.TestCase):
         for code in cases:
             with self.subTest(code=code[:35]):
                 native = ManagedProcess.launch(Path(sys.executable), ["-c", code])
-                process = WorkerTransport(native)
+                process = WorkerTransport(WindowsManagedProcess(native))
                 self.addCleanup(process.shutdown, 0.1, 3)
                 with self.assertRaises(TransportError):
                     process.request("capabilities", {"protocol_version": "0.1.0", "schema_version": "0.1.0"}, 0.3)
@@ -187,7 +188,7 @@ class WorkerTransportTests(unittest.TestCase):
     def test_stdin_eof_stops_worker(self):
         process = self.launch()
         process.process.stdin.close()
-        self.assertTrue(process.process.wait(3))
+        self.assertTrue(process.process.wait(time.monotonic()+3))
         with self.assertRaises(TransportError):
             process.request("start", self.payload["start"], 1)
 
@@ -200,7 +201,7 @@ class WorkerTransportTests(unittest.TestCase):
             "two=json.loads(sys.stdin.buffer.readline());os.write(1,reply(two['id']));time.sleep(.3)\n"
         )
         native = ManagedProcess.launch(Path(sys.executable), ["-c", code])
-        process = WorkerTransport(native)
+        process = WorkerTransport(WindowsManagedProcess(native))
         self.addCleanup(process.shutdown, 0.1, 3)
         params = {"protocol_version": "0.1.0", "schema_version": "0.1.0"}
         with self.assertRaises(TransportError):
@@ -214,7 +215,7 @@ class WorkerTransportTests(unittest.TestCase):
             "time.sleep(30)"
         )
         native = ManagedProcess.launch(Path(sys.executable), ["-c", code])
-        process = WorkerTransport(native)
+        process = WorkerTransport(WindowsManagedProcess(native))
         self.addCleanup(process.shutdown, 0.1, 3)
         with self.assertRaises(TransportError):
             process.request("capabilities", {"protocol_version": "0.1.0",
@@ -253,7 +254,7 @@ class WorkerTransportTests(unittest.TestCase):
 
     def test_mismatched_launch_identity_fails_before_capabilities(self):
         packet = WorkerLaunchPacket.model_validate(dict(self.payload, project_id="project:other"))
-        process = WorkerTransport.launch(Path(sys.executable), packet)
+        process = WorkerTransport.launch(Path(sys.executable), packet, process_factory=WindowsProcessFactory(), owner=None)
         self.addCleanup(process.shutdown, .1, 3)
         with self.assertRaises(TransportError):
             process.request("capabilities", {"protocol_version": "0.1.0",
@@ -265,7 +266,7 @@ class WorkerTransportTests(unittest.TestCase):
             owner_epoch = 1
         with self.assertRaises(TransportError):
             WorkerTransport.launch(Path(sys.executable),
-                                   WorkerLaunchPacket.model_validate(self.payload), owner=OtherOwner())
+                                   WorkerLaunchPacket.model_validate(self.payload), owner=OtherOwner(), process_factory=WindowsProcessFactory())
 
     def test_shutdown_joins_transport_threads(self):
         process = self.launch()
@@ -276,7 +277,7 @@ class WorkerTransportTests(unittest.TestCase):
     def test_fatal_frame_joins_transport_threads(self):
         native = ManagedProcess.launch(Path(sys.executable), ["-c",
             "import os,time;os.write(1,b'not-json\\n');time.sleep(30)"])
-        process = WorkerTransport(native)
+        process = WorkerTransport(WindowsManagedProcess(native))
         self.addCleanup(process.shutdown, .1, 3)
         with self.assertRaises(TransportError):
             process.request("capabilities", {"protocol_version": "0.1.0",
@@ -312,7 +313,7 @@ class WorkerTransportTests(unittest.TestCase):
         packet = WorkerLaunchPacket.model_validate(dict(self.payload, context_json=context_json,
                                                          start=start, fixture_output=fixture_output,
                                                          fixture_mode="complete"))
-        process = WorkerTransport.launch(Path(sys.executable), packet)
+        process = WorkerTransport.launch(Path(sys.executable), packet, process_factory=WindowsProcessFactory(), owner=None)
         self.addCleanup(process.shutdown, .1, 3)
         process.request("capabilities", {"protocol_version": "0.1.0", "schema_version": "0.1.0"}, 3)
         self.assertTrue(process.request("start", start, 3).result["accepted"])
@@ -332,13 +333,14 @@ class WorkerTransportTests(unittest.TestCase):
                         snapshot_bytes=packet.snapshot_json.encode(),
                         expected_start=StartParams.model_validate(start))
         grants.accept(StartParams.model_validate(start))
-        roots = {"root:1": NativeRoot(self.root)}
+        io_factory = WindowsIOFactory()
+        roots = {"root:1": io_factory.open_registered_root("root:1", self.root, purpose="read")}
         external = {item.registration_id: ExternalRegistration(Path(item.absolute_path),
                      NativeIdentity(
                          item.file_identity.volume_id, item.file_identity.file_id))
                     for item in packet.external_registrations}
-        staging_root = NativeRoot(staging_path)
-        output_root = NativeRoot(output_path)
+        staging_root = io_factory.open_registered_root("staging", staging_path, purpose="staging")
+        output_root = io_factory.open_registered_root("output", output_path, purpose="publication")
         self.addCleanup(grants.close)
         for root in (*roots.values(), staging_root, output_root):
             self.addCleanup(root.close)
@@ -360,9 +362,9 @@ class WorkerTransportTests(unittest.TestCase):
                 return result
 
         repository = MetadataRepository()
-        publisher = Publisher(repository, grants, WorkerIOResolver(grants, roots, external),
+        publisher = Publisher(repository, grants, WorkerIOResolver(grants, roots, external, io_factory=io_factory),
                               {"staging:1": staging_root}, output_root, Guard(),
-                              validator=lambda _job, _manifest: True)
+                              validator=lambda _job, _manifest: True, io_factory=io_factory)
         publisher.register_candidate(candidate_id=packet.candidate_manifest_id,
             context_id=context["access_context_id"], project_id=context["project_id"],
             attempt=attempt, staging_id=context["staging_id"],
@@ -383,8 +385,8 @@ class WorkerTransportTests(unittest.TestCase):
     def test_capabilities_handshake_and_finite_deadline_required(self):
         packet = WorkerLaunchPacket.model_validate(self.payload)
         with self.assertRaises(ValueError):
-            WorkerTransport.launch(Path(sys.executable), packet, bootstrap_timeout=float("nan"))
-        process = WorkerTransport.launch(Path(sys.executable), packet)
+            WorkerTransport.launch(Path(sys.executable), packet, bootstrap_timeout=float("nan"), process_factory=WindowsProcessFactory(), owner=None)
+        process = WorkerTransport.launch(Path(sys.executable), packet, process_factory=WindowsProcessFactory(), owner=None)
         self.addCleanup(process.shutdown, .1, 3)
         with self.assertRaises(TransportError):
             process.request("start", self.payload["start"], 1)
@@ -397,7 +399,7 @@ class WorkerTransportTests(unittest.TestCase):
 
     def test_nonreading_child_cannot_block_request_deadline_or_shutdown(self):
         native = ManagedProcess.launch(Path(sys.executable), ["-c", "import time;time.sleep(30)"])
-        process = WorkerTransport(native)
+        process = WorkerTransport(WindowsManagedProcess(native))
         self.addCleanup(process.shutdown, .1, 3)
         params = {"protocol_version": "0.1.0", "schema_version": "0.1.0"}
         def timed_request(_):

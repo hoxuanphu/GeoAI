@@ -1496,6 +1496,124 @@
       "type": "object"
     },
     "JsonValue": {},
+    "LinuxOwnerGeneration": {
+      "additionalProperties": false,
+      "properties": {
+        "boot_id": {
+          "format": "uuid",
+          "title": "Boot Id",
+          "type": "string"
+        },
+        "cgroup_identity": {
+          "$ref": "#/$defs/FileIdentity"
+        },
+        "cgroup_path": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Cgroup Path",
+          "type": "string"
+        },
+        "invocation_id": {
+          "maxLength": 32,
+          "minLength": 32,
+          "pattern": "^[0-9a-f]{32}$",
+          "title": "Invocation Id",
+          "type": "string"
+        },
+        "owner_epoch": {
+          "exclusiveMinimum": 0,
+          "title": "Owner Epoch",
+          "type": "integer"
+        },
+        "owner_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Owner Id",
+          "type": "string"
+        },
+        "project_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "project_root_identity": {
+          "$ref": "#/$defs/FileIdentity"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "closed"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "supervisor_pid": {
+          "exclusiveMinimum": 0,
+          "title": "Supervisor Pid",
+          "type": "integer"
+        },
+        "supervisor_start_ticks": {
+          "exclusiveMinimum": 0,
+          "title": "Supervisor Start Ticks",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "project_id",
+        "owner_id",
+        "owner_epoch",
+        "project_root_identity",
+        "boot_id",
+        "invocation_id",
+        "supervisor_pid",
+        "supervisor_start_ticks",
+        "cgroup_path",
+        "cgroup_identity",
+        "state"
+      ],
+      "title": "LinuxOwnerGeneration",
+      "type": "object"
+    },
+    "LinuxOwnerLedger": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "epoch_high_watermark": {
+          "exclusiveMinimum": 0,
+          "title": "Epoch High Watermark",
+          "type": "integer"
+        },
+        "generations": {
+          "items": {
+            "$ref": "#/$defs/LinuxOwnerGeneration"
+          },
+          "maxItems": 1024,
+          "minItems": 1,
+          "title": "Generations",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "epoch_high_watermark",
+        "generations"
+      ],
+      "title": "LinuxOwnerLedger",
+      "type": "object"
+    },
     "ManagedLocalLocation": {
       "additionalProperties": false,
       "properties": {
@@ -3754,6 +3872,10 @@
       "ResultRevision",
       "RunManifest",
       "TransformSpec"
+    ],
+    "private_native": [
+      "LinuxOwnerGeneration",
+      "LinuxOwnerLedger"
     ],
     "private_runtime": [
       "SessionDescriptor",

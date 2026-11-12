@@ -1,3 +1,4 @@
+from geoai.jobs.native_process import WindowsProcessFactory
 """Full synthetic process/files/SQLite composition; requires optional DB extra."""
 import importlib.util
 import json
@@ -46,7 +47,7 @@ class JobRecoveryTests(unittest.TestCase):
 
     def run_worker(self):
         from geoai.jobs.transport import WorkerTransport
-        self.transport = WorkerTransport.launch(Path(sys.executable), self.packet, owner=self.owner)
+        self.transport = WorkerTransport.launch(Path(sys.executable), self.packet, owner=self.owner, process_factory=WindowsProcessFactory())
         self.addCleanup(self.transport.shutdown, .2, 5)
         self.transport.request('capabilities', {'protocol_version': '0.1.0', 'schema_version': '0.1.0'}, 5)
         accepted = self.transport.request('start', self.packet.start, 5)
@@ -62,7 +63,7 @@ class JobRecoveryTests(unittest.TestCase):
         from geoai.jobs.publisher import Publisher
         from geoai.storage.resolver import GrantRegistry
         from geoai.storage.io_resolver import WorkerIOResolver, ExternalRegistration
-        from geoai.storage.windows_io import NativeRoot, NativeIdentity
+        from geoai.storage.windows_io import WindowsIOFactory, NativeIdentity
         p = self.packet
         grants = GrantRegistry(worker_id=p.bootstrap.worker_id, launch_nonce=p.bootstrap.launch_nonce,
             project_id=p.project_id, execution_owner_id=p.execution_owner_id, owner_epoch=p.owner_epoch)
@@ -70,18 +71,19 @@ class JobRecoveryTests(unittest.TestCase):
         grants.register(context_bytes=p.context_json.encode(), job_bytes=p.job_json.encode(),
             snapshot_bytes=p.snapshot_json.encode(), expected_start=p.start)
         grants.accept(p.start)
-        roots = {r.root_id: NativeRoot(r.absolute_path) for r in p.managed_roots}
+        io_factory = WindowsIOFactory()
+        roots = {r.root_id: io_factory.open_registered_root(r.root_id, Path(r.absolute_path), purpose="read") for r in p.managed_roots}
         external = {r.registration_id: ExternalRegistration(Path(r.absolute_path),
             NativeIdentity(r.file_identity.volume_id, r.file_identity.file_id)) for r in p.external_registrations}
-        staging = NativeRoot(p.fixture_output.absolute_path)
+        staging = io_factory.open_registered_root("staging", Path(p.fixture_output.absolute_path), purpose="staging")
         destination = Path(self.fixture.temp.name) / 'published'
         destination.mkdir()
-        output = NativeRoot(destination)
+        output = io_factory.open_registered_root("output", destination, purpose="publication")
         for root in (*roots.values(), staging, output):
             self.addCleanup(root.close)
-        publisher = Publisher(self.repo, grants, WorkerIOResolver(grants, roots, external),
+        publisher = Publisher(self.repo, grants, WorkerIOResolver(grants, roots, external, io_factory=io_factory),
             {p.fixture_output.staging_id: staging}, output, self.writer,
-            validator=lambda job, manifest: True)  # Synthetic profile only.
+            validator=lambda job, manifest: True, io_factory=io_factory)  # Synthetic profile only.
         publisher.register_candidate(candidate_id=p.candidate_manifest_id,
             context_id=p.start.access_context_id, project_id=p.project_id, attempt=p.start.attempt,
             staging_id=p.fixture_output.staging_id,

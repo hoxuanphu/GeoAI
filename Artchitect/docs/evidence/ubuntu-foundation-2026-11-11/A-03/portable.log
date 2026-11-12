@@ -1,0 +1,18 @@
+test_capabilities_and_shutdown_over_real_pipes (test_process_factory.PortableTransportRoundtripTests.test_capabilities_and_shutdown_over_real_pipes) ... ok
+test_expired_deadline_does_not_spawn (test_process_factory.ProcessFactoryTests.test_expired_deadline_does_not_spawn) ... ok
+test_owned_fd_close_cannot_close_reused_descriptor (test_process_factory.ProcessFactoryTests.test_owned_fd_close_cannot_close_reused_descriptor) ... ok
+test_reexported_error_classes_keep_catch_compatibility (test_process_factory.ProcessFactoryTests.test_reexported_error_classes_keep_catch_compatibility) ... ok
+test_transport_delegates_original_packet_and_absolute_deadline (test_process_factory.ProcessFactoryTests.test_transport_delegates_original_packet_and_absolute_deadline) ... ok
+test_transport_import_does_not_load_windows_adapter (test_process_factory.ProcessFactoryTests.test_transport_import_does_not_load_windows_adapter) ... ok
+test_legacy_duration_receives_remaining_absolute_budget (test_process_factory.WindowsAdapterPolicyUnitTests.test_legacy_duration_receives_remaining_absolute_budget) ... ok
+test_partial_bootstrap_failure_closes_only_owned_fds (test_process_factory.WindowsAdapterPolicyUnitTests.test_partial_bootstrap_failure_closes_only_owned_fds) ... ok
+test_stop_evidence_rechecks_bound_process_and_attempt (test_process_factory.WindowsAdapterPolicyUnitTests.test_stop_evidence_rechecks_bound_process_and_attempt) ... ok
+test_failed_launch_releases_its_lease (test_process_factory.WindowsWriterLifetimeUnitTests.test_failed_launch_releases_its_lease) ... ok
+test_live_process_prevents_writer_close (test_process_factory.WindowsWriterLifetimeUnitTests.test_live_process_prevents_writer_close) ... ok
+test_stop_releases_lease_exactly_once (test_process_factory.WindowsWriterLifetimeUnitTests.test_stop_releases_lease_exactly_once) ... ok
+test_unproved_bootstrap_cleanup_keeps_writer_lease (test_process_factory.WindowsWriterLifetimeUnitTests.test_unproved_bootstrap_cleanup_keeps_writer_lease) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.662s
+
+OK

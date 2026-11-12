@@ -106,3 +106,38 @@ Các bước trên là tiêu chí phát triển và phát hành, chưa là hư�
 - [systemd v249 — service](https://github.com/systemd/systemd/blob/v249/man/systemd.service.xml) và [kill](https://github.com/systemd/systemd/blob/v249/man/systemd.kill.xml): main-process lifecycle và dọn control group; dùng bản upstream theo tag để tránh mặc định dựa tính năng mới. Các URL man/249 trên freedesktop timeout trong lượt kiểm, đã đọc raw XML cùng tag từ upstream.
 - [XDG Base Directory](https://specifications.freedesktop.org/basedir/latest/): config/data/state/cache/runtime và quyền runtime directory.
 - [Linux man-pages — flock](https://man7.org/linux/man-pages/man2/flock.2.html), [openat2](https://man7.org/linux/man-pages/man2/openat2.2.html), [fsync](https://man7.org/linux/man-pages/man2/fsync.2.html): advisory lock, giải quyết path theo directory FD và durability. Chỉ dùng flag có trên kernel mục tiêu đã probe; không lấy toàn bộ tính năng trong man-page mới làm baseline LTS.
+
+## Chuẩn bị executor build trong Cloud 11/11/2026
+
+Theo yêu cầu ưu tiên chuẩn bị bản build Ubuntu, đã thêm bộ công cụ tại `tools/ubuntu-build/`. Host Cloud hiện là Debian 13; image Docker dùng Ubuntu 22.04 làm nền biên dịch glibc cũ nhất trong phạm vi dự kiến. Xem [hướng dẫn builder](../../../../tools/ubuntu-build/README.md).
+
+Chạy từ root repository:
+
+```bash
+tools/ubuntu-build/build-image.sh
+tools/ubuntu-build/run.sh bash tools/ubuntu-build/setup.sh
+tools/ubuntu-build/run.sh bash tools/ubuntu-build/preflight.sh
+tools/ubuntu-build/run.sh cargo check --manifest-path apps/desktop/src-tauri/Cargo.toml
+```
+
+Đây là chuẩn bị/kiểm compiler và thư viện cho shell, có thể thực hiện trước khi hoàn tất A-01. Không đổi acceptance của backend/worker/lifecycle hoặc công bố gói runtime đã sẵn sàng. Container không thay Ubuntu Desktop/systemd user manager, Windows regression hoặc kiểm máy sạch. `.venv-ubuntu-env/` là state local đã được gitignore; script không thay Python/Node dependency đang dùng trên host.
+
+Kết quả chạy thực và giới hạn của executor: [bàn giao 11/11/2026](../../evidence/ubuntu-build-environment-2026-11-11/handoff.md). Cargo check/native-link pass; chưa tạo installer hoặc nghiệm thu runtime Linux.
+
+### Runner foundation hiện có (11/11/2026)
+
+Hai script không cài dependency hoặc chạy bootstrap để thu descriptor. Chọn directory
+mới cho từng lần chạy; preflight và runner được dùng chung directory có marker của task,
+nhưng từ chối ghi đè `env.json`/`results.json` hoặc hồ sơ lịch sử không có marker.
+Ví dụ trong builder Ubuntu 22.04 đã chuẩn bị:
+
+```bash
+tools/ubuntu-build/run.sh python tools/ubuntu_foundation_preflight.py --output Artchitect/docs/evidence/ubuntu-foundation-2026-11-11/A-05/ubuntu22-reviewed-baseline
+tools/ubuntu-build/run.sh python tools/ubuntu_foundation_check.py --layer portable --output Artchitect/docs/evidence/ubuntu-foundation-2026-11-11/A-05/ubuntu22-reviewed-baseline
+```
+
+`portable` chạy sáu suite Python bằng unittest result object, schema/API exporter,
+`pip check`, frontend test và build. `results.json` chỉ giữ exit/counts/skip và reason code; không lưu raw stdout/stderr,
+argv hoặc môi trường của process. Khi cần chẩn đoán lỗi, chạy riêng check tương ứng. Layer native/desktop chưa được runner cung cấp; nhập các layer đó bị lỗi input,
+không chuyển về portable. Cargo/native-link/Xvfb vẫn dùng `tools/ubuntu-build/verify.sh`
+cho kiểm build riêng, không suy native acceptance từ portable hoặc container.

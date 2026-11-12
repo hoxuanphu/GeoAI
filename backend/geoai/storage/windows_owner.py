@@ -16,8 +16,7 @@ import threading
 import uuid
 
 
-class OwnershipError(RuntimeError):
-    """Ownership is busy, uncertain, or no longer held."""
+from geoai.storage.native_owner import OwnershipError
 
 
 if os.name == "nt":
@@ -480,3 +479,36 @@ class ExecutionOwner:
             CloseHandle(self._handle)
             self._security.close()
             self._closed = True
+
+
+class WindowsExecutionOwner:
+    """Protocol wrapper over the existing kernel-backed Windows owner."""
+    def __init__(self, native):
+        if type(native) is not ExecutionOwner:
+            raise OwnershipError("unverified_owner")
+        self._native = native
+        self._writer = None
+
+    @classmethod
+    def acquire(cls):
+        return cls(ExecutionOwner.acquire())
+
+    @property
+    def owner_id(self):
+        return self._native.owner_id
+
+    @property
+    def owner_epoch(self):
+        return self._native.owner_epoch
+
+    def acquire_project(self, project_id, project_root):
+        self._writer = self._native.acquire_writer(project_id, project_root)
+        return self._writer
+
+    def recovery_evidence(self):
+        if self._writer is None:
+            raise OwnershipError("project_not_claimed")
+        return self._native.recovery_evidence(self._writer)
+
+    def close(self):
+        self._native.close()

@@ -1,0 +1,101 @@
+{
+  "preflight": {
+    "exit_code": 0
+  },
+  "contracts": {
+    "exit_code": 0,
+    "total": 58,
+    "passed": 58,
+    "skipped": 0,
+    "errors": 0,
+    "failures": 0
+  },
+  "integration": {
+    "exit_code": 0,
+    "total": 56,
+    "passed": 14,
+    "skipped": 42,
+    "errors": 0,
+    "failures": 0
+  },
+  "architecture": {
+    "exit_code": 0,
+    "total": 2,
+    "passed": 2,
+    "skipped": 0,
+    "errors": 0,
+    "failures": 0
+  },
+  "catalog": {
+    "exit_code": 0,
+    "total": 9,
+    "passed": 9,
+    "skipped": 0,
+    "errors": 0,
+    "failures": 0
+  },
+  "storage": {
+    "exit_code": 1,
+    "total": 78,
+    "passed": 55,
+    "skipped": 22,
+    "errors": 1,
+    "failures": 0
+  },
+  "jobs": {
+    "exit_code": 0,
+    "total": 17,
+    "passed": 17,
+    "skipped": 0,
+    "errors": 0,
+    "failures": 0
+  },
+  "schemas": {
+    "exit_code": 0
+  },
+  "api-client": {
+    "exit_code": 0
+  },
+  "pip": {
+    "exit_code": 0
+  },
+  "frontend-tests": {
+    "exit_code": 0
+  },
+  "frontend-build": {
+    "exit_code": 0
+  },
+  "display": {
+    "exit_code": 0
+  },
+  "native-link": {
+    "exit_code": 0
+  },
+  "cargo-check": {
+    "exit_code": 0,
+    "warnings": 3
+  },
+  "overall": {
+    "exit_code": 1,
+    "reason": "Existing test_attempt_state_tracks_publication_cancel_and_stop CursorResult error; build prerequisite checks passed."
+  },
+  "environment": {
+    "host": "Debian 13",
+    "builder": "Ubuntu 22.04.5 LTS amd64",
+    "glibc": "2.35",
+    "python": "3.12.16",
+    "rustc": "1.99.1",
+    "cargo": "1.99.1",
+    "node": "24.20.0",
+    "npm": "11.19.0",
+    "tauri_cli": "2.12.4",
+    "webkit2gtk_4_1": "2.50.4",
+    "image_id": "sha256:e5ae51bdc1fa68d0fe8b6957f4564d83e5d178536026a3e8fe47228d95b567f7"
+  },
+  "sha256": {
+    "apps/desktop/src-tauri/Cargo.lock": "696bfacd7e7392138ca79a739e5d59a8e64f9f84f2b1978f8f089b99d61c0767",
+    "apps/desktop/package-lock.json": "cb62bfcff9a044c70bd2ee28051091b1ac18490b8dea0406ecc8f462110d5bac",
+    "tools/ubuntu-build/Dockerfile": "37adc1e740556ccad6de4656b0a96861489d1b54123726ef7ba0fbf72419e074",
+    "apps/desktop/src-tauri/icons/icon.png": "131264ffcb5bc83249d5721b570d48cbd8053008a039e7119287466a52b80730"
+  }
+}

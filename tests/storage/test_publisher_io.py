@@ -12,7 +12,7 @@ from geoai.contracts import JobSpec, RunManifest
 from geoai.jobs.coordinator import JobCoordinator, RetryPolicy
 from geoai.jobs.publisher import Publisher, PublicationError
 from geoai.storage.io_resolver import WorkerIOResolver
-from geoai.storage.windows_io import NativeRoot
+from geoai.storage.windows_io import NativeRoot, WindowsIOFactory
 
 
 class FixtureGuard:
@@ -53,10 +53,15 @@ class PublisherIOTests(unittest.TestCase):
         self.temps = [tempfile.TemporaryDirectory() for _ in range(3)]
         self.staging, self.output, self.inputs = [NativeRoot(Path(t.name)) for t in self.temps]
         self.inputs.create_file("manifests/snapshot-1.json", [self.fixture.sb], max_bytes=len(self.fixture.sb))
-        self.io = WorkerIOResolver(self.fixture.registry, {"root:1": self.inputs}, {})
+        self.io_factory = WindowsIOFactory()
+        self.registered_staging = self.io_factory.open_registered_root("staging", Path(self.temps[0].name), purpose="staging")
+        self.registered_output = self.io_factory.open_registered_root("output", Path(self.temps[1].name), purpose="publication")
+        self.registered_inputs = self.io_factory.open_registered_root("inputs", Path(self.temps[2].name), purpose="read")
+        self.io = WorkerIOResolver(self.fixture.registry, {"root:1": self.registered_inputs}, {}, io_factory=self.io_factory)
         self.repo = MetadataRepository(self.core)
         self.publisher = Publisher(self.repo, self.fixture.registry, self.io,
-            {"staging:1": self.staging}, self.output, FixtureGuard(), validator=lambda job, manifest: True)
+            {"staging:1": self.registered_staging}, self.registered_output, FixtureGuard(),
+            validator=lambda job, manifest: True, io_factory=self.io_factory)
         data = json.loads((Path(__file__).parents[1] / 'fixtures/contracts/workflow.json').read_text())['RunManifest']
         data.update(attempt=self.attempt.model_dump(), publication_state="candidate",
                     input_sha256=hashlib.sha256(self.fixture.sb).hexdigest(),
@@ -68,7 +73,8 @@ class PublisherIOTests(unittest.TestCase):
         self.staging.create_file("result.bin", [b"payload"], max_bytes=7)
 
     def tearDown(self):
-        for root in (self.staging, self.output, self.inputs):
+        for root in (self.registered_staging, self.registered_output, self.registered_inputs,
+                     self.staging, self.output, self.inputs):
             root.close()
         for temp in self.temps:
             temp.cleanup()
@@ -173,9 +179,9 @@ class PublisherDatabaseTests(unittest.TestCase):
         f.registry.accept(f.start)
         self.env.manifest = self.env.manifest.model_copy(update={'attempt': self.env.attempt})
         self.env.publisher = Publisher(self.repo, f.registry,
-            WorkerIOResolver(f.registry, {'root:1': self.env.inputs}, {}),
-            {'staging:1': self.env.staging}, self.env.output, self.guard,
-            validator=lambda job, manifest: True)
+            WorkerIOResolver(f.registry, {'root:1': self.env.registered_inputs}, {}, io_factory=self.env.io_factory),
+            {'staging:1': self.env.registered_staging}, self.env.registered_output, self.guard,
+            validator=lambda job, manifest: True, io_factory=self.env.io_factory)
 
     def test_publication_inventory_and_missing_byte_reconciliation(self):
         self.env.register()

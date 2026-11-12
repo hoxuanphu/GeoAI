@@ -1,0 +1,13 @@
+   Compiling geoai-desktop v0.1.0 (/workspace/GeoAI/apps/desktop/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.74s
+     Running unittests src/lib.rs (/state/target/debug/deps/geoai_desktop-0aa5f54c89a1626b)
+
+running 5 tests
+test linux_runtime::runtime::tests::runtime_resolves_fixed_packaged_layout ... ok
+test session::tests::descriptor_accepts_valid_loopback ... ok
+test linux_runtime::runtime::tests::runtime_rejects_path_outside_resource_root ... ok
+test session::tests::descriptor_preserves_url_and_token_validation ... ok
+test session::tests::descriptor_rejects_userinfo_query_fragment_unknown_fields ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

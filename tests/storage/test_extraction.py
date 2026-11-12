@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 
 from geoai.contracts.imports import ArchivePolicy
 from geoai.storage.extraction import extract_zip
-from geoai.storage.windows_io import NativeRoot
+from geoai.storage.windows_io import NativeRoot, WindowsIOFactory
 
 
 def zipped(entries):
@@ -30,13 +30,16 @@ class ExtractionTests(unittest.TestCase):
             max_seconds=10., chunk_bytes=64, allowed_extensions=(".txt", ".json"), nested_archives="reject")
         self.temp = tempfile.TemporaryDirectory()
         self.root = NativeRoot(Path(self.temp.name))
+        self.io_factory = WindowsIOFactory()
+        self.registered = self.io_factory.open_registered_root("staging", Path(self.temp.name), purpose="staging")
 
     def tearDown(self):
+        self.registered.close()
         self.root.close()
         self.temp.cleanup()
 
     def extract(self, source, **kwargs):
-        return extract_zip(source, self.policy, self.root, inventory_id="inventory:1", created_at=self.now, **kwargs)
+        return extract_zip(source, self.policy, self.registered, io_factory=self.io_factory, inventory_id="inventory:1", created_at=self.now, **kwargs)
 
     def test_valid_zip_is_hashed_and_written_without_activation(self):
         source = zipped([("folder/", b""), ("empty/", b""), ("folder/first.txt", b"abc"), ("second.json", b"{}")])

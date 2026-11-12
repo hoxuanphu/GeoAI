@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "layer": "portable",
+  "status": "pass",
+  "recorded_at": "2026-11-11T10:57:51.321912+00:00",
+  "environment": {
+    "schema_version": 1,
+    "recorded_at": "2026-11-11T10:57:51.346281+00:00",
+    "os": {
+      "ID": "ubuntu",
+      "VERSION_ID": "22.04",
+      "PRETTY_NAME": "Ubuntu 22.04.5 LTS"
+    },
+    "platform": "Linux",
+    "arch": "x86_64",
+    "kernel": "6.18.57",
+    "libc": {
+      "name": "glibc",
+      "version": "2.35"
+    },
+    "filesystem": "overlayfs",
+    "cgroup_v2": true,
+    "user_manager": "not_accessible",
+    "python": {
+      "version": "3.12.16",
+      "implementation": "CPython"
+    },
+    "toolchain": {
+      "node": "24.20.0",
+      "npm": "11.19.0",
+      "rustc": "1.99.1",
+      "cargo": "1.99.1",
+      "gtk3": "3.24.33",
+      "webkitgtk41": "2.50.4"
+    },
+    "packages": {
+      "pydantic": "2.14.3",
+      "fastapi": "0.141.1",
+      "uvicorn": "0.49.0",
+      "httpx": "0.28.1",
+      "SQLAlchemy": "2.1.8",
+      "alembic": "1.20.1"
+    }
+  },
+  "native_acceptance": "not_evaluated",
+  "gates": "not_evaluated",
+  "checks": [
+    {
+      "id": "contracts",
+      "exit_code": 0,
+      "counts": {
+        "testsRun": 66,
+        "skipped": 0,
+        "failures": 0,
+        "errors": 0,
+        "expectedFailures": 0,
+        "unexpectedSuccesses": 0
+      },
+      "status": "pass"
+    },
+    {
+      "id": "integration",
+      "exit_code": 0,
+      "counts": {
+        "testsRun": 56,
+        "skipped": 42,
+        "failures": 0,
+        "errors": 0,
+        "expectedFailures": 0,
+        "unexpectedSuccesses": 0
+      },
+      "status": "pass"
+    },
+    {
+      "id": "architecture",
+      "exit_code": 0,
+      "counts": {
+        "testsRun": 11,
+        "skipped": 0,
+        "failures": 0,
+        "errors": 0,
+        "expectedFailures": 0,
+        "unexpectedSuccesses": 0
+      },
+      "status": "pass"
+    },
+    {
+      "id": "catalog",
+      "exit_code": 0,
+      "counts": {
+        "testsRun": 9,
+        "skipped": 0,
+        "failures": 0,
+        "errors": 0,
+        "expectedFailures": 0,
+        "unexpectedSuccesses": 0
+      },
+      "status": "pass"
+    },
+    {
+      "id": "storage",
+      "exit_code": 0,
+      "counts": {
+        "testsRun": 105,
+        "skipped": 25,
+        "failures": 0,
+        "errors": 0,
+        "expectedFailures": 0,
+        "unexpectedSuccesses": 0
+      },
+      "status": "pass"
+    },
+    {
+      "id": "jobs",
+      "exit_code": 0,
+      "counts": {
+        "testsRun": 30,
+        "skipped": 0,
+        "failures": 0,
+        "errors": 0,
+        "expectedFailures": 0,
+        "unexpectedSuccesses": 0
+      },
+      "status": "pass"
+    },
+    {
+      "id": "schemas",
+      "exit_code": 0,
+      "status": "pass"
+    },
+    {
+      "id": "api-client",
+      "exit_code": 0,
+      "status": "pass"
+    },
+    {
+      "id": "pip",
+      "exit_code": 0,
+      "status": "pass"
+    },
+    {
+      "id": "frontend-tests",
+      "exit_code": 0,
+      "status": "pass"
+    },
+    {
+      "id": "frontend-build",
+      "exit_code": 0,
+      "status": "pass"
+    }
+  ]
+}

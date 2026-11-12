@@ -1,0 +1,12 @@
+   Compiling geoai-desktop v0.1.0 (/workspace/GeoAI/apps/desktop/src-tauri)
+error[E0599]: no associated function or constant named `from_build_environment` found for struct `runtime::DevRuntimePaths` in the current scope
+   --> src/linux_runtime/runtime.rs:187:51
+    |
+ 14 | pub struct DevRuntimePaths {
+    | -------------------------- associated function or constant `from_build_environment` not found for this struct
+...
+187 |             if let Some(paths) = DevRuntimePaths::from_build_environment().unwrap() {
+    |                                                   ^^^^^^^^^^^^^^^^^^^^^^ associated function or constant not found in `runtime::DevRuntimePaths`
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `geoai-desktop` (lib test) due to 1 previous error

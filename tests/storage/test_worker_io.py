@@ -6,7 +6,7 @@ import unittest
 
 import test_grant_registry as fixtures
 from geoai.storage.io_resolver import WorkerIOResolver, ExternalRegistration
-from geoai.storage.windows_io import NativeRoot, StorageIOError
+from geoai.storage.windows_io import NativeRoot, StorageIOError, WindowsIOFactory
 from geoai.storage.resolver import GrantError
 
 
@@ -32,10 +32,13 @@ class WorkerIOTests(unittest.TestCase):
             self.root.create_file(entry['location']['relative_path'], [content], max_bytes=len(content))
         self.fixture.register()
         self.fixture.registry.accept(self.fixture.start)
-        self.resolver = WorkerIOResolver(self.fixture.registry, {"root:1": self.root}, {
-            "registration:1": ExternalRegistration(Path(self.external.name) / "input.bin", self.identity)})
+        self.io_factory = WindowsIOFactory()
+        self.read_root = self.io_factory.open_registered_root("root:1", Path(self.managed.name), purpose="read")
+        self.resolver = WorkerIOResolver(self.fixture.registry, {"root:1": self.read_root}, {
+            "registration:1": ExternalRegistration(Path(self.external.name) / "input.bin", self.identity)}, io_factory=self.io_factory)
 
     def tearDown(self):
+        self.read_root.close()
         self.root.close()
         self.external_root.close()
         self.managed.cleanup()
@@ -61,6 +64,6 @@ class WorkerIOTests(unittest.TestCase):
             self.read("job:1")
 
     def test_registration_permission_is_independent_of_context_path(self):
-        denied = WorkerIOResolver(self.fixture.registry, {"root:1": self.root}, {})
+        denied = WorkerIOResolver(self.fixture.registry, {"root:1": self.read_root}, {}, io_factory=self.io_factory)
         with self.assertRaises(StorageIOError):
             denied.open_read("access:1", self.fixture.start.attempt, "local:input:1")

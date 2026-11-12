@@ -1,0 +1,11 @@
+# A-03 — process/owner boundary checkpoint, 11/11/2026
+
+Common modules storage/native_owner.py and jobs/process.py define error singleton/protocols and absolute deadlines; native adapters re-export original errors. WindowsExecutionOwner delegates acquire_project to existing acquire_writer and retains current writer for recovery_evidence. guards.py remains the lifetime source.
+
+Transport receives process_factory and explicit owner; no Windows imports. WindowsProcessFactory retains handle-list/Job Object spawn and private launch packet pipe. Native methods on WindowsManagedProcess accept absolute deadlines and translate only to remaining legacy durations. Direct legacy process fixtures use this facade; callsites explicitly inject WindowsProcessFactory. Explicit owner=None remains only legacy low-level containment fixtures, cannot issue stop evidence. Workload proof retains actual native process, project/full attempt/owner generation/current writer identity and queries the same group on each assertion; no publisher consumption until E-01.
+
+Bootstrap writer owns its FD after successful thread start. An ownership handshake also handles interrupted Thread.start; parent closes only still-owned FDs. Timed-out bootstrap kills/observes native group before return; failed stop retains native process and writer lease for recovery, not fake stopped bool.
+
+Review found one Important lifetime gap: writer was only asserted, not retained. RED→GREEN tests with actual ProjectWriter bookkeeping show retain before bootstrap/spawn, lease transferred to process, release only after proven stop/close, idempotent; unproved bootstrap cleanup retains both native process and lease. Focused suite 13/13 pass on Linux; log portable.log. Tests use I/O doubles or one controlled RPC child, not Windows native proof. Native Windows process/transport/owner acceptance remains not_run and task/010.1 not closed. Next A-04 private ledger and A-05 tooling; existing Ubuntu builder is usable with tools/ubuntu-build/run.sh.
+
+No commits/new branches/push. Existing dirty docs/Ubuntu builder/A-01/A-02 work retained. Default Legacy cleanup waits still durations; common process methods are absolute deadlines. Do not mix the two.

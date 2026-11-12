@@ -1,6 +1,6 @@
 # SPEC-010 — Ubuntu foundation: adapter, lifecycle và luồng fixture
 
-**Ngày:** 10/11/2026. **Trạng thái đặc tả:** hoàn tất rà soát và kiểm tài liệu, sẵn sàng làm đầu vào gen code foundation; [bằng chứng](../evidence/spec010-2026-11-10/review.md). **Trạng thái code/runtime:** chưa bắt đầu. Người dùng yêu cầu hoàn thiện spec trước; đây không phải lệnh triển khai code hoặc quyết định nghiệm thu Ubuntu. Các lựa chọn kỹ thuật vẫn ở trạng thái đề xuất theo ADR-012.
+**Ngày:** 10/11/2026. **Trạng thái đặc tả:** hoàn tất rà soát và kiểm tài liệu, sẵn sàng làm đầu vào gen code foundation; [bằng chứng](../evidence/spec010-2026-11-10/review.md). **Trạng thái code/runtime 11/11/2026:** đang thực thi A/B theo yêu cầu người dùng; [checkpoint](../evidence/ubuntu-foundation-2026-11-11/progress.md). Chưa nghiệm thu native Ubuntu. Các lựa chọn kỹ thuật vẫn ở trạng thái đề xuất theo ADR-012.
 
 **Mục tiêu:** một checkout chạy cùng API/coordinator/contracts trên Windows và Ubuntu; trên Ubuntu 22.04 LTS và 24.04 LTS, shell mở phiên native và một job tổng hợp đi qua worker thật → staging → publisher → SQLite, giữ owner, cancel/retry và fencing đúng.
 
@@ -8,7 +8,7 @@ Nguồn: [ADR-012](../adr/ADR-012-ubuntu-desktop.md), [architecture](../architec
 
 ## 1. Phạm vi và dependency
 
-**Kế hoạch thực thi tiếp nối:** [plan tổng Superpowers](../superpowers/plans/2026-11-10-ubuntu-foundation.md) và 5 phần A–E/26 task có catalog signatures, test steps và handoff. Người dùng hiện yêu cầu lập plan thật kỹ; chưa triển khai code. Bằng chứng lập/kiểm plan tại [hồ sơ riêng](../evidence/ubuntu-plan-2026-11-10/review.md), không thay bằng chứng đặc tả phía trên hoặc đóng 010.1–010.3.
+**Kế hoạch thực thi tiếp nối:** [plan tổng Superpowers](../superpowers/plans/2026-11-10-ubuntu-foundation.md) và 5 phần A–E/26 task có catalog signatures, test steps và handoff. Người dùng đã chuyển sang yêu cầu thực thi plan; trạng thái code theo checkpoint hiện tại. Bằng chứng lập/kiểm plan tại [hồ sơ riêng](../evidence/ubuntu-plan-2026-11-10/review.md), không thay bằng chứng đặc tả phía trên hoặc đóng 010.1–010.3.
 
 | Trong SPEC-010 | Ngoài nghiệm thu SPEC-010 |
 | --- | --- |
@@ -121,4 +121,8 @@ Lệnh nền có thật: `PYTHONPATH=backend python -m unittest discover -s test
 **Tình trạng tại đợt đặc tả:** 010.1–010.3 chưa bắt đầu; ADR kỹ thuật vẫn đề xuất; UB runtime chưa chạy. Phần review và kiểm tài liệu được lưu ở [báo cáo SPEC-010](../evidence/spec010-2026-11-10/review.md), tách khỏi kết quả triển khai tương lai.
 
 
-C?p nh?t 10/11/2026: A-01 m?i t?ch hai ki?u I/O chung, ch?a c? factory/protocol; [handoff v? log](../evidence/ubuntu-foundation-2026-11-10/A-01/handoff.md). C?c m?c 010.1?010.3 v? acceptance native v?n m?.
+
+
+### Chuẩn bị compiler Ubuntu Cloud 11/11/2026
+
+[Bàn giao môi trường](../evidence/ubuntu-build-environment-2026-11-11/handoff.md) ghi prerequisites ban đầu. Đến checkpoint hiện tại, đã build/cài `.deb` shell preview trong private Ubuntu 22.04 builder và chạy portable baseline: 207 Python pass/67 Windows skip, exporters/frontend/build đạt. Lỗi test DB baseline đã sửa cách đọc CursorResult mà giữ assertion. A-01–A-04 có code/test, A-05 đã có runner, B-01 đang làm. Pack chưa chứa Linux backend; native user manager/ext4, Windows và Ubuntu 24.04 chưa nghiệm thu. Không đóng 010.1–010.3 hoặc G3 từ shell preview. Lệnh môi trường tại `tools/ubuntu-build/README.md`; [checkpoint và bằng chứng](../evidence/ubuntu-foundation-2026-11-11/progress.md).

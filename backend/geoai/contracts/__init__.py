@@ -25,6 +25,7 @@ from .access import (
     WorkerAccessContext, WorkerBootstrap, WorkerReadEntry, WorkerLaunchPacket,
     ManagedRootRegistration, ExternalReadRegistration, FixtureOutput,
 )
+from .native import LinuxOwnerGeneration, LinuxOwnerLedger
 from .api import HealthResponse, CapabilitiesResponse, SessionDescriptor
 from .imports import (
     ArchiveEntry, ArchiveInventory, ArchivePolicy, ProviderAssetBinding,
@@ -44,6 +45,8 @@ PRIVATE_CONTEXT_MODELS = {model.__name__: model for model in (
     WorkerAccessContext, WorkerBootstrap, WorkerLaunchPacket, SessionDescriptor,
 )}
 
+PRIVATE_NATIVE_MODELS = {model.__name__: model for model in (LinuxOwnerGeneration, LinuxOwnerLedger)}
+
 __all__ = [
     "SCHEMA_VERSION", "ValueModel", "Contract", "ArtifactRef", "AttemptKey",
     "ResourceBudget", "StructuredError", "TimeRange", "AssetRef", "BandSpec",
@@ -58,7 +61,8 @@ __all__ = [
     "ExternalRegisteredLocalLocation", "FileIdentity", "ManagedLocalLocation",
     "WorkerAccessContext", "WorkerBootstrap", "WorkerReadEntry", "WorkerLaunchPacket",
     "ManagedRootRegistration", "ExternalReadRegistration", "FixtureOutput", "CONTRACT_MODELS",
-    "WIRE_MODELS", "PRIVATE_CONTEXT_MODELS",
+    "WIRE_MODELS", "PRIVATE_CONTEXT_MODELS", "PRIVATE_NATIVE_MODELS",
+    "LinuxOwnerGeneration", "LinuxOwnerLedger",
     "HealthResponse", "CapabilitiesResponse",
     "SessionDescriptor",
     "ArchiveEntry", "ArchiveInventory", "ArchivePolicy",

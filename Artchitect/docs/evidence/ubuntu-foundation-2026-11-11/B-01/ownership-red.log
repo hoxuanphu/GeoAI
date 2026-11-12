@@ -1,0 +1,27 @@
+   Compiling geoai-desktop v0.1.0 (/workspace/GeoAI/apps/desktop/src-tauri)
+error[E0425]: cannot find function `trusted_owner` in this scope
+   --> src/linux_runtime/runtime.rs:195:17
+    |
+195 |         assert!(trusted_owner(0, 1000));
+    |                 ^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `trusted_owner` in this scope
+   --> src/linux_runtime/runtime.rs:196:17
+    |
+196 |         assert!(trusted_owner(1000, 1000));
+    |                 ^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `trusted_owner` in this scope
+   --> src/linux_runtime/runtime.rs:197:18
+    |
+197 |         assert!(!trusted_owner(1001, 1000));
+    |                  ^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `trusted_owner` in this scope
+   --> src/linux_runtime/runtime.rs:198:18
+    |
+198 |         assert!(!trusted_owner(1000, 0));
+    |                  ^^^^^^^^^^^^^ not found in this scope
+
+For more information about this error, try `rustc --explain E0425`.
+error: could not compile `geoai-desktop` (lib test) due to 4 previous errors

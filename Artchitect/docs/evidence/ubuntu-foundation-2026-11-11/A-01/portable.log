@@ -1,0 +1,22 @@
+test_external_failed_open_releases_registered_root (test_native_factory.NativeFactoryFailureUnitTests.test_external_failed_open_releases_registered_root) ... ok
+test_os_error_does_not_expose_native_path (test_native_factory.NativeFactoryFailureUnitTests.test_os_error_does_not_expose_native_path) ... ok
+test_duplicate_root_id_cannot_change_purpose (test_native_factory.NativeFactoryPolicyUnitTests.test_duplicate_root_id_cannot_change_purpose) ... ok
+test_expired_or_cancelled_operation_never_reaches_legacy_io (test_native_factory.NativeFactoryPolicyUnitTests.test_expired_or_cancelled_operation_never_reaches_legacy_io) ... ok
+test_external_reader_owns_root_and_failed_open_cleans_up (test_native_factory.NativeFactoryPolicyUnitTests.test_external_reader_owns_root_and_failed_open_cleans_up) ... ok
+test_move_requires_same_factory_and_publication_destination (test_native_factory.NativeFactoryPolicyUnitTests.test_move_requires_same_factory_and_publication_destination) ... ok
+test_protocol_shape_does_not_register_a_root (test_native_factory.NativeFactoryPolicyUnitTests.test_protocol_shape_does_not_register_a_root) ... ok
+test_read_root_refuses_mutations_even_without_require_root (test_native_factory.NativeFactoryPolicyUnitTests.test_read_root_refuses_mutations_even_without_require_root) ... ok
+test_reader_keeps_root_open_and_seek_returns_position (test_native_factory.NativeFactoryPolicyUnitTests.test_reader_keeps_root_open_and_seek_returns_position) ... ok
+test_registry_retains_root_and_rejects_closed_or_foreign_objects (test_native_factory.NativeFactoryPolicyUnitTests.test_registry_retains_root_and_rejects_closed_or_foreign_objects) ... ok
+test_remaining_budget_is_not_reset_between_calls (test_native_factory.NativeFactoryPolicyUnitTests.test_remaining_budget_is_not_reset_between_calls) ... ok
+test_external_registration_keeps_identity_and_is_immutable (test_native_factory.NativeInterfaceTests.test_external_registration_keeps_identity_and_is_immutable) ... ok
+test_protocols_do_not_grant_runtime_authorization (test_native_factory.NativeInterfaceTests.test_protocols_do_not_grant_runtime_authorization) ... ok
+test_windows_reexports_shared_identity_and_error (test_native_factory.NativeSharedTypesTests.test_windows_reexports_shared_identity_and_error) ... ok
+test_expired_creation_never_writes_file (test_native_factory.WindowsRegisteredFactoryNativeTests.test_expired_creation_never_writes_file) ... skipped 'Windows registered factory native handles required'
+test_external_registration_checks_expected_bytes_and_identity (test_native_factory.WindowsRegisteredFactoryNativeTests.test_external_registration_checks_expected_bytes_and_identity) ... skipped 'Windows registered factory native handles required'
+test_reader_denies_writes_and_root_release_until_closed (test_native_factory.WindowsRegisteredFactoryNativeTests.test_reader_denies_writes_and_root_release_until_closed) ... skipped 'Windows registered factory native handles required'
+
+----------------------------------------------------------------------
+Ran 17 tests in 1.425s
+
+OK (skipped=3)

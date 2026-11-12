@@ -1,0 +1,18 @@
+   Compiling geoai-desktop v0.1.0 (/workspace/GeoAI/apps/desktop/src-tauri)
+warning: unused import: `super::*`
+ --> src/linux_runtime/runtime.rs:3:9
+  |
+3 |     use super::*;
+  |         ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0425]: cannot find function `resolve_runtime` in this scope
+  --> src/linux_runtime/runtime.rs:44:21
+   |
+44 |         let paths = resolve_runtime(&fixture.0, None).unwrap();
+   |                     ^^^^^^^^^^^^^^^ not found in this scope
+
+For more information about this error, try `rustc --explain E0425`.
+warning: `geoai-desktop` (lib test) generated 1 warning
+error: could not compile `geoai-desktop` (lib test) due to 1 previous error; 1 warning emitted

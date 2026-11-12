@@ -1,0 +1,28 @@
+{
+  "LinuxOwnerLedger": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-11-11T00:00:00Z",
+    "epoch_high_watermark": 7,
+    "generations": [
+      {
+        "project_id": "project:unit",
+        "owner_id": "owner:unit",
+        "owner_epoch": 7,
+        "project_root_identity": {
+          "volume_id": "linux-dev:1",
+          "file_id": "linux-ino:2"
+        },
+        "boot_id": "00000000-0000-4000-8000-000000000001",
+        "invocation_id": "00000000000000000000000000000001",
+        "supervisor_pid": 123,
+        "supervisor_start_ticks": 456,
+        "cgroup_path": "/user.slice/user-1000.slice/user@1000.service/app.slice/geoai-execution.service",
+        "cgroup_identity": {
+          "volume_id": "linux-dev:3",
+          "file_id": "linux-ino:4"
+        },
+        "state": "active"
+      }
+    ]
+  }
+}

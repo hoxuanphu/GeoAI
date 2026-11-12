@@ -1,0 +1,31 @@
+   Compiling nix v0.31.3
+   Compiling geoai-desktop v0.1.0 (/workspace/GeoAI/apps/desktop/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.94s
+     Running unittests src/lib.rs (/state/target/debug/deps/geoai_desktop-faedf3503fc3ec61)
+
+running 9 tests
+test linux_runtime::runtime::tests::runtime_rejects_missing_pack_and_relative_root ... ok
+test linux_runtime::runtime::tests::runtime_rejects_path_outside_resource_root ... ok
+test linux_runtime::runtime::tests::runtime_rejects_untrusted_ancestor_of_resource_root ... ok
+test linux_runtime::runtime::tests::runtime_rejects_non_executables_and_privilege_bits ... ok
+test linux_runtime::runtime::tests::runtime_resolves_fixed_packaged_layout ... FAILED
+test session::tests::descriptor_accepts_valid_loopback ... ok
+test session::tests::descriptor_preserves_url_and_token_validation ... ok
+test session::tests::descriptor_rejects_userinfo_query_fragment_unknown_fields ... ok
+test linux_runtime::runtime::tests::runtime_rejects_untrusted_write_permissions ... ok
+
+failures:
+
+---- linux_runtime::runtime::tests::runtime_resolves_fixed_packaged_layout stdout ----
+
+thread 'linux_runtime::runtime::tests::runtime_resolves_fixed_packaged_layout' (12179) panicked at src/linux_runtime/runtime.rs:111:55:
+called `Result::unwrap()` on an `Err` value: LinuxRuntimeUnavailable
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    linux_runtime::runtime::tests::runtime_resolves_fixed_packaged_layout
+
+test result: FAILED. 8 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+error: test failed, to rerun pass `--lib`
